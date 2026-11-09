@@ -1,0 +1,18 @@
+PÁGINA DE SEQUOIA AI
+
+Página
+- index.html → diseño propio (inspirado en happyrobot.ai) con los logos del kit. (La versión B con todo el kit se descartó.)
+
+Cómo verla en tu PC
+- Abre una terminal y corre:  python -m http.server 4321 --bind 127.0.0.1 --directory C:\Users\Gigabyte\sequoia-landing
+- Luego abre:  http://127.0.0.1:4321/?motion
+- "?motion" fuerza las animaciones aunque Windows tenga apagados los efectos de animación.
+
+Revisión automática (se pegan en la consola del navegador o las corre Claude)
+- scripts\qa.js          revisa desbordes, imágenes rotas, textos encimados y el carrusel.
+- scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, diagrama, contadores.
+- scripts\anim-audit.js  busca animaciones que salten de golpe y mide la fluidez (cuadros por segundo).
+
+Logos
+- assets\ tiene el símbolo, la palabra "sequoia ai" (versión verde y clara), favicons e ícono de celular,
+  sacados del logo aprobado del kit (Documents\Codex\2026-11-08\dise-a-el-logo-de-sequoia\outputs\sequoia-ai-kit).

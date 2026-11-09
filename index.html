@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sequoia AI — La empresa que aprende con cada tarea</title>
+<meta name="description" content="Sequoia es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo." />
+<script>if (/[?&]motion(?:&|=|$)/.test(location.search)) document.documentElement.classList.add("force-motion");</script>
+<link rel="icon" href="assets/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<meta name="theme-color" content="#1e3b2f" />
+<meta property="og:title" content="Sequoia AI" />
+<meta property="og:image" content="assets/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0d110e;
+    --ink-2: #2a2f2b;
+    --muted: #6d6f66;
+    --moss: #1e3b2f;
+    --fern: #4f6b57;
+    --sage: #a9ae9a;
+    --sage-2: #c9ccbd;
+    --paper: #f4f1ea;
+    --paper-2: #ebe6da;
+    --white: #fcfbf8;
+    --line: #d9d4c7;
+    --redwood: #b4532a;
+    --ember: #d98c5f;
+    --font-body: "Instrument Sans", "Helvetica Neue", sans-serif;
+    --font-serif: "Instrument Serif", Georgia, serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --max: 1280px;
+    --ease: cubic-bezier(.2, .7, .1, 1);
+    --ease-hr: cubic-bezier(.33, 0, .15, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 48px; }
+  .mono { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
+  .serif { font: inherit; letter-spacing: inherit; color: inherit; } /* same letter and color as the rest of the title */
+  .accent { color: var(--redwood); }
+
+  /* ---------- grain ---------- */
+  body::after {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* ---------- announcement ---------- */
+  .announce {
+    background: var(--moss); color: #e9eadf; text-align: center; padding: 9px 16px;
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  }
+  .announce .dot { display: inline-block; width: 6px; height: 6px; background: var(--ember); margin-right: 10px; vertical-align: middle; border-radius: 1px; animation: blink 2.6s ease-in-out infinite; }
+  .announce a { margin-left: 14px; transition: opacity .15s cubic-bezier(.4,0,.2,1); }
+  .announce a:hover { opacity: .7; }
+  @keyframes blink { 0%, 100% { opacity: 1; box-shadow: 0 0 7px 1px rgba(217, 140, 95, .55); } 50% { opacity: .08; box-shadow: 0 0 0 0 rgba(217, 140, 95, 0); } }
+
+  /* ---------- nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(252, 251, 248, .82); backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid transparent; transition: border-color .4s; }
+  .nav.scrolled { border-color: var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand .sym { width: 30px; height: 30px; transition: transform .8s var(--ease); }
+  .brand .word { height: 19px; width: auto; margin-top: 2px; }
+  .brand:hover .sym { transform: rotate(-6deg) scale(1.06); }
+  .nav-links { display: flex; align-items: center; gap: 30px; }
+  .nav-links a.link { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); position: relative; }
+  .link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease-hr); }
+  .link:hover::after { transform: scaleX(1); transform-origin: left; }
+  .dd { position: relative; }
+  .dd-btn { background: none; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); position: relative; padding: 0; }
+  .chev { width: 10px; height: 10px; transition: transform .35s var(--ease-hr); }
+  .dd-panel { position: absolute; top: calc(100% + 18px); left: -18px; width: 300px; background: var(--white); border: 1px solid var(--line); box-shadow: 0 24px 48px -28px rgba(13,17,14,.45); padding: 8px; display: grid;
+    opacity: 0; visibility: hidden; transform: translateY(-5px); transition: opacity .2s var(--ease-hr), transform .3s var(--ease-hr), visibility 0s linear .3s; }
+  .dd-panel::before { content: ""; position: absolute; left: 0; right: 0; top: -20px; height: 20px; }
+  .dd-panel a { display: grid; gap: 4px; padding: 12px; transition: background-color .2s; }
+  .dd-panel a .mono { color: var(--redwood); }
+  .dd-panel a span:last-child { font-size: 14px; color: var(--ink-2); }
+  .dd-panel a:hover, .dd-panel a:focus-visible { background: var(--paper); outline: none; }
+  .dd.open .dd-panel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .dd.open .chev { transform: rotate(180deg); }
+  @media (hover: hover) { .dd:hover .dd-panel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; } .dd:hover .chev { transform: rotate(180deg); } }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px; height: 44px; padding: 0 12px 0 20px;
+    background: var(--ink); color: var(--white); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+    border: 1px solid var(--ink); position: relative; isolation: isolate; overflow: hidden; white-space: nowrap;
+    transition: background-color .35s var(--ease-hr), color .35s var(--ease-hr), border-color .35s var(--ease-hr), transform .2s var(--ease-hr);
+  }
+  .btn:active, .arrow:active { transform: scale(.98); }
+  .btn:focus-visible, .arrow:focus-visible, .boxlink:focus-visible, .area:focus-visible { outline: 2px solid var(--redwood); outline-offset: 2px; }
+  /* arrow swap: one arrow leaves to the right, the next one enters from the left */
+  .arr { position: relative; flex-shrink: 0; overflow: hidden; width: 20px; height: 20px; border: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 55%, transparent); transition: border-color .35s var(--ease-hr); }
+  .arr .rot { position: absolute; inset: 0; transform: rotate(-45deg); }
+  .arr svg { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; transition: transform .35s var(--ease-hr); }
+  .arr .a2 { transform: translateX(-26px); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  @media (hover: hover) {
+    .btn:hover { background: var(--moss); border-color: var(--moss); }
+    .btn.ghost:hover { background: var(--ink); border-color: var(--ink); color: var(--white); }
+    .btn:hover .arr, .boxlink:hover .arr { border-color: currentColor; }
+    .btn:hover .arr .a1, .boxlink:hover .arr .a1, .card:hover .arr .a1, .area:hover .arr .a1 { transform: translateX(26px); }
+    .btn:hover .arr .a2, .boxlink:hover .arr .a2, .card:hover .arr .a2, .area:hover .arr .a2 { transform: none; }
+  }
+  .btn:focus-visible .arr .a1, .boxlink:focus-visible .arr .a1 { transform: translateX(26px); }
+  .btn:focus-visible .arr .a2, .boxlink:focus-visible .arr .a2 { transform: none; }
+  .boxlink { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+  .boxlink .arr { width: 18px; height: 18px; }
+  .ul { position: relative; }
+  .ul::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform-origin: left; }
+  @media (hover: hover) { .boxlink:hover .ul::after, footer li a:hover::after { animation: sweep .6s var(--ease-hr); } }
+  @keyframes sweep { 0% { transform-origin: 100% 50%; transform: scaleX(1); } 49% { transform-origin: 100% 50%; transform: scaleX(0); } 51% { transform-origin: 0 50%; transform: scaleX(0); } 100% { transform-origin: 0 50%; transform: scaleX(1); } }
+  footer li a { position: relative; }
+  footer li a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; }
+  .hero-cta .btn:first-child { animation: beckon 2.6s ease-in-out 4.5s 2; }
+  @keyframes beckon { 0%, 100% { filter: brightness(1); transform: scale(1); } 45% { filter: brightness(1.25); transform: scale(1.03); } }
+  .boxlink .arr svg { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative; overflow: hidden; min-height: calc(100svh - 104px); display: flex; align-items: center;
+    background: linear-gradient(100deg, #e4e0d4 0%, #efece4 45%, #fbfaf6 100%);
+  }
+  .hero .wrap { position: relative; z-index: 2; width: 100%; padding-top: 80px; padding-bottom: 96px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--fern); margin-bottom: 34px; }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+  h1.hero-title {
+    font-weight: 400; font-size: clamp(52px, 7.4vw, 118px); line-height: .98; letter-spacing: -0.055em; max-width: 11.4em;
+    background: repeating-linear-gradient(104deg, var(--ink) var(--gx, 8%), var(--fern) calc(var(--gx, 8%) + 60%), var(--ink) calc(var(--gx, 8%) + 120%));
+    -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; cursor: default;
+  }
+  .hero-sub { margin-top: 34px; max-width: 470px; font-size: 18px; line-height: 1.5; color: var(--ink-2); }
+  .hero-cta { margin-top: 38px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-meta { margin-top: 56px; display: flex; gap: 28px; color: var(--muted); flex-wrap: wrap; }
+  .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+  .hero-meta i { width: 6px; height: 6px; border-radius: 50%; background: var(--fern); display: inline-block; }
+
+  /* hero load-in */
+  .load { opacity: 0; transform: translateY(18px); animation: rise 1.1s var(--ease) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* rings visual */
+  .rings { position: absolute; right: calc(min(64vw, 920px) * -0.13); top: 50%; width: min(64vw, 920px); aspect-ratio: 1; transform: translateY(-50%); z-index: 1; pointer-events: none;
+    -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%); mask-image: radial-gradient(closest-side, #000 62%, transparent 100%); }
+  .rings svg { width: 100%; height: 100%; overflow: visible; }
+  .ring { fill: none; stroke: var(--ink); stroke-opacity: .16; stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s var(--ease) forwards; animation-delay: var(--d, 0s); }
+  .ring.strong { stroke-opacity: .32; }
+  .ring.dash { stroke-dasharray: 2 6; stroke-dashoffset: 0; animation: fadeIn 1.6s ease forwards; opacity: 0; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .spoke { stroke: var(--redwood); stroke-width: 1.2; fill: none; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.4s var(--ease) forwards; animation-delay: var(--d, 0s); opacity: .75; }
+  .node { opacity: 0; transform-box: fill-box; transform-origin: center; animation: pop .7s var(--ease) forwards; animation-delay: var(--d, 0s); }
+  @keyframes pop { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+  .node-core { fill: var(--moss); }
+  .node-hot { fill: var(--redwood); }
+  .pulse { fill: none; stroke: var(--redwood); transform-box: fill-box; transform-origin: center; animation: ping 2.8s ease-out infinite; animation-delay: var(--d, 0s); opacity: 0; }
+  @keyframes ping { 0% { opacity: 0; transform: scale(.4); } 12% { opacity: .6; } 80%, 100% { opacity: 0; transform: scale(2.6); } }
+  .rings .slow { transform-origin: 500px 500px; animation: spin 140s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .chip { opacity: 0; animation: rise .9s var(--ease) forwards; animation-delay: var(--d, 0s); }
+  /* hero scenes: 18s loop, 6s per scene, lines draw in 1.6s (HappyRobot hero rhythm) */
+  .scene { --t: calc(1.8s + var(--s) * 6s); opacity: 0; animation: sceneVis 18s linear var(--t) infinite both; }
+  @keyframes sceneVis { 0% { opacity: 0; } 2% { opacity: 1; } 30% { opacity: 1; } 33.3% { opacity: 0; } 100% { opacity: 0; } }
+  .sp { fill: none; stroke: var(--redwood); stroke-width: 1.3; opacity: .8; stroke-dasharray: 1; stroke-dashoffset: 1; animation: sceneDraw 18s cubic-bezier(.65, 0, .35, 1) var(--t) infinite both; }
+  @keyframes sceneDraw { 0% { stroke-dashoffset: 1; } 8.9% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; } }
+  .sn { fill: var(--moss); transform-box: fill-box; transform-origin: center; animation: sceneNode 18s var(--ease-hr) calc(var(--t) + var(--n) * .45s) infinite both; }
+  .sn.hot { fill: var(--redwood); }
+  @keyframes sceneNode { 0% { opacity: 0; transform: scale(.2); } 3% { opacity: 1; transform: scale(1); } 100% { opacity: 1; transform: scale(1); } }
+  .spulse { fill: none; stroke: var(--redwood); transform-box: fill-box; transform-origin: center; animation: ping 2s ease-out calc(var(--t) + 1.4s) infinite both; opacity: 0; }
+  .sc { animation: sceneChip 18s var(--ease-hr) calc(var(--t) + .5s + var(--c) * .45s) infinite both; }
+  .sc rect { fill: var(--white); stroke: var(--line); }
+  .sc text { font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; fill: var(--ink-2); }
+  .sc .k { fill: var(--redwood); }
+  @keyframes sceneChip { 0% { opacity: 0; transform: translateY(8px); } 3% { opacity: 1; transform: none; } 100% { opacity: 1; transform: none; } }
+  .rings > svg { animation: drift 16s ease-in-out infinite alternate; transform-origin: 60% 50%; }
+  @keyframes drift { from { transform: scale(1) translateY(0); } to { transform: scale(1.035) translateY(-1%); } }
+  .chip rect { fill: var(--white); stroke: var(--line); }
+  .chip text { font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; fill: var(--ink-2); }
+  .chip .k { fill: var(--redwood); }
+
+  /* ---------- section shells ---------- */
+  section { position: relative; }
+  .sec { padding: 132px 0; }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 56px; flex-wrap: wrap; }
+  h2 { font-weight: 400; font-size: clamp(34px, 3.6vw, 54px); line-height: 1.02; letter-spacing: -0.035em; max-width: 12.5em; }
+  .sec-head h2, .areas-top h2 { flex: 1 1 520px; }
+  .lead { max-width: 420px; color: var(--ink-2); line-height: 1.55; font-size: 16px; }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0s); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- providers wall ---------- */
+  .wall { border-top: 1px solid var(--line); }
+  .wall-title { display: flex; justify-content: space-between; align-items: center; padding: 26px 0; color: var(--muted); }
+  .marquee { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .cell { width: 230px; height: 112px; display: grid; place-items: center; border-right: 1px solid var(--line); font-size: 21px; letter-spacing: -0.02em; color: var(--ink-2); gap: 6px; }
+  .cell { transition: background-color .28s, color .28s; }
+  .cell small { transition: color .28s; }
+  @media (hover: hover) { .cell:hover { background: var(--ink); color: var(--paper); } .cell:hover small { color: var(--sage); } }
+  .cell small { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; margin-top: 6px; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ---------- story cards ---------- */
+  .story { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .card { display: flex; flex-direction: column; }
+  .visual { position: relative; aspect-ratio: 1 / 1.02; overflow: hidden; background: var(--moss); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .visual::before { transition: transform .6s var(--ease-hr); }
+  .mini { transition: transform .6s var(--ease-hr); }
+  @media (hover: hover) { .card:hover .visual::before { transform: scale(1.12); } .card:hover .mini { transform: translateY(-4px); } }
+  .visual::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 80% at 80% 0%, rgba(217,140,95,.35), transparent 60%), radial-gradient(90% 70% at 0% 100%, rgba(169,174,154,.25), transparent 70%); }
+  .visual .num { position: absolute; top: 18px; left: 20px; color: rgba(244,241,234,.7); }
+  .visual .tag { position: absolute; top: 16px; right: 16px; width: 26px; height: 26px; color: #f4f1ea; }
+  .tag.arr svg { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; }
+  .tag.arr .a2 { transform: translateX(-34px); }
+  @media (hover: hover) { .card:hover .tag.arr .a1, .area:hover .tag.arr .a1 { transform: translateX(34px); } .card:hover .tag.arr, .area:hover .tag.arr { border-color: currentColor; } }
+  .mini { position: relative; background: rgba(252,251,248,.94); color: var(--ink); padding: 14px; font-size: 12.5px; line-height: 1.45; box-shadow: 0 20px 40px -24px rgba(0,0,0,.5); }
+  .mini .row { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .mini .row:last-child { border-bottom: 0; }
+  .mini b { font-weight: 600; white-space: nowrap; }
+  .mini .who { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; min-width: 54px; }
+  .mini .pill { display: inline-block; font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em; padding: 2px 6px; border: 1px solid var(--line); margin-right: 4px; }
+  .mini .pill.ok { border-color: var(--fern); color: var(--fern); }
+  .mini .pill.hot { border-color: var(--redwood); color: var(--redwood); }
+  .big { font-size: 46px; letter-spacing: -0.04em; line-height: 1; color: var(--ink); }
+  .card .label { margin-top: 18px; color: var(--muted); }
+  .card h3 { margin-top: 8px; font-weight: 400; font-size: 22px; line-height: 1.18; letter-spacing: -0.02em; }
+  .card p { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+
+  /* ---------- platform ---------- */
+  .platform { background: var(--paper); border-top: 1px solid var(--line); }
+  .platform .grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 64px; align-items: center; }
+  .feat { margin-top: 44px; border-top: 1px solid #cfc9bb; }
+  .feat-item { padding: 22px 0; border-bottom: 1px solid #cfc9bb; display: grid; grid-template-columns: 34px 1fr; gap: 6px; }
+  .feat-item .mono { color: var(--redwood); padding-top: 4px; }
+  .feat-item h4 { font-weight: 500; font-size: 17px; letter-spacing: -0.01em; }
+  .feat-item { transition: opacity .35s var(--ease-hr); cursor: default; }
+  .feat-item h4 { display: flex; align-items: center; gap: 10px; }
+  .feat.has-on .feat-item:not(.on) { opacity: .42; }
+  .feat-item .mono { transition: color .35s; }
+  .diagram.has-on .seg { opacity: .3; }
+  .diagram .seg { transition: opacity .45s var(--ease-hr), filter .4s; }
+  .diagram.has-on .seg.on { opacity: 1; }
+  .live { width: 7px; height: 7px; border-radius: 50%; background: #3f9b62; box-shadow: 0 0 0 3px rgba(63,155,98,.18); animation: live 1.6s ease-in-out infinite; display: inline-block; }
+  @keyframes live { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+  @media (min-width: 1021px) {
+    .platform .grid { align-items: start; }
+    .diagram { position: sticky; top: max(104px, calc(50vh - 290px)); }
+    .feat-item { padding: 34px 0; }
+    .platform .grid > div:first-child { padding-bottom: 22vh; }
+  }
+  .feat-item p { grid-column: 2; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); margin-top: 4px; max-width: 400px; }
+  .diagram svg { width: 100%; height: auto; overflow: visible; }
+  .seg { transition: transform .6s var(--ease), filter .4s; transform-box: fill-box; transform-origin: center; cursor: default; }
+  .seg:hover { filter: brightness(1.12); }
+  .dlabel { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; }
+  .dsmall { font-family: var(--font-body); font-size: 12.5px; }
+  .tick { stroke: var(--ink); stroke-opacity: .35; stroke-dasharray: 2 4; }
+
+  /* ---------- areas carousel ---------- */
+  .areas-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 48px; flex-wrap: wrap; }
+  .carousel { --gut: max(48px, calc((100vw - 1280px) / 2 + 48px)); display: grid; grid-auto-flow: column; grid-auto-columns: calc((min(100%, 1184px) - 60px) / 4.4); gap: 20px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; padding: 0 var(--gut) 4px; margin: 0 calc(-1 * var(--gut)); scroll-padding-inline: var(--gut); overscroll-behavior-x: contain; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .carousel.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .carousel.dragging .area { pointer-events: none; }
+  .carousel img, .carousel svg { -webkit-user-drag: none; }
+  .carousel::-webkit-scrollbar { display: none; }
+  .area { scroll-snap-align: start; position: relative; aspect-ratio: 1; overflow: hidden; color: #f4f1ea; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+  .area .bg { position: absolute; inset: 0; transition: transform .6s var(--ease-hr); }
+  .area::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s var(--ease-hr); background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(255,248,237,.22), transparent 70%); }
+  .area .top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .area .tag { position: relative; width: 26px; height: 26px; }
+  @media (hover: hover) { .area:hover .bg { transform: scale(1.04); } .area:hover::after { opacity: 1; } }
+  .area .top, .area .bottom { position: relative; }
+  .area .bottom h3 { font-weight: 400; font-size: 26px; letter-spacing: -0.03em; }
+  .area .bottom p { margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+  .glyph { position: absolute; right: -10%; top: 8%; width: 70%; opacity: .5; }
+  .controls { display: flex; justify-content: flex-end; align-items: center; gap: 14px; margin-top: 22px; }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 6px; height: 6px; background: var(--line); display: block; transition: background .3s, width .4s var(--ease); }
+  .dots i.on { background: var(--ink); width: 18px; }
+  .arrow { position: relative; overflow: hidden; width: 44px; height: 44px; border: 1px solid #b9b3a5; background: var(--white); color: var(--ink); cursor: pointer; transition: color .2s, border-color .2s, opacity .2s, transform .2s var(--ease-hr); }
+  .arrow svg { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; transition: transform .35s var(--ease-hr); }
+  .arrow .a2 { transform: translateX(-30px); }
+  .arrow.left .a2 { transform: translateX(30px); }
+  @media (hover: hover) { .arrow:hover { border-color: var(--ink); } .arrow:hover .a1 { transform: translateX(30px); } .arrow.left:hover .a1 { transform: translateX(-30px); } .arrow:hover .a2 { transform: none; } }
+  .arrow:disabled { opacity: .35; pointer-events: none; }
+
+  /* ---------- stone section ---------- */
+  .stone { background: var(--sage); }
+  .panel { background: var(--paper); margin-top: 56px; }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .col { padding: 30px 28px 34px; border-right: 1px solid var(--line); }
+  .col:last-child { border-right: 0; }
+  .col .mono { color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .col .mono::before { content: ""; width: 6px; height: 6px; background: var(--redwood); }
+  .col h4 { margin-top: 18px; font-weight: 500; font-size: 19px; letter-spacing: -0.02em; }
+  .col p { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); max-width: 330px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .stat { padding: 30px 28px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat b { display: block; font-weight: 400; font-size: 48px; letter-spacing: -0.045em; line-height: 1; }
+  .stat .mono { display: block; margin-top: 14px; color: var(--muted); }
+
+  /* ---------- learning ---------- */
+  .learn .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .learn .lead { margin-top: 22px; }
+  .learn .btn { margin-top: 32px; }
+  .stage { aspect-ratio: 1.1; background: linear-gradient(180deg, var(--white), var(--paper)); border: 1px solid var(--line); display: grid; place-items: center; perspective: 900px; overflow: hidden; position: relative; }
+  .stage .cap { position: absolute; left: 18px; bottom: 16px; color: var(--muted); }
+  .stage .cap2 { position: absolute; right: 18px; top: 16px; color: var(--muted); }
+  .grow { width: 64%; height: auto; overflow: visible; margin: -40px 0 0 -18%; }
+  .gr { stroke: var(--ink); stroke-opacity: .55; stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; animation: grow 9s var(--ease) infinite; animation-delay: calc(var(--i) * .55s); }
+  .gr.hot { stroke: var(--redwood); stroke-opacity: 1; stroke-width: 1.6; }
+  @keyframes grow { 0% { opacity: 0; stroke-dashoffset: 1; } 6% { opacity: 1; } 18% { stroke-dashoffset: 0; } 82% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 0; } }
+  .crack { stroke: var(--ink); stroke-opacity: .25; stroke-dasharray: 2 4; }
+  .log { position: absolute; right: 18px; bottom: 42px; list-style: none; text-align: right; color: var(--ink-2); font-size: 10.5px; line-height: 1.9; }
+  .log li { opacity: 0; transform: translateY(6px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .log li.in { opacity: 1; transform: none; }
+  .log b { color: var(--redwood); font-weight: 500; }
+
+  /* ---------- closing ---------- */
+  .closing { position: relative; overflow: hidden; background: linear-gradient(100deg, #e4e0d4 0%, #efece4 48%, #fbfaf6 100%); padding: 150px 0 140px; }
+  .closing h2 { font-size: clamp(46px, 6.4vw, 100px); letter-spacing: -0.055em; line-height: .98; max-width: 8.5em;
+    background: linear-gradient(104deg, var(--ink) 0%, var(--ink-2) 45%, var(--fern) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
+  .closing .rings { right: calc(min(70vw, 980px) * -0.28); width: min(70vw, 980px); opacity: .9; }
+
+  footer { background: var(--ink); color: #c9ccbd; padding: 56px 0 40px; }
+  footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+  footer .brand { color: var(--white); }
+  footer p { margin-top: 14px; font-size: 14px; line-height: 1.55; max-width: 340px; color: #a9ad9f; }
+  footer h5 { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #7f8577; font-weight: 400; margin-bottom: 14px; }
+  footer li { list-style: none; font-size: 14px; padding: 4px 0; }
+  footer li a:hover { color: var(--white); }
+  .legal { grid-column: 1 / -1; display: flex; justify-content: space-between; border-top: 1px solid #262c27; padding-top: 22px; margin-top: 20px; color: #7f8577; flex-wrap: wrap; gap: 12px; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1020px) {
+    .wrap { padding: 0 28px; }
+    .story { grid-template-columns: repeat(2, 1fr); }
+    .platform .grid, .learn .grid { grid-template-columns: 1fr; }
+    .carousel { --gut: 28px; grid-auto-columns: calc((100vw - 56px - 20px) / 2.2); }
+    .cols, .stats { grid-template-columns: 1fr 1fr; }
+    .col:nth-child(2) { border-right: 0; }
+    .col:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--line); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .rings { right: -30vw; width: 110vw; opacity: .55; }
+    .hero .rings .chip, .hero .rings .sc { display: none; }
+  }
+  @media (max-width: 900px) { .nav-links a.link, .nav-links .dd { display: none; } }
+  @media (max-width: 720px) {
+    .wrap { padding: 0 16px; }
+    .nav-links a.link { display: none; }
+    .sec { padding: 88px 0; }
+    .story { grid-template-columns: 1fr; }
+    .carousel { --gut: 16px; grid-auto-columns: 78vw; }
+    .cols, .stats { grid-template-columns: 1fr; }
+    .col, .stat { border-right: 0 !important; border-bottom: 1px solid var(--line); }
+    .col:nth-child(3) { border-top: 0; }
+    footer .wrap { grid-template-columns: 1fr; }
+    .hero-sub { font-size: 16.5px; }
+    .rings { top: 22%; right: -45vw; width: 130vw; opacity: .4; }
+    .announce .hide-sm { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html:not(.force-motion) *, html:not(.force-motion) *::before, html:not(.force-motion) *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    html:not(.force-motion) .reveal, html:not(.force-motion) .load { opacity: 1; transform: none; }
+    html:not(.force-motion) .gr { animation: none !important; opacity: 1; stroke-dashoffset: 0; }
+    html:not(.force-motion) .ring.dash { opacity: 1; }
+    html:not(.force-motion) .track { animation: none !important; }
+    html:not(.force-motion) .announce .dot { animation-duration: 2.6s !important; animation-iteration-count: infinite !important; } /* a soft fade, no movement: keep it */
+    html:not(.force-motion) .scene, html:not(.force-motion) .sp, html:not(.force-motion) .sn, html:not(.force-motion) .sc { animation: none !important; }
+    html:not(.force-motion) .scene { opacity: 0; }
+    html:not(.force-motion) .scene[style*="--s:0"] { opacity: 1; }
+    html:not(.force-motion) .sp { stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- LOGO PROVISIONAL: reemplazar este símbolo por el logo final -->
+  <symbol id="logo" viewBox="0 0 22 26">
+    <path d="M11 0 L17 8 H13.8 L19 15 H14.6 L21 23 H12.2 V26 H9.8 V23 H1 L7.4 15 H3 L8.2 8 H5 Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="arr" viewBox="0 0 10 10"><path d="M1 5h7.2M5.4 1.8 8.6 5 5.4 8.2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  <symbol id="arr-l" viewBox="0 0 10 10"><path d="M9 5H1.8M4.6 1.8 1.4 5l3.2 3.2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  <symbol id="diag" viewBox="0 0 10 10"><path d="M2 8 8 2M3.4 2H8v4.6" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+</svg>
+
+<div class="announce">
+  <span class="dot"></span>Sequoia AI se presenta en el Kavak × OpenAI × Primero AI RSI Hackathon<span class="hide-sm"> — 9 nov 2026</span>
+  <a href="#demo">Ver la demo →</a>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Sequoia AI, inicio"><img class="sym" src="assets/symbol.png" alt="" width="30" height="30" /><img class="word" src="assets/wordmark.png" alt="sequoia ai" width="77" height="19" /></a>
+    <nav class="nav-links">
+      <div class="dd" id="dd">
+        <button class="link dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Producto <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></button>
+        <div class="dd-panel" role="menu">
+          <a role="menuitem" href="#demo"><span class="mono">01 · Cómo funciona</span><span>De la junta al feature, paso a paso</span></a>
+          <a role="menuitem" href="#plataforma"><span class="mono">02 · Plataforma</span><span>Conocimiento por capas y permisos</span></a>
+          <a role="menuitem" href="#aprende"><span class="mono">03 · Auto-aprendizaje</span><span>La wiki que se mejora sola</span></a>
+        </div>
+      </div>
+      <a class="link" href="#areas">Áreas</a>
+      <a class="link" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="rings" aria-hidden="true">
+      <svg viewBox="0 0 1000 1000">
+        <g class="slow">
+          <path class="ring dash" d="M500 40 a460 460 0 1 1 -0.1 0" style="--d:.2s"/>
+        </g>
+        <path class="ring" pathLength="1" d="M500 92 C760 96 912 268 906 506 C900 742 742 910 500 906 C262 902 92 748 96 500 C100 262 250 88 500 92 Z" style="--d:.1s"/>
+        <path class="ring strong" pathLength="1" d="M500 170 C700 168 832 300 830 502 C828 704 700 834 498 832 C300 830 168 700 170 500 C172 300 302 172 500 170 Z" style="--d:.35s"/>
+        <path class="ring" pathLength="1" d="M500 236 C652 240 766 344 762 504 C758 660 650 766 496 762 C344 758 236 656 240 498 C244 344 350 232 500 236 Z" style="--d:.55s"/>
+        <path class="ring strong" pathLength="1" d="M502 308 C612 304 694 390 692 500 C690 612 610 696 498 692 C390 690 306 610 308 500 C310 392 392 312 502 308 Z" style="--d:.75s"/>
+        <path class="ring" pathLength="1" d="M500 372 C574 370 630 428 628 502 C626 574 572 630 498 628 C426 626 370 574 372 500 C374 428 428 374 500 372 Z" style="--d:.95s"/>
+        <path class="ring strong" pathLength="1" d="M500 430 C540 430 570 462 570 500 C570 540 540 570 500 570 C460 570 430 540 430 500 C430 462 462 430 500 430 Z" style="--d:1.15s"/>
+
+        <!-- three scenes loop every 18s: lines draw, chips appear, everything fades (HappyRobot A/B/C rhythm) -->
+        <g class="scene" style="--s:0">
+          <path class="sp" pathLength="1" d="M500 500 L560 446 L652 336 L760 196"/>
+          <circle class="sn" cx="560" cy="446" r="5.5" style="--n:0"/>
+          <circle class="sn" cx="652" cy="336" r="6.5" style="--n:1"/>
+          <circle class="sn hot" cx="760" cy="196" r="8" style="--n:2"/>
+          <circle class="spulse" cx="760" cy="196" r="12"/>
+          <g transform="translate(574 436)"><g class="sc" style="--c:0"><rect width="200" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> PERSONA · IKER</text></g></g>
+          <g transform="translate(664 352)"><g class="sc" style="--c:1"><rect width="190" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> ÁREA · VENTAS</text></g></g>
+          <g transform="translate(532 150)"><g class="sc" style="--c:2"><rect width="214" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> EMPRESA · KAVAK</text></g></g>
+        </g>
+        <g class="scene" style="--s:1">
+          <path class="sp" pathLength="1" d="M500 500 L548 580 L612 690 L668 820"/>
+          <circle class="sn" cx="548" cy="580" r="5.5" style="--n:0"/>
+          <circle class="sn hot" cx="612" cy="690" r="6.5" style="--n:1"/>
+          <circle class="sn" cx="668" cy="820" r="7" style="--n:2"/>
+          <circle class="spulse" cx="612" cy="690" r="10"/>
+          <g transform="translate(560 560)"><g class="sc" style="--c:0"><rect width="236" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> SOLICITUD · VENTAS</text></g></g>
+          <g transform="translate(600 712)"><g class="sc" style="--c:1"><rect width="250" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> APROBADA · MAGDALENA</text></g></g>
+        </g>
+        <g class="scene" style="--s:2">
+          <path class="sp" pathLength="1" d="M500 500 L600 470 L700 520 L800 480"/>
+          <circle class="sn hot" cx="600" cy="470" r="5.5" style="--n:0"/>
+          <circle class="sn" cx="700" cy="520" r="6.5" style="--n:1"/>
+          <circle class="sn" cx="800" cy="480" r="8" style="--n:2"/>
+          <circle class="spulse" cx="800" cy="480" r="12"/>
+          <g transform="translate(566 536)"><g class="sc" style="--c:0"><rect width="238" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> PROMO ANTERIOR · 5%</text></g></g>
+          <g transform="translate(600 590)"><g class="sc" style="--c:1"><rect width="222" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> SKILL · COMPARTIDA</text></g></g>
+          <g transform="translate(640 644)"><g class="sc" style="--c:2"><rect width="196" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> WIKI · V13</text></g></g>
+        </g>
+        <circle class="node node-core" cx="500" cy="500" r="9" style="--d:1.35s"/>
+        <circle class="pulse" cx="500" cy="500" r="16" style="--d:1.8s"/>
+      </svg>
+    </div>
+
+    <div class="wrap">
+      <div class="eyebrow mono load" style="animation-delay:.05s">Agentes que trabajan en equipo</div>
+      <h1 class="hero-title load" style="animation-delay:.15s">La empresa que <span class="serif">aprende</span> con cada tarea.</h1>
+      <p class="hero-sub load" style="animation-delay:.35s">Sequoia es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo.</p>
+      <div class="hero-cta load" style="animation-delay:.5s">
+        <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+      </div>
+      <div class="hero-meta mono load" style="animation-delay:.7s">
+        <span><i></i>Wiki viva por capas</span>
+        <span><i></i>Permisos por área</span>
+        <span><i></i>Funciona con Claude y Codex</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROVIDERS ================= -->
+  <section class="wall">
+    <div class="wrap wall-title mono reveal">
+      <span>Funciona con los agentes que tu equipo ya usa</span>
+      <span>Trae tu propia suscripción</span>
+    </div>
+    <div class="marquee reveal" style="--d:.1s">
+      <div class="track">
+        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
+        <div class="cell"><div>Codex<small>OpenAI</small></div></div>
+        <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
+        <div class="cell"><div>OpenCode<small>Open source</small></div></div>
+        <div class="cell"><div>Grok<small>xAI</small></div></div>
+        <div class="cell"><div>Antigravity<small>Google</small></div></div>
+        <div class="cell"><div>Kiro<small>AWS</small></div></div>
+        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
+        <div class="cell"><div>Codex<small>OpenAI</small></div></div>
+        <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
+        <div class="cell"><div>OpenCode<small>Open source</small></div></div>
+        <div class="cell"><div>Grok<small>xAI</small></div></div>
+        <div class="cell"><div>Antigravity<small>Google</small></div></div>
+        <div class="cell"><div>Kiro<small>AWS</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STORY ================= -->
+  <section class="sec" id="demo">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal">De la junta al feature, <span class="serif">sin perder nada.</span></h2>
+        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña con Kavak. Nadie recuerda el descuento de la vez pasada. Así lo resuelve un equipo en Sequoia.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
+      </div>
+
+      <div class="story">
+        <article class="card reveal">
+          <div class="visual">
+            <span class="num mono">01</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <div class="mini">
+              <div class="row"><span class="who">MARÍA</span><span>"Esto ya se hizo… ¿de cuánto fue la promo?"</span></div>
+              <div class="row"><span class="who">FCO.</span><span>"Mándenme el request por Sequoia."</span></div>
+              <div class="row"><span class="who">TAREA</span><span><span class="pill hot">IKER</span>Buscar % de la promo</span></div>
+            </div>
+          </div>
+          <span class="label mono">Junta · transcripción</span>
+          <h3>La junta se vuelve tareas sola.</h3>
+          <p>El transcript se procesa y el tablero de cada quien se actualiza con lo que le toca.</p>
+        </article>
+
+        <article class="card reveal" style="--d:.1s">
+          <div class="visual" style="background:#2c4a3c">
+            <span class="num mono">02</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <div class="mini">
+              <div class="row"><b>Nodo encontrado</b></div>
+              <div class="row"><span>Pertenece al área</span><span class="pill">VENTAS</span></div>
+              <div class="row"><span class="pill hot">SOLICITUD</span><span class="pill ok">APROBADA · MAGDALENA</span></div>
+            </div>
+          </div>
+          <span class="label mono">Permisos por área</span>
+          <h3>Acceso cuando hace falta, no antes.</h3>
+          <p>El agente encuentra el dato, pero es de Ventas. Iker pide acceso y la jefa de área lo aprueba.</p>
+        </article>
+
+        <article class="card reveal" style="--d:.2s">
+          <div class="visual" style="background:#3b3a2e">
+            <span class="num mono">03</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <div class="mini">
+              <div class="big">5%</div>
+              <div class="row" style="margin-top:8px"><span>Compartido con María</span></div>
+              <div class="row"><span class="pill ok">RESULTADO + PROCESO</span><span class="pill">SIN CHAT</span></div>
+            </div>
+          </div>
+          <span class="label mono">Contexto compartido</span>
+          <h3>Resultados, no conversaciones.</h3>
+          <p>María ve cómo se encontró el dato, sin leer el chat de Iker con su agente. Cero micromanagement.</p>
+        </article>
+
+        <article class="card reveal" style="--d:.3s">
+          <div class="visual" style="background:#5a2f1f">
+            <span class="num mono">04</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <div class="mini">
+              <div class="row"><span class="pill ok">+ ÁREA</span><span>Proceso documentado</span></div>
+              <div class="row"><span class="pill ok">+ EMPRESA</span><span>Colaboración activa con Kavak</span></div>
+              <div class="row"><span class="pill hot">− PODA</span><span>Campaña anterior archivada</span></div>
+            </div>
+          </div>
+          <span class="label mono">La empresa aprende</span>
+          <h3>Cada feature deja la wiki más sabia.</h3>
+          <p>Al cerrar, el contexto del área y de la empresa se actualiza, se prueba y se poda solo.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PLATFORM ================= -->
+  <section class="sec platform" id="plataforma">
+    <div class="wrap grid">
+      <div>
+        <h2 class="reveal">Una plataforma para trabajar con tu <span class="serif">equipo de agentes.</span></h2>
+        <a class="btn reveal" style="margin-top:30px; --d:.1s" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver el código <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+        <div class="feat">
+          <div class="feat-item reveal" data-seg="0"><span class="mono">01</span><h4>El conocimiento vive por capas</h4><p>Empresa, área y persona. Cada agente consulta solo lo que su dueño puede ver, cuando lo necesita.</p></div>
+          <div class="feat-item reveal" data-seg="2" style="--d:.08s"><span class="mono">02</span><h4>Tu equipo, en vivo <i class="live" aria-hidden="true"></i></h4><p>Ve los proyectos y agentes activos de tus compañeros. Actuar en el de otro requiere permiso explícito y revocable.</p></div>
+          <div class="feat-item reveal" data-seg="3" style="--d:.16s"><span class="mono">03</span><h4>El sistema se mejora a sí mismo</h4><p>Lo que pasa en juntas, chats y tareas se convierte en propuestas que actualizan la wiki, con pruebas antes de entrar.</p></div>
+        </div>
+      </div>
+
+      <div class="diagram reveal" style="--d:.15s" aria-label="Diagrama: el conocimiento de Sequoia por capas">
+        <svg viewBox="0 0 640 600">
+          <!-- outer ring segments (empresa) -->
+          <g transform="translate(320 300)">
+            <path class="seg" data-seg="0" d="M0 -270 A270 270 0 0 1 270 0 L190 0 A190 190 0 0 0 0 -190 Z" fill="#1e3b2f"/>
+            <path class="seg" data-seg="1" d="M270 0 A270 270 0 0 1 0 270 L0 190 A190 190 0 0 0 190 0 Z" fill="#4f6b57"/>
+            <path class="seg" data-seg="2" d="M0 270 A270 270 0 0 1 -270 0 L-190 0 A190 190 0 0 0 0 190 Z" fill="#a9ae9a"/>
+            <path class="seg" data-seg="3" d="M-270 0 A270 270 0 0 1 0 -270 L0 -190 A190 190 0 0 0 -190 0 Z" fill="#ebe6da" stroke="#cfc9bb"/>
+            <!-- middle ring (área) -->
+            <circle r="190" fill="none" stroke="#fcfbf8" stroke-width="2"/>
+            <circle r="186" fill="none" stroke="#fcfbf8" stroke-opacity=".0"/>
+            <circle r="128" fill="#f4f1ea" stroke="#cfc9bb"/>
+            <circle r="128" fill="none" stroke="#b4532a" stroke-dasharray="3 6" stroke-opacity=".7"/>
+            <!-- core (persona + agentes) -->
+            <circle r="66" fill="#fcfbf8" stroke="#0d110e" stroke-opacity=".25"/>
+            <circle r="5" fill="#b4532a"/>
+            <line class="tick" x1="0" y1="-270" x2="0" y2="270"/>
+            <line class="tick" x1="-270" y1="0" x2="270" y2="0"/>
+
+            <text class="dlabel" x="0" y="-20" text-anchor="middle" fill="#0d110e">Agentes</text>
+            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#6d6f66">Claude · Codex · …</text>
+            <text class="dlabel" x="0" y="-92" text-anchor="middle" fill="#2a2f2b" font-size="11">Área</text>
+            <text class="dlabel" x="0" y="106" text-anchor="middle" fill="#2a2f2b" font-size="11">Persona</text>
+
+            <text class="dlabel" x="163" y="-166" text-anchor="middle" fill="#f4f1ea">Contexto</text>
+            <text class="dsmall" x="163" y="-147" text-anchor="middle" fill="#c9ccbd">Wiki · Memoria</text>
+            <text class="dlabel" x="163" y="160" text-anchor="middle" fill="#f4f1ea">Permisos</text>
+            <text class="dsmall" x="163" y="179" text-anchor="middle" fill="#e2e4d8">Por área</text>
+            <text class="dlabel" x="-163" y="160" text-anchor="middle" fill="#0d110e">Equipo</text>
+            <text class="dsmall" x="-163" y="179" text-anchor="middle" fill="#2a2f2b">En vivo</text>
+            <text class="dlabel" x="-163" y="-166" text-anchor="middle" fill="#0d110e">Aprendizaje</text>
+            <text class="dsmall" x="-163" y="-147" text-anchor="middle" fill="#6d6f66">Propuestas</text>
+          </g>
+          <!-- callout -->
+          <g transform="translate(470 22)">
+            <line x1="0" y1="10" x2="-60" y2="70" stroke="#0d110e" stroke-opacity=".4" stroke-dasharray="2 3"/>
+            <text class="dlabel" x="6" y="8" fill="#0d110e">Empresa</text>
+            <text class="dsmall" x="6" y="26" fill="#6d6f66">Lo que todos saben</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AREAS ================= -->
+  <section class="sec" id="areas">
+    <div class="wrap">
+      <div class="areas-top">
+        <h2 class="reveal">Para cada área <span class="serif">de la empresa.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Cada área tiene su propia capa de conocimiento. Tus agentes trabajan con lo que tú puedes ver, y piden el resto.</p>
+      </div>
+      <div class="carousel reveal" id="carousel" style="--d:.15s">
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#1e3b2f,#0d110e)"></div><svg class="glyph" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="30" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="14" fill="none" stroke="#d98c5f"/></svg><div class="top mono"><span>01</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Customer Experience</h3><p>Diseño de features · Promociones</p></div></a>
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#b4532a,#5a2f1f)"></div><svg class="glyph" viewBox="0 0 100 100"><path d="M10 80 L40 50 L60 64 L90 24" fill="none" stroke="#f4f1ea" stroke-opacity=".6"/><circle cx="90" cy="24" r="4" fill="#f4f1ea"/></svg><div class="top mono"><span>02</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Ventas</h3><p>Campañas · Historial de precios</p></div></a>
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#4f6b57,#1e3b2f)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="#f4f1ea" fill-opacity=".45"><rect x="12" y="12" width="20" height="20"/><rect x="40" y="12" width="20" height="20" fill-opacity=".2"/><rect x="68" y="12" width="20" height="20"/><rect x="12" y="40" width="20" height="20" fill-opacity=".2"/><rect x="40" y="40" width="20" height="20"/><rect x="68" y="40" width="20" height="20" fill-opacity=".2"/></g></svg><div class="top mono"><span>03</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Data</h3><p>Tablas · Fuentes de verdad</p></div></a>
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#2a2f2b,#0d110e)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="none" stroke="#d98c5f"><path d="M50 10 L88 32 L88 72 L50 92 L12 72 L12 32 Z" stroke-opacity=".7"/><path d="M50 10 L50 92 M12 32 L88 72 M88 32 L12 72" stroke-opacity=".3"/></g></svg><div class="top mono"><span>04</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>AI Engineering</h3><p>Skills · Buenas prácticas de RAG</p></div></a>
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#a9ae9a,#5f6656)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="none" stroke="#0d110e" stroke-opacity=".45"><circle cx="35" cy="50" r="25"/><circle cx="65" cy="50" r="25"/></g></svg><div class="top mono" style="color:#0d110e"><span>05</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom" style="color:#0d110e"><h3>Negocio</h3><p>Alianzas · Decisiones</p></div></a>
+        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#3b3a2e,#141611)"></div><svg class="glyph" viewBox="0 0 100 100"><g stroke="#f4f1ea" stroke-opacity=".5"><line x1="20" y1="85" x2="20" y2="55"/><line x1="40" y1="85" x2="40" y2="35"/><line x1="60" y1="85" x2="60" y2="45"/><line x1="80" y1="85" x2="80" y2="18" stroke="#d98c5f" stroke-opacity="1"/></g></svg><div class="top mono"><span>06</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Métricas</h3><p>KPIs · Resultados por equipo</p></div></a>
+      </div>
+      <div class="controls">
+        <div class="dots" id="dots"></div>
+        <button class="arrow left" id="prev" aria-label="Anterior"><svg class="a1"><use href="#arr-l"/></svg><svg class="a2"><use href="#arr-l"/></svg></button>
+        <button class="arrow" id="next" aria-label="Siguiente"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STONE ================= -->
+  <section class="sec stone">
+    <div class="wrap">
+      <h2 class="reveal">Hecho para equipos, <span class="serif">no para vigilantes.</span></h2>
+      <div class="panel reveal" style="--d:.1s">
+        <div class="cols">
+          <div class="col"><span class="mono">Capas</span><h4>Contexto que se ordena solo</h4><p>General para todos, por área para quien la trabaja, individual para ti. Sin copiar documentos a cada prompt.</p></div>
+          <div class="col"><span class="mono">Privacidad</span><h4>Resultados, no conversaciones</h4><p>Tu jefe ve qué encontraste y cómo, nunca tu chat completo con tu agente. Confianza sin micromanagement.</p></div>
+          <div class="col"><span class="mono">Compartido</span><h4>Lo que aprende uno, lo aprende el equipo</h4><p>Una skill o un hallazgo se comparte con un clic y queda en la wiki para la próxima vez.</p></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b data-count="3">3</b><span class="mono">Capas de conocimiento</span></div>
+          <div class="stat"><b data-count="7">7</b><span class="mono">Agentes compatibles</span></div>
+          <div class="stat"><b data-count="1">1</b><span class="mono">Wiki viva por empresa</span></div>
+          <div class="stat"><b data-count="0">0</b><span class="mono">Chats expuestos a tu jefe</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LEARNING ================= -->
+  <section class="sec learn" id="aprende">
+    <div class="wrap grid">
+      <div>
+        <h2 class="reveal">Esto es una empresa <span class="serif">que aprende.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Sequoia escucha lo que pasa en juntas, Slack y tareas, propone cambios a la wiki, los prueba y poda lo que ya no sirve. Cada anillo nuevo hace más fuerte al árbol.</p>
+        <a class="btn reveal" style="--d:.2s" href="#demo">Ver cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+      </div>
+      <div class="stage reveal" style="--d:.15s" aria-hidden="true">
+        <span class="cap2 mono" id="ver">Versión 12</span>
+        <svg class="grow" viewBox="0 0 400 400">
+          <g fill="none">
+            <path pathLength="1" class="gr" style="--i:0" d="M200 176 C214 176 224 186 224 200 C224 214 214 224 200 224 C186 224 176 214 176 200 C176 186 186 176 200 176 Z"/>
+            <path pathLength="1" class="gr" style="--i:1" d="M201 150 C228 149 251 172 250 200 C249 228 227 251 199 250 C172 249 150 227 151 199 C152 172 174 151 201 150 Z"/>
+            <path pathLength="1" class="gr" style="--i:2" d="M200 124 C243 126 278 158 276 202 C274 244 242 278 198 276 C156 274 122 242 124 198 C126 156 158 122 200 124 Z"/>
+            <path pathLength="1" class="gr" style="--i:3" d="M202 98 C258 96 304 142 302 200 C300 258 256 304 198 302 C142 300 96 256 98 200 C100 142 146 100 202 98 Z"/>
+            <path pathLength="1" class="gr" style="--i:4" d="M200 72 C272 74 330 128 328 202 C326 272 270 330 198 328 C128 326 70 272 72 198 C74 128 130 70 200 72 Z"/>
+            <path pathLength="1" class="gr" style="--i:5" d="M203 46 C287 44 356 114 354 200 C352 288 284 356 197 354 C112 352 44 284 46 199 C48 114 118 48 203 46 Z"/>
+            <path pathLength="1" class="gr hot" style="--i:6" d="M200 20 C302 22 382 98 380 202 C378 302 300 382 198 380 C98 378 18 300 20 198 C22 98 100 18 200 20 Z"/>
+          </g>
+          <line x1="200" y1="200" x2="372" y2="146" class="crack"/>
+          <circle cx="200" cy="200" r="4" fill="#b4532a"/>
+        </svg>
+        <ul class="log mono" id="log"></ul>
+        <span class="cap mono">Conocimiento · versión por versión</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING ================= -->
+  <section class="closing">
+    <div class="rings" aria-hidden="true">
+      <svg viewBox="0 0 1000 1000">
+        <path class="ring" pathLength="1" d="M500 92 C760 96 912 268 906 506 C900 742 742 910 500 906 C262 902 92 748 96 500 C100 262 250 88 500 92 Z"/>
+        <path class="ring strong" pathLength="1" d="M500 170 C700 168 832 300 830 502 C828 704 700 834 498 832 C300 830 168 700 170 500 C172 300 302 172 500 170 Z" style="--d:.2s"/>
+        <path class="ring" pathLength="1" d="M502 308 C612 304 694 390 692 500 C690 612 610 696 498 692 C390 690 306 610 308 500 C310 392 392 312 502 308 Z" style="--d:.4s"/>
+        <path class="ring strong" pathLength="1" d="M500 430 C540 430 570 462 570 500 C570 540 540 570 500 570 C460 570 430 540 430 500 C430 462 462 430 500 430 Z" style="--d:.6s"/>
+        <circle class="node node-hot" cx="500" cy="500" r="8" style="--d:.8s"/>
+        <circle class="pulse" cx="500" cy="500" r="14" style="--d:1s"/>
+      </svg>
+    </div>
+    <div class="wrap" style="position:relative; z-index:2">
+      <h2 class="reveal">Pon a tu empresa <span class="serif">a aprender.</span></h2>
+      <div class="hero-cta reveal" style="--d:.15s">
+        <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="#top" aria-label="Sequoia AI, inicio"><img class="sym" src="assets/symbol-light.png" alt="" width="30" height="30" /><img class="word" src="assets/wordmark-light.png" alt="sequoia ai" width="77" height="19" /></a>
+      <p>El espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa. Hecho por el equipo Tri-π.</p>
+    </div>
+    <div>
+      <h5>Producto</h5>
+      <ul><li><a href="#demo">Cómo funciona</a></li><li><a href="#plataforma">Plataforma</a></li><li><a href="#areas">Áreas</a></li><li><a href="#aprende">Auto-aprendizaje</a></li></ul>
+    </div>
+    <div>
+      <h5>Proyecto</h5>
+      <ul><li><a href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://luma.com/6ejxfvva" target="_blank" rel="noopener">RSI Hackathon 2026</a></li></ul>
+    </div>
+    <div class="legal mono">
+      <span>© 2026 Sequoia AI · Tri-π</span>
+      <span>Construido sobre T3 Code (licencia MIT)</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // nav border on scroll
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // closing rings draw when visible
+  const closing = document.querySelector('.closing .rings');
+  closing.querySelectorAll('.ring, .node, .pulse').forEach((el) => (el.style.animationPlayState = 'paused'));
+  new IntersectionObserver(([e], o) => {
+    if (!e.isIntersecting) return;
+    closing.querySelectorAll('.ring, .node, .pulse').forEach((el) => (el.style.animationPlayState = 'running'));
+    o.disconnect();
+  }, { threshold: 0.2 }).observe(closing);
+
+  // stats count-up
+  const counters = document.querySelectorAll('[data-count]');
+  const co = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const el = e.target, end = +el.dataset.count, t0 = performance.now(), dur = 1100;
+      const tick = (t) => { const p = Math.min(1, (t - t0) / dur); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); };
+      if (end > 0) { el.textContent = '0'; requestAnimationFrame(tick); }
+      co.unobserve(el);
+    }
+  }, { threshold: 0.6 });
+  counters.forEach((c) => co.observe(c));
+
+  // hero title gradient follows the cursor (eased)
+  const title = document.querySelector('.hero-title');
+  if (title && matchMedia('(hover: hover)').matches) {
+    let target = 8, cur = 8, raf = 0;
+    const loop = () => { cur += (target - cur) * 0.08; title.style.setProperty('--gx', cur.toFixed(2) + '%'); raf = Math.abs(target - cur) > 0.05 ? requestAnimationFrame(loop) : 0; };
+    document.querySelector('.hero').addEventListener('pointermove', (e) => {
+      const r = title.getBoundingClientRect(); target = -40 + ((e.clientX - r.left) / r.width) * 60;
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+  }
+
+  // spotlight that follows the cursor on area cards
+  document.querySelectorAll('.area').forEach((a) => a.addEventListener('pointermove', (e) => {
+    const r = a.getBoundingClientRect(); a.style.setProperty('--mx', (e.clientX - r.left) + 'px'); a.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }));
+
+  // nav dropdown: click/keyboard toggle, Escape and outside click close it
+  const dd = document.getElementById('dd'), ddBtn = dd.querySelector('.dd-btn');
+  const setDD = (open) => { dd.classList.toggle('open', open); ddBtn.setAttribute('aria-expanded', String(open)); };
+  ddBtn.addEventListener('click', () => setDD(!dd.classList.contains('open')));
+  document.addEventListener('click', (e) => { if (!dd.contains(e.target)) setDD(false); });
+  dd.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setDD(false); ddBtn.focus(); } });
+  dd.querySelectorAll('.dd-panel a').forEach((a) => a.addEventListener('click', () => setDD(false)));
+
+  // platform: the feature in the middle of the screen (or under the cursor) lights its diagram segment
+  const feat = document.querySelector('.feat'), diagram = document.querySelector('.diagram');
+  const fItems = [...feat.querySelectorAll('.feat-item')], segs = [...diagram.querySelectorAll('.seg')];
+  const light = (seg) => {
+    feat.classList.toggle('has-on', seg !== null); diagram.classList.toggle('has-on', seg !== null);
+    fItems.forEach((i) => i.classList.toggle('on', i.dataset.seg === seg));
+    segs.forEach((g) => g.classList.toggle('on', g.dataset.seg === seg));
+  };
+  let hovering = false;
+  const featIO = new IntersectionObserver((entries) => {
+    if (hovering) return;
+    const vis = entries.filter((e) => e.isIntersecting);
+    if (vis.length) light(vis[vis.length - 1].target.dataset.seg);
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  fItems.forEach((i) => featIO.observe(i));
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting) light(null); }).observe(document.querySelector('.platform'));
+  [...fItems, ...segs].forEach((el) => {
+    el.addEventListener('pointerenter', () => { hovering = true; light(el.dataset.seg); });
+    el.addEventListener('pointerleave', () => { hovering = false; });
+  });
+
+  // carousel
+  const car = document.getElementById('carousel');
+  const dots = document.getElementById('dots');
+  const items = [...car.children];
+  items.forEach(() => dots.appendChild(document.createElement('i')));
+  const step = () => items[0].getBoundingClientRect().width + 20;
+  const sync = () => { const i = Math.round(car.scrollLeft / step()); [...dots.children].forEach((d, k) => d.classList.toggle('on', k === Math.min(i, items.length - 1))); };
+  const prevB = document.getElementById('prev'), nextB = document.getElementById('next');
+  const edges = () => { prevB.disabled = car.scrollLeft < 4; nextB.disabled = car.scrollLeft + car.clientWidth > car.scrollWidth - 4; };
+  car.addEventListener('scroll', () => { sync(); edges(); }, { passive: true }); sync(); edges(); addEventListener('resize', edges);
+  document.getElementById('next').onclick = () => car.scrollBy({ left: step(), behavior: 'smooth' });
+  // full-bleed rail: the gutter is the distance from the window edge to the content column (no 100vw, so no scrollbar overflow)
+  const setGut = () => { const w = car.parentElement, r = w.getBoundingClientRect(); car.style.setProperty('--gut', Math.round(r.left + parseFloat(getComputedStyle(w).paddingLeft)) + 'px'); };
+  setGut(); addEventListener('resize', setGut);
+
+  // drag the rail with the mouse (touch already scrolls natively)
+  let drag = null;
+  car.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; drag = { x: e.clientX, left: car.scrollLeft, moved: false }; });
+  addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) > 5) { drag.moved = true; car.classList.add('dragging'); }
+    if (drag.moved) car.scrollLeft = drag.left - dx;
+  });
+  addEventListener('pointerup', () => {
+    if (!drag) return;
+    const moved = drag.moved; drag = null;
+    if (moved) { car.classList.remove('dragging'); const i = Math.round(car.scrollLeft / step()); car.scrollTo({ left: i * step(), behavior: 'smooth' }); }
+  });
+  car.addEventListener('click', (e) => { if (car.classList.contains('dragging')) e.preventDefault(); }, true);
+  car.addEventListener('dragstart', (e) => e.preventDefault());
+
+  document.getElementById('prev').onclick = () => car.scrollBy({ left: -step(), behavior: 'smooth' });
+
+  // growing rings log
+  const logEl = document.getElementById('log'), verEl = document.getElementById('ver');
+  const changes = [
+    ['+', 'conexión · promo kavak → ventas'], ['+', 'proceso de diseño documentado'], ['−', 'poda · campaña anterior'],
+    ['+', 'skill RAG compartida'], ['+', 'acceso aprobado · área ventas'], ['−', 'poda · nota duplicada']
+  ];
+  let v = 12, k = 0;
+  const pushLog = () => {
+    const li = document.createElement('li');
+    const [sign, text] = changes[k++ % changes.length];
+    li.innerHTML = '<b>' + sign + '</b> ' + text;
+    logEl.appendChild(li); requestAnimationFrame(() => li.classList.add('in'));
+    while (logEl.children.length > 4) logEl.firstChild.remove();
+  };
+  for (let i = 0; i < 3; i++) pushLog();
+  setInterval(pushLog, 1800);
+  setInterval(() => { verEl.textContent = 'Versión ' + (++v); }, 9000);
+</script>
+</body>
+</html>
