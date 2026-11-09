@@ -277,22 +277,64 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
   .feat-item h4 { display: flex; align-items: center; gap: 10px; }
   .feat.has-on .feat-item:not(.on) h4, .feat.has-on .feat-item:not(.on) p, .feat.has-on .feat-item:not(.on) .mono { color: var(--muted); } /* carbón = the lit item, grafito = the rest (AA either way) */
   .feat-item .mono { transition: color .35s; }
-  .diagram.has-on .seg { opacity: .3; }
-  .diagram .seg { transition: opacity .45s var(--ease-hr), filter .4s; }
-  .diagram.has-on .seg.on { opacity: 1; }
+  .feat-item:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
   @media (min-width: 1021px) {
     .platform .grid { align-items: start; }
-    .diagram { position: sticky; top: max(104px, calc(50vh - 290px)); }
+    .graph { position: sticky; top: max(92px, calc(50vh - 362px)); }
     .feat-item { padding: 34px 0; }
     .platform .grid > div:first-child { padding-bottom: 22vh; }
   }
   .feat-item p { grid-column: 2; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); margin-top: 4px; max-width: 400px; }
-  .diagram svg { width: 100%; height: auto; overflow: visible; }
-  .seg { transition: transform .6s var(--ease), filter .4s; transform-box: fill-box; transform-origin: center; cursor: default; }
-  .seg:hover { filter: brightness(1.12); }
-  .dlabel { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; }
-  .dsmall { font-family: var(--font-body); font-size: 12.5px; }
-  .tick { stroke: var(--ink); stroke-opacity: .35; stroke-dasharray: 2 4; }
+
+  /* ---------- knowledge graph: 4 stacked layers drawn on a canvas (script: "knowledge graph") ---------- */
+  .graph { background: var(--white); border: 1px solid var(--line); min-width: 0; }
+  .g-head { display: flex; justify-content: space-between; align-items: center; gap: 10px 16px; flex-wrap: wrap; padding: 16px 18px 0; }
+  .g-title { font-size: 14px; line-height: 1.3; color: var(--muted); }
+  .g-title b { color: var(--ink); font-weight: 500; }
+  .g-row { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; padding: 12px 18px 0; }
+  .g-legend { display: flex; flex-wrap: wrap; gap: 6px; }
+  .g-chip, .g-btn { height: 32px; display: inline-flex; align-items: center; gap: 8px; padding: 0 11px; background: var(--white); border: 1px solid var(--line-2); color: var(--ink);
+    font: 500 13px/1 var(--font-body); cursor: pointer; transition: border-color .25s var(--ease-hr), color .25s var(--ease-hr), background-color .25s var(--ease-hr); }
+  .g-chip em { font-style: normal; font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: inline-block; min-width: 2ch; }
+  .g-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .g-chip svg ellipse { fill: none; stroke: var(--line-2); stroke-width: 1.2; transition: stroke .25s, fill .25s; }
+  .g-chip svg ellipse.me { fill: var(--ink); stroke: var(--ink); }
+  .g-chip[aria-pressed="false"] { color: var(--muted); border-style: dashed; background: transparent; }
+  .g-chip[aria-pressed="false"] svg ellipse.me { fill: none; stroke: var(--plata); }
+  .g-chip.bump { border-color: var(--ink); }
+  .g-chip em.tick { animation: gTick .55s var(--ease); }
+  @keyframes gTick { from { opacity: 0; transform: translateY(-70%); } to { opacity: 1; transform: none; } }
+  @media (hover: hover) { .g-chip:hover, .g-btn:hover { border-color: var(--ink); } }
+  .g-chip:focus-visible, .g-btn:focus-visible, .g-find:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  @media (max-width: 1020px) { .graph { position: relative; } } /* desktop: sticky, which also anchors the search field */
+  .g-tools { position: absolute; z-index: 3; right: 18px; margin-top: 12px; display: flex; gap: 6px; } /* sits on the stage's top-right corner */
+  .g-find { height: 32px; width: 150px; padding: 0 11px; border: 1px solid var(--line-2); border-radius: 0; background: var(--white); color: var(--ink); font: 13px var(--font-body); -webkit-appearance: none; appearance: none; }
+  .g-find::placeholder { color: var(--grafito); }
+  .g-find:focus { outline: none; border-color: var(--ink); }
+  .g-stage { position: relative; height: clamp(360px, calc(100vh - 330px), 560px); margin-top: 6px; touch-action: pan-y; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; overflow: hidden; }
+  .g-stage.dragging { cursor: grabbing; }
+  .g-stage.on-node { cursor: pointer; }
+  .g-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .g-tip { position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none; background: var(--white); border: 1px solid var(--line-2); box-shadow: 0 14px 30px -18px rgba(23,26,32,.45);
+    padding: 8px 11px 9px; display: grid; gap: 3px; white-space: nowrap; transform: translate(-50%, calc(-100% - 14px)); }
+  .g-tip.below { transform: translate(-50%, 14px); }
+  .g-tip b { font-weight: 500; font-size: 14px; color: var(--ink); }
+  .g-tip span { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+  .g-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 20px; flex-wrap: wrap; padding: 14px 18px 16px; border-top: 1px solid var(--line); }
+  .g-cap { flex: 1 1 300px; min-width: 0; display: grid; gap: 6px; }
+  .g-step { color: var(--muted); }
+  .g-line { font-family: var(--font-mono); font-size: 12px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); min-height: 3em;
+    transition: opacity .22s var(--ease-hr), transform .32s var(--ease); }
+  .g-line.out { opacity: 0; transform: translateY(5px); }
+  .g-prog { height: 1px; background: var(--line); overflow: hidden; }
+  .g-prog i { display: block; height: 100%; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+  .g-key { display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--muted); }
+  .g-key span { display: inline-flex; align-items: center; gap: 7px; }
+  .g-key i { display: inline-block; border-radius: 50%; }
+  .g-key .k-p { width: 9px; height: 9px; background: var(--ink); }
+  .g-key .k-a { width: 9px; height: 9px; border: 1.5px solid var(--ink); }
+  .g-key .k-h { width: 7px; height: 7px; background: #4a505a; box-shadow: 0 0 0 2px var(--white), 0 0 0 3px var(--plata); margin: 0 2px; }
+  .g-key .k-d { width: 4px; height: 4px; background: var(--grafito); }
 
   /* ---------- areas carousel ---------- */
   .areas-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 48px; flex-wrap: wrap; }
@@ -532,6 +574,15 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     .audit > .mono { padding-top: 0; }
     .rings { right: -30vw; width: 110vw; opacity: .55; }
     .hero .rings .chip, .hero .rings .sc { display: none; }
+    .g-stage { height: clamp(360px, 92vw, 560px); }
+  }
+  @media (max-width: 560px) {
+    .g-find { display: none; } /* search would crowd the phone layout; tap a node instead */
+    .g-head, .g-row { padding-left: 14px; padding-right: 14px; }
+    .g-tools { right: 14px; margin-top: 8px; }
+    .g-btn { height: 30px; font-size: 12.5px; padding: 0 9px; }
+    .g-foot { padding: 12px 14px 14px; }
+    .g-chip { padding: 0 9px; gap: 6px; }
   }
   @media (max-width: 900px) {
     .nav-links a.link, .nav-links .dd { display: none; }
@@ -817,52 +868,40 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
         <h2 class="reveal">Todo para trabajar con tu <span class="serif">equipo de agentes.</span></h2>
         <a class="boxlink reveal" style="margin-top:30px; --d:.1s" href="#seguridad"><span class="ul">Ver seguridad y control</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <div class="feat">
-          <div class="feat-item reveal" data-seg="0"><span class="mono">01</span><h4>Conocimiento por capas</h4><p>Una wiki viva en tres capas: empresa, área y persona. Los agentes la consultan cuando la necesitan y citan la fuente de cada dato.</p></div>
-          <div class="feat-item reveal" data-seg="1" style="--d:.08s"><span class="mono">02</span><h4>Permisos por área</h4><p>Se aplican en el servidor, también a los agentes. Si necesitas algo de otra área, pides acceso y el líder de esa área lo aprueba.</p></div>
-          <div class="feat-item reveal" data-seg="2" style="--d:.16s"><span class="mono">03</span><h4>Vista de equipo</h4><p>Comparte conversaciones en modo lectura o solo como resumen: tu jefe ve qué se hizo, no el chat completo. Entre compañeros se mandan mensajes y se piden skills.</p></div>
-          <div class="feat-item reveal" data-seg="3" style="--d:.24s"><span class="mono">04</span><h4>Aprende con aprobación</h4><p>Los agentes proponen conocimiento nuevo a partir de su trabajo, por ejemplo de una junta. Un líder de área o un admin lo aprueba antes de que entre.</p></div>
+          <div class="feat-item reveal" tabindex="0" data-seg="0"><span class="mono">01</span><h4>Conocimiento por capas</h4><p>Una wiki viva en tres capas: empresa, área y persona. Los agentes la consultan cuando la necesitan y citan la fuente de cada dato.</p></div>
+          <div class="feat-item reveal" tabindex="0" data-seg="1" style="--d:.08s"><span class="mono">02</span><h4>Permisos por área</h4><p>Se aplican en el servidor, también a los agentes. Si necesitas algo de otra área, pides acceso y el líder de esa área lo aprueba.</p></div>
+          <div class="feat-item reveal" tabindex="0" data-seg="2" style="--d:.16s"><span class="mono">03</span><h4>Vista de equipo</h4><p>Comparte conversaciones en modo lectura o solo como resumen: tu jefe ve qué se hizo, no el chat completo. Entre compañeros se mandan mensajes y se piden skills.</p></div>
+          <div class="feat-item reveal" tabindex="0" data-seg="3" style="--d:.24s"><span class="mono">04</span><h4>Aprende con aprobación</h4><p>Los agentes proponen conocimiento nuevo a partir de su trabajo, por ejemplo de una junta. Un líder de área o un admin lo aprueba antes de que entre.</p></div>
         </div>
       </div>
 
-      <div class="diagram reveal" style="--d:.15s" role="img" aria-label="Diagrama: el conocimiento de norai por capas, con contexto, permisos, equipo y aprendizaje">
-        <svg viewBox="0 0 640 600" aria-hidden="true">
-          <!-- outer ring segments (empresa) -->
-          <g transform="translate(320 300)">
-            <path class="seg" data-seg="0" d="M0 -270 A270 270 0 0 1 270 0 L190 0 A190 190 0 0 0 0 -190 Z" fill="#171a20"/>
-            <path class="seg" data-seg="1" d="M270 0 A270 270 0 0 1 0 270 L0 190 A190 190 0 0 0 190 0 Z" fill="#4a505a"/>
-            <path class="seg" data-seg="2" d="M0 270 A270 270 0 0 1 -270 0 L-190 0 A190 190 0 0 0 0 190 Z" fill="#a7adb6"/>
-            <path class="seg" data-seg="3" d="M-270 0 A270 270 0 0 1 0 -270 L0 -190 A190 190 0 0 0 -190 0 Z" fill="#e6e9ed" stroke="#d5d9df"/>
-            <!-- middle ring (área) -->
-            <circle r="190" fill="none" stroke="#ffffff" stroke-width="2"/>
-            <circle r="128" fill="#f2f4f6" stroke="#d5d9df"/>
-            <circle r="128" fill="none" stroke="#69717d" stroke-dasharray="3 6" stroke-opacity=".8"/>
-            <!-- core (persona + agentes) -->
-            <circle r="66" fill="#ffffff" stroke="#171a20" stroke-opacity=".25"/>
-            <circle r="5" fill="#171a20"/>
-            <line class="tick" x1="0" y1="-270" x2="0" y2="270"/>
-            <line class="tick" x1="-270" y1="0" x2="270" y2="0"/>
-
-            <text class="dlabel" x="0" y="-20" text-anchor="middle" fill="#171a20">Agentes</text>
-            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#5e6672">Codex · Claude</text>
-            <text class="dlabel" x="0" y="-92" text-anchor="middle" fill="#3a3f48" font-size="11">Área</text>
-            <text class="dlabel" x="0" y="106" text-anchor="middle" fill="#3a3f48" font-size="11">Persona</text>
-
-            <text class="dlabel" x="163" y="-166" text-anchor="middle" fill="#ffffff">Contexto</text>
-            <text class="dsmall" x="163" y="-147" text-anchor="middle" fill="#c5cad1">Wiki · Fuentes</text>
-            <text class="dlabel" x="163" y="160" text-anchor="middle" fill="#ffffff">Permisos</text>
-            <text class="dsmall" x="163" y="179" text-anchor="middle" fill="#d5d9df">Por área</text>
-            <text class="dlabel" x="-163" y="160" text-anchor="middle" fill="#171a20">Equipo</text>
-            <text class="dsmall" x="-163" y="179" text-anchor="middle" fill="#2a2f37">Compartido</text>
-            <text class="dlabel" x="-163" y="-166" text-anchor="middle" fill="#171a20">Aprendizaje</text>
-            <text class="dsmall" x="-163" y="-147" text-anchor="middle" fill="#5e6672">Con aprobación</text>
-          </g>
-          <!-- callout -->
-          <g transform="translate(470 22)">
-            <line x1="0" y1="10" x2="-60" y2="70" stroke="#171a20" stroke-opacity=".4" stroke-dasharray="2 3"/>
-            <text class="dlabel" x="6" y="8" fill="#171a20">Empresa</text>
-            <text class="dsmall" x="6" y="26" fill="#5e6672">Lo que todos saben</text>
-          </g>
-        </svg>
+      <!-- knowledge graph: drawn by the "knowledge graph" script (canvas); the feature item in view picks its scene -->
+      <div class="graph reveal" id="graph" style="--d:.15s" data-scene="">
+        <div class="g-head">
+          <p class="g-title"><b>Contexto de tu empresa</b> · 4 capas · <span class="g-count">0</span> nodos</p>
+        </div>
+        <div class="g-row">
+          <div class="g-legend" role="group" aria-label="Capas del grafo: muestra u oculta cada una">
+            <button class="g-chip" type="button" aria-pressed="true" data-layer="0"><svg viewBox="0 0 14 14" aria-hidden="true"><ellipse class="me" cx="7" cy="3" rx="6" ry="1.5"/><ellipse cx="7" cy="5.7" rx="6" ry="1.5"/><ellipse cx="7" cy="8.4" rx="6" ry="1.5"/><ellipse cx="7" cy="11.1" rx="6" ry="1.5"/></svg>Empresa <em>0</em></button>
+            <button class="g-chip" type="button" aria-pressed="true" data-layer="1"><svg viewBox="0 0 14 14" aria-hidden="true"><ellipse cx="7" cy="3" rx="6" ry="1.5"/><ellipse class="me" cx="7" cy="5.7" rx="6" ry="1.5"/><ellipse cx="7" cy="8.4" rx="6" ry="1.5"/><ellipse cx="7" cy="11.1" rx="6" ry="1.5"/></svg>Áreas <em>0</em></button>
+            <button class="g-chip" type="button" aria-pressed="true" data-layer="2"><svg viewBox="0 0 14 14" aria-hidden="true"><ellipse cx="7" cy="3" rx="6" ry="1.5"/><ellipse cx="7" cy="5.7" rx="6" ry="1.5"/><ellipse class="me" cx="7" cy="8.4" rx="6" ry="1.5"/><ellipse cx="7" cy="11.1" rx="6" ry="1.5"/></svg>Personas <em>0</em></button>
+            <button class="g-chip" type="button" aria-pressed="true" data-layer="3"><svg viewBox="0 0 14 14" aria-hidden="true"><ellipse cx="7" cy="3" rx="6" ry="1.5"/><ellipse cx="7" cy="5.7" rx="6" ry="1.5"/><ellipse cx="7" cy="8.4" rx="6" ry="1.5"/><ellipse class="me" cx="7" cy="11.1" rx="6" ry="1.5"/></svg>Agentes <em>0</em></button>
+          </div>
+        </div>
+        <div class="g-tools">
+          <label class="sr-only" for="g-find">Busca un nodo</label>
+          <input class="g-find" id="g-find" type="search" placeholder="Busca un nodo" autocomplete="off" spellcheck="false" />
+          <button class="g-btn g-reset" type="button">Restablecer vista</button>
+        </div>
+        <div class="g-stage" role="img" aria-label="Grafo del contexto de una empresa en cuatro capas: empresa, áreas, personas y agentes. Cuenta una historia en bucle: María le pregunta a Iker por la promo de octubre; Iker se lo pide a su agente; el agente busca en la wiki, no tiene acceso a Ventas, Iker lo pide y Magdalena, líder de Ventas, lo aprueba; el agente responde citando la fuente, propone guardar lo aprendido y, cuando Magdalena lo aprueba, entra como un nodo nuevo en la wiki de Ventas que todo el equipo ya puede consultar.">
+          <canvas aria-hidden="true"></canvas>
+          <div class="g-tip" hidden aria-hidden="true"><b></b><span></span></div>
+        </div>
+        <div class="g-foot">
+          <div class="g-cap" aria-hidden="true"><span class="g-step mono"></span><span class="g-line"></span><span class="g-prog"><i></i></span></div>
+          <p class="g-key mono" aria-hidden="true"><span><i class="k-p"></i>Persona</span><span><i class="k-a"></i>Agente</span><span><i class="k-h"></i>Página</span><span><i class="k-d"></i>Documento</span></p>
+        </div>
+        <p class="sr-only g-live" aria-live="polite"></p>
       </div>
     </div>
 
@@ -1295,13 +1334,612 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     });
   }
 
-  // platform: the feature in the middle of the screen (or under the cursor) lights its diagram segment
-  const feat = document.querySelector('.feat'), diagram = document.querySelector('.diagram');
-  const fItems = [...feat.querySelectorAll('.feat-item')], segs = [...diagram.querySelectorAll('.seg')];
+  // ================= knowledge graph (Funciones) =================
+  // Four stacked layers (empresa, áreas, personas, agentes) on a canvas with a small 3D projection; no libraries.
+  // A scripted story plays as pulses along the edges. Everything the story shows is a function of the story time T,
+  // so any moment can be drawn (scene jumps, ?nomotion). The feature item in view picks the scene (graph.scene(k)).
+  const graph = (() => {
+    const root = document.getElementById('graph');
+    const stage = root.querySelector('.g-stage'), cv = stage.querySelector('canvas'), ctx = cv.getContext('2d');
+    const tip = root.querySelector('.g-tip'), findIn = root.querySelector('.g-find'), resetB = root.querySelector('.g-reset');
+    const chips = [...root.querySelectorAll('.g-chip')], countEl = root.querySelector('.g-count');
+    const stepEl = root.querySelector('.g-step'), lineEl = root.querySelector('.g-line'), progEl = root.querySelector('.g-prog i'), live = root.querySelector('.g-live');
+    const MOTION = motionOn;
+    const INK = '#171a20', GRAF = '#69717d', PLATA = '#a7adb6', HUB = '#4a505a';
+    const FONT = '"Instrument Sans", "Helvetica Neue", sans-serif', MONO = '"IBM Plex Mono", ui-monospace, monospace';
+    const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+    const ease = (u) => 0.5 - Math.cos(Math.PI * clamp(u, 0, 1)) / 2;
+    const backOut = (u) => { u = clamp(u, 0, 1); const c = 1.9; return 1 + (c + 1) * (u - 1) ** 3 + c * (u - 1) ** 2; };
+    let seed = 11; // seeded random: the same graph on every visit
+    const rnd = () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+
+    // ---------- the graph: nodes live on 4 discs of radius 1, stacked GAP apart ----------
+    const GAP = 0.46, D2R = Math.PI / 180;
+    const LAYERS = ['Empresa', 'Áreas', 'Personas', 'Agentes'];
+    const AREAS = { ventas: ['Ventas', 40], producto: ['Producto', 140], marketing: ['Marketing', 220], operaciones: ['Operaciones', 320] };
+    const nodes = [], byId = {}, edges = [];
+    const at = (r, a) => [Math.cos(a * D2R) * r, Math.sin(a * D2R) * r];
+    const node = (id, label, kind, layer, [x, z], extra) => {
+      const n = { id, label, kind, layer, x, y: (1.5 - layer) * GAP, z, lite: true, pres: 1, nb: new Set(), ph: rnd() * 6.28, fa: 1, vis: 1, sx: 0, sy: 0, d: 0, f: 1, ...extra };
+      nodes.push(n); byId[id] = n; return n;
+    };
+    const link = (a, b, kind) => { a = byId[a] || a; b = byId[b] || b; edges.push({ a, b, kind }); a.nb.add(b); b.nb.add(a); };
+    const scatter = (layer, [cx, cz], spread, count, names, hubs, area) => {
+      for (let k = 0; k < count; k++) {
+        const a = rnd() * 6.283, r = spread * Math.sqrt(0.08 + 0.92 * rnd());
+        let x = cx + Math.cos(a) * r, z = cz + Math.sin(a) * r;
+        const m = Math.hypot(x, z); if (m > 0.93) { x *= 0.93 / m; z *= 0.93 / m; }
+        let hub = hubs[0], best = 9;
+        for (const h of hubs) { const dd = Math.hypot(h.x - x, h.z - z); if (dd < best) { best = dd; hub = h; } }
+        const label = k < names.length ? names[k] : `${hub.label} / nota ${k - names.length + 1}`;
+        link(node(`d${layer}${area || ''}${k}`, label, 'doc', layer, [x, z], { area, lite: k % 2 === 0 }), hub, 'leaf');
+      }
+    };
+    // 1 · Empresa: company-wide wiki
+    const EH = [['e_politicas', 'Políticas', 0.36, 105], ['e_clientes', 'Clientes', 0.44, 18], ['e_precios', 'Precios', 0.42, 178], ['e_marca', 'Manual de marca', 0.38, 282]]
+      .map(([id, l, r, a]) => node(id, l, 'hub', 0, at(r, a)));
+    EH.forEach((h, i) => link(h, EH[(i + 1) % EH.length], 'hub'));
+    scatter(0, [0, 0], 0.9, 36, ['Código de conducta', 'Vacaciones', 'Viáticos', 'Contrato marco', 'Aviso de privacidad', 'Organigrama', 'Onboarding', 'Facturación', 'Lista de precios', 'Glosario', 'Proveedores aprobados', 'Logos y colores'], EH);
+    // 2 · Áreas: one wiki cluster per area, two pages (hubs) each, linked up to the company layer
+    const AH = {
+      ventas: [['v_promos', 'Promos 2026', 0.62, 54], ['v_cartera', 'Cartera de clientes', 0.47, 28]],
+      producto: [['p_lanz', 'Lanzamientos', 0.6, 130], ['p_roadmap', 'Roadmap', 0.47, 154]],
+      marketing: [['m_camp', 'Campañas', 0.58, 210], ['m_cal', 'Calendario editorial', 0.5, 234]],
+      operaciones: [['o_inv', 'Inventario', 0.58, 310], ['o_prov', 'Logística', 0.48, 334]],
+    };
+    const UP = { ventas: ['e_clientes', 'e_precios'], producto: ['e_precios', 'e_politicas'], marketing: ['e_marca', 'e_clientes'], operaciones: ['e_politicas', 'e_marca'] };
+    const ADOCS = {
+      ventas: ['Promo de verano', 'Descuentos por volumen', 'Guion de llamada', 'Metas del trimestre', 'Clientes clave', 'Objeciones comunes', 'Cotizaciones'],
+      producto: ['Notas de versión', 'Pruebas con clientes', 'Prioridades', 'Fichas de producto', 'Bitácora de cambios', 'Ideas'],
+      marketing: ['Campaña de octubre', 'Tono de voz', 'Redes sociales', 'Boletín', 'Resultados de anuncios', 'Fotos de producto'],
+      operaciones: ['Almacén', 'Envíos', 'Devoluciones', 'Turnos', 'Mantenimiento', 'Compras'],
+    };
+    for (const [k, [, ang]] of Object.entries(AREAS)) {
+      const hs = AH[k].map(([id, l, r, a]) => node(id, l, 'hub', 1, at(r, a), { area: k }));
+      link(hs[0], hs[1], 'hub'); hs.forEach((h, i) => link(h, UP[k][i], 'cross'));
+      scatter(1, at(0.56, ang), 0.3, 22, ADOCS[k], hs, k);
+    }
+    // the page the story adds (hidden until Magdalena approves it)
+    const NEW = node('v_new', 'Promo de octubre: 5%', 'hub', 1, at(0.82, 70), { area: 'ventas', learned: true, pres: 0 });
+    link(NEW, 'v_promos', 'hub');
+    // 3 · Personas and 4 · Agentes: one agent under each person, plus two shared agents
+    const PEOPLE = [
+      ['maria', 'María', 'producto', 120, 'Líder de Producto'], ['iker', 'Iker', 'producto', 140, 'Producto'], ['francisco', 'Francisco', 'producto', 160, 'Producto'],
+      ['magdalena', 'Magdalena', 'ventas', 62, 'Líder de Ventas'], ['diego', 'Diego', 'ventas', 42, 'Ventas'], ['renata', 'Renata', 'ventas', 22, 'Ventas'],
+      ['lucia', 'Lucía', 'marketing', 206, 'Marketing'], ['tomas', 'Tomás', 'marketing', 232, 'Marketing'],
+      ['andres', 'Andrés', 'operaciones', 304, 'Operaciones'], ['sofia', 'Sofía', 'operaciones', 330, 'Líder de Operaciones'],
+    ];
+    for (const [id, name, area, ang, role] of PEOPLE) {
+      node(id, name, 'person', 2, at(0.72, ang), { area, role });
+      node('a_' + id, 'Agente de ' + name, 'agent', 3, at(0.72, ang), { area });
+      link(id, 'a_' + id, 'own'); link('a_' + id, AH[area][0][0], 'read');
+    }
+    for (const g of Object.keys(AREAS)) { const ps = PEOPLE.filter((p) => p[2] === g); ps.forEach((p, i) => ps.slice(i + 1).forEach((q) => link(p[0], q[0], 'team'))); }
+    [['maria', 'magdalena'], ['iker', 'diego'], ['maria', 'lucia'], ['magdalena', 'sofia'], ['tomas', 'renata'], ['andres', 'francisco'], ['sofia', 'maria']].forEach(([a, b]) => link(a, b, 'team'));
+    node('a_ventas', 'Agente compartido de Ventas', 'shared', 3, at(0.3, 44), { area: 'ventas' });
+    node('a_reportes', 'Agente de reportes', 'shared', 3, at(0.3, 250), { area: 'operaciones' });
+    ['magdalena', 'diego', 'renata'].forEach((p) => link(p, 'a_ventas', 'own'));
+    ['sofia', 'andres', 'maria'].forEach((p) => link(p, 'a_reportes', 'own'));
+    [['a_ventas', 'v_cartera'], ['a_reportes', 'o_prov'], ['a_reportes', 'e_politicas'], ['a_maria', 'e_politicas'], ['a_magdalena', 'e_clientes'], ['a_andres', 'e_marca'], ['a_lucia', 'e_marca']].forEach(([a, b]) => link(a, b, 'read'));
+    for (let c = 0; c < 26; c++) { // a few documents reference each other inside a layer
+      const L = c % 2, pool = nodes.filter((n) => n.kind === 'doc' && n.layer === L);
+      const a = pool[Math.floor(rnd() * pool.length)], b = pool[Math.floor(rnd() * pool.length)];
+      if (a !== b && Math.hypot(a.x - b.x, a.z - b.z) < 0.5) link(a, b, 'ref');
+    }
+    const AREA_NODES = Object.entries(AREAS).map(([k, [name, ang]]) => { const [x, z] = at(0.56, ang); return { k, name, x, y: 0.5 * GAP, z, sx: 0, sy: 0, d: 0, f: 1 }; });
+
+    // ---------- the story: beats (caption + who is in it) and pulses, on one clock T (seconds) ----------
+    const SCENES = [
+      { name: 'Conocimiento por capas', start: 0, end: 8.6, sum: 'El agente de Iker sube de capa en capa y cita la fuente de cada dato.' },
+      { name: 'Permisos por área', start: 8.6, end: 17.6, sum: 'Sin acceso a Ventas, Iker lo pide y Magdalena, líder del área, lo aprueba.' },
+      { name: 'Vista de equipo', start: 17.6, end: 24.6, sum: 'Entre compañeros se mandan mensajes; a María le llega un resumen, no el chat.' },
+      { name: 'Aprende con aprobación', start: 24.6, end: 33.6, sum: 'El agente propone lo aprendido, Magdalena lo aprueba y entra a la wiki de Ventas.' },
+    ];
+    const LOOP = 33.6, UNLOCK = 12.6, POP = 27.7;
+    const BEATS = [
+      [0, 'María le pregunta a Iker por la promo de octubre', ['maria', 'iker']],
+      [2.4, 'Iker se lo pide a su agente', ['iker', 'a_iker']],
+      [4.0, 'El agente sube por las capas: Producto, luego la empresa', ['a_iker', 'p_lanz', 'e_precios']],
+      [6.3, 'Vuelve con lo que encontró y cita la fuente', ['a_iker', 'e_precios', 'iker']],
+      [8.6, 'El agente busca en Ventas… sin acceso', ['a_iker', 'v_promos']],
+      [10.6, 'Iker pide acceso; Magdalena, líder de Ventas, aprueba', ['iker', 'magdalena', 'a_iker', 'v_promos']],
+      [13.8, 'El agente encuentra el dato y responde con la fuente', ['a_iker', 'v_promos', 'iker']],
+      [17.6, 'Iker le manda a María un resumen, no el chat', ['iker', 'maria']],
+      [19.9, 'Entre compañeros se mandan mensajes y se piden skills', null], // actors: this loop's peers
+      [24.6, 'El agente propone guardar lo aprendido', ['a_iker', 'magdalena']],
+      [26.6, 'Magdalena aprueba: entra a la wiki de Ventas', ['magdalena', 'v_new', 'v_promos']],
+      [29.4, 'El equipo ya lo sabe', ['v_new', 'a_diego', 'a_renata', 'a_maria', 'a_lucia', 'a_ventas', 'diego', 'renata', 'maria', 'lucia']],
+    ].map(([t, text, actors]) => ({ t, text, actors: actors && new Set(actors.map((i) => byId[i])), s: SCENES.findIndex((s) => t >= s.start && t < s.end) }));
+    // [start, from, to, duration, kind]  kinds: msg · read · answer · blocked · request · approve · summary
+    const BASE_PULSES = [
+      [0.5, 'maria', 'iker', 1.5, 'msg'], [2.7, 'iker', 'a_iker', 1.0, 'msg'],
+      [4.2, 'a_iker', 'p_lanz', 1.0, 'read'], [5.2, 'p_lanz', 'e_precios', 0.9, 'read'], [6.45, 'e_precios', 'a_iker', 1.25, 'answer'], [7.75, 'a_iker', 'iker', 0.7, 'answer'],
+      [8.9, 'a_iker', 'v_promos', 1.1, 'blocked'], [10.8, 'iker', 'magdalena', 1.1, 'request'], [12.0, 'magdalena', 'iker', 0.9, 'approve'],
+      [14.0, 'a_iker', 'v_promos', 0.9, 'read'], [15.0, 'v_promos', 'a_iker', 0.9, 'answer'], [16.0, 'a_iker', 'iker', 0.7, 'answer'],
+      [17.9, 'iker', 'maria', 1.4, 'summary'],
+      [24.9, 'a_iker', 'magdalena', 1.3, 'request'], [26.8, 'magdalena', 'v_new', 0.9, 'approve'],
+      [29.5, 'v_new', 'a_diego', 1.0, 'msg'], [29.65, 'v_new', 'a_renata', 1.0, 'msg'], [29.8, 'v_new', 'a_ventas', 0.9, 'msg'], [29.95, 'v_new', 'a_maria', 1.1, 'msg'], [30.1, 'v_new', 'a_lucia', 1.3, 'msg'],
+      [30.7, 'a_diego', 'diego', 0.6, 'answer'], [30.85, 'a_renata', 'renata', 0.6, 'answer'], [31.1, 'a_maria', 'maria', 0.6, 'answer'], [31.5, 'a_lucia', 'lucia', 0.6, 'answer'],
+    ];
+    const TEAM = edges.filter((e) => e.kind === 'team' && !(e.a.id === 'iker' && e.b.id === 'maria'));
+    let loopN = 0, pulses = [], peerSet = new Set();
+    const buildPulses = () => { // small variation each loop: a different set of colleagues messaging in scene 3
+      const saved = seed; seed = 97 + loopN * 13;
+      const pick = [...TEAM].sort(() => rnd() - 0.5).slice(0, 6);
+      seed = saved;
+      peerSet = new Set(pick.flatMap((e) => [e.a, e.b]));
+      pulses = [...BASE_PULSES, ...pick.map((e, i) => [20.1 + i * 0.5, ...(i % 2 ? [e.b.id, e.a.id] : [e.a.id, e.b.id]), 1.2, 'msg'])]
+        .map(([t, a, b, dur, kind]) => ({ t, a: byId[a], b: byId[b], dur, kind }));
+    };
+    buildPulses();
+    const CHIPS = [ // source / state tags drawn next to a node
+      [6.6, 8.6, 'e_precios', 'Fuente · Empresa / Precios'], [9.9, 11.2, 'v_promos', 'Sin acceso'], [15.1, 17.6, 'v_promos', 'Fuente · Ventas / Promos 2026'],
+      [19.1, 19.9, 'maria', 'Solo resumen'], [25.9, 27.6, 'v_new', 'Propuesta · Promo de octubre'], [27.9, 31.4, 'v_new', 'Nuevo · Promo de octubre: 5%'],
+    ].map(([t0, t1, id, text]) => ({ t0, t1, n: byId[id], text: text.toUpperCase() }));
+
+    // ---------- view state ----------
+    const P0 = 0.27, DIST = 6;
+    let W = 0, H = 0, dpr = 1, S = 1, CX = 0, CY = 0, YS = 1, small = false;
+    let yawUser = 0, yawVel = 0, pitch = P0, pitchT = P0, yawBack = false, clock = 0;
+    let cY = 1, sY = 0, cP = 1, sP = 0, kSize = 1;
+    let T = 0, sel = null, hold = 0, beatIx = -1, sceneShown = -2;
+    const layerOn = [true, true, true, true], layerVis = [1, 1, 1, 1];
+    let hover = null, pinned = null, found = null, drag = null;
+    let lockA = 0, litA = 0, newCount = -1;
+    const proj = (x, y, z, o) => {
+      y *= YS;
+      const xr = x * cY - z * sY, zr = x * sY + z * cY;
+      const d = y * sP + zr * cP, yp = y * cP - zr * sP, f = DIST / (DIST - d);
+      o.sx = CX + xr * f * S; o.sy = CY - yp * f * S; o.d = d; o.f = f; return o;
+    };
+    const RN = 132, RC = [], RS = [];
+    for (let i = 0; i < RN; i++) { RC.push(Math.cos((i / RN) * 6.2832)); RS.push(Math.sin((i / RN) * 6.2832)); }
+    const tmp = { sx: 0, sy: 0, d: 0, f: 1 }, tmp2 = { sx: 0, sy: 0, d: 0, f: 1 };
+
+    const resize = () => {
+      const r = stage.getBoundingClientRect();
+      W = r.width; H = r.height; dpr = Math.min(2, window.devicePixelRatio || 1);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      small = W < 520;
+      // fit: the top ring's far edge and the bottom ring's near edge, with perspective (the near, lower rings draw bigger)
+      const c = Math.cos(P0), s = Math.sin(P0), y0 = 1.5 * GAP, R = 1.06;
+      const fTop = DIST / (DIST - (y0 * s - R * c)), fBot = DIST / (DIST - (-y0 * s + R * c)), fW = DIST / (DIST - y0 * s);
+      const up = (y0 * c + R * s) * fTop, down = (y0 * c + R * s) * fBot;
+      const padT = 50, padB = 10, room = H - padT - padB;
+      S = Math.min((W / 2 - 6) / (R * fW), room / (up + down));
+      // width-limited (phones, narrow columns): open the layers up vertically to use the height
+      YS = clamp((room / S - R * s * (fTop + fBot)) / (y0 * c * (fTop + fBot)), 1, 1.9);
+      const up2 = (y0 * YS * c + R * s) * fTop, down2 = (y0 * YS * c + R * s) * fBot;
+      CX = W / 2; CY = padT + up2 * S + (room - (up2 + down2) * S) / 2; kSize = clamp(S / 230, 0.78, 1.12);
+      countNodes();
+    };
+    const avail = (n) => n.lite || !small;
+    const countNodes = () => {
+      const per = [0, 0, 0, 0];
+      for (const n of nodes) if (avail(n) && (!n.learned || n.pres > 0.5)) per[n.layer]++;
+      const total = per.reduce((a, b) => a + b, 0);
+      if (total === newCount) return;
+      const grew = newCount > 0 && total > newCount;
+      newCount = total; countEl.textContent = total;
+      chips.forEach((c, i) => {
+        const em = c.querySelector('em'); if (em.textContent === String(per[i])) return;
+        em.textContent = per[i];
+        if (grew && MOTION) { em.classList.remove('tick'); void em.offsetWidth; em.classList.add('tick'); c.classList.add('bump'); setTimeout(() => c.classList.remove('bump'), 1400); }
+      });
+    };
+
+    // ---------- story state at time T ----------
+    const beatAt = (t) => { let i = 0; while (i + 1 < BEATS.length && BEATS[i + 1].t <= t) i++; return i; };
+    const sceneOf = (t) => Math.max(0, SCENES.findIndex((s) => t >= s.start && t < s.end));
+    const setCaption = (step, text, prog) => {
+      stepEl.textContent = step;
+      if (lineEl.dataset.t === text) return;
+      lineEl.dataset.t = text;
+      if (!MOTION) { lineEl.textContent = text; return; }
+      lineEl.classList.add('out');
+      setTimeout(() => { lineEl.textContent = lineEl.dataset.t; lineEl.classList.remove('out'); }, 200);
+    };
+    const sceneLabel = (s) => `0${s + 1} / 04 · ${SCENES[s].name}`;
+    const actorsNow = () => {
+      const focus = pinned || found || hover;
+      if (focus) return new Set([focus, ...focus.nb]);
+      if (!MOTION) return sel === null ? null : new Set(BEATS.filter((b) => b.s === sel).flatMap((b) => [...(b.actors || peerSet)]));
+      const b = BEATS[beatAt(T)];
+      return b.actors || peerSet;
+    };
+
+    // ---------- per-frame update ----------
+    const step = (dt) => {
+      clock += dt;
+      // story clock: whole loop, or the chosen scene on repeat (with a short hold at its end)
+      if (sel === null) { T += dt; if (T >= LOOP) { T -= LOOP; loopN++; buildPulses(); } }
+      else {
+        const sc = SCENES[sel];
+        if (T < sc.end - 0.001) T = Math.min(T + dt, sc.end - 0.001);
+        else if ((hold += dt) > 1.1) { hold = 0; T = sc.start; loopN++; buildPulses(); }
+      }
+      // view: inertia after a drag, eased reset, pitch follows its target
+      if (!drag) { yawUser += yawVel * dt; yawVel *= Math.exp(-dt * 2.6); }
+      if (yawBack) { yawUser += (0 - yawUser) * (1 - Math.exp(-dt * 5)); if (Math.abs(yawUser) < 0.002) { yawUser = 0; yawBack = false; } }
+      pitch += (pitchT - pitch) * (1 - Math.exp(-dt * 6));
+      const k = 1 - Math.exp(-dt * 7);
+      for (let i = 0; i < 4; i++) layerVis[i] += ((layerOn[i] ? 1 : 0) - layerVis[i]) * k;
+      // story state: lock on Ventas, the approved access edge, the learned page
+      const lockT = !MOTION ? 0 : T < 8.6 ? 0.42 : T < UNLOCK ? 1 : clamp(1 - (T - UNLOCK - 0.6) / 1.4, 0, 1);
+      lockA += (lockT - lockA) * k;
+      const litT = MOTION && T >= UNLOCK && T < SCENES[1].end + 0.2 ? 1 : 0;
+      litA += (litT - litA) * (1 - Math.exp(-dt * 4));
+      const newT = !MOTION || T >= POP ? 1 : 0;
+      NEW.pres += (newT - NEW.pres) * (newT ? 1 : 1 - Math.exp(-dt * 5));
+      // focus: everyone outside the current beat fades back
+      const actors = actorsNow();
+      const kf = 1 - Math.exp(-dt * 5);
+      for (const n of nodes) {
+        const tf = !actors || actors.has(n) ? 1 : n.kind === 'person' ? 0.42 : 0.26;
+        n.fa += (tf - n.fa) * kf;
+        n.vis = layerVis[n.layer] * (avail(n) ? 1 : 0) * (n.learned ? NEW.pres : 1);
+      }
+      countNodes();
+      // caption + scene attribute
+      const sc = sel !== null ? sel : MOTION ? sceneOf(T) : null;
+      if (sc !== sceneShown) { sceneShown = sc; root.dataset.scene = sc === null ? '' : String(sc); }
+      if (MOTION) {
+        const i = beatAt(T), b = BEATS[i], nt = i + 1 < BEATS.length ? BEATS[i + 1].t : LOOP;
+        if (i !== beatIx) { beatIx = i; setCaption(sceneLabel(b.s), b.text); }
+        progEl.style.transform = `scaleX(${clamp((T - b.t) / (nt - b.t), 0, 1).toFixed(3)})`;
+      } else if (sc === null) setCaption('4 capas · personas, agentes y conocimiento', 'Las personas hablan entre sí, sus agentes leen la wiki con permiso y lo aprendido entra con aprobación');
+      else setCaption(sceneLabel(sc), SCENES[sc].sum);
+      return actors;
+    };
+
+    // ---------- drawing ----------
+    const bucket = new Map();
+    const ES = { leaf: [PLATA, 0.6, 0.7], ref: [PLATA, 0.4, 0.6], hub: [GRAF, 0.55, 0.9], cross: [PLATA, 0.42, 0.6], team: [GRAF, 0.6, 0.9], own: [GRAF, 0.5, 0.8], read: [PLATA, 0.36, 0.6] };
+    const EK = Object.keys(ES); edges.forEach((e) => (e.ki = EK.indexOf(e.kind)));
+    const order = nodes.slice();
+    const halo = document.createElement('canvas'); // soft carbón glow under each pulse
+    halo.width = halo.height = 64;
+    { const g = halo.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, 'rgba(23,26,32,.34)'); gr.addColorStop(0.4, 'rgba(23,26,32,.12)'); gr.addColorStop(1, 'rgba(23,26,32,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }
+    const text = (s, x, y, font, color, align = 'left') => {
+      ctx.font = font; ctx.textAlign = align; ctx.lineWidth = 3.5; ctx.strokeStyle = 'rgba(255,255,255,.92)'; ctx.lineJoin = 'round';
+      ctx.strokeText(s, x, y); ctx.fillStyle = color; ctx.fillText(s, x, y);
+    };
+    const pathPoint = (p, u, o) => {
+      const a = p.a, b = p.b, bow = a.layer === b.layer ? Math.sin(Math.PI * u) * clamp(Math.hypot(a.x - b.x, a.z - b.z) * 0.22, 0.05, 0.17) : 0;
+      return proj(a.x + (b.x - a.x) * u, a.y + (b.y - a.y) * u + bow, a.z + (b.z - a.z) * u, o);
+    };
+    const nodeR = (n) => (n.kind === 'doc' ? 1.5 + (n.ph % 1) * 0.9 : n.kind === 'hub' ? (n.layer === 0 ? 5.6 : 4.8) : n.kind === 'person' ? 5.6 : 5) * kSize;
+
+    const chipA = (c) => (MOTION ? clamp((T - c.t0) / 0.3, 0, 1) * clamp((c.t1 - T) / 0.3, 0, 1) * (c.n.learned ? layerVis[1] : c.n.vis) : 0);
+    const draw = (actors) => {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      const yaw = -0.08 + yawUser + (MOTION ? 0.3 * Math.sin((clock * 2 * Math.PI) / 52) : 0);
+      cY = Math.cos(yaw); sY = Math.sin(yaw); cP = Math.cos(pitch); sP = Math.sin(pitch);
+      for (const n of nodes) proj(n.x, n.y, n.z, n);
+      for (const a of AREA_NODES) proj(a.x, a.y, a.z, a);
+
+      // 1 · layer planes and their dotted rings (bottom layer first: it is the farthest from the eye)
+      for (let L = 3; L >= 0; L--) {
+        const v = layerVis[L]; if (v < 0.02) continue;
+        const y = (1.5 - L) * GAP;
+        ctx.beginPath();
+        for (let i = 0; i < RN; i++) { proj(RC[i] * 1.06, y, RS[i] * 1.06, tmp); i ? ctx.lineTo(tmp.sx, tmp.sy) : ctx.moveTo(tmp.sx, tmp.sy); }
+        ctx.closePath(); ctx.globalAlpha = 0.5 * v; ctx.fillStyle = '#f2f4f6'; ctx.fill();
+        for (const front of [false, true]) {
+          ctx.beginPath();
+          for (let i = 0; i < RN; i++) {
+            proj(RC[i] * 1.06, y, RS[i] * 1.06, tmp);
+            if ((tmp.d > y * YS * sP) !== front) continue;
+            const s = (front ? 1.7 : 1.25) * tmp.f; ctx.rect(tmp.sx - s / 2, tmp.sy - s / 2, s, s);
+          }
+          ctx.globalAlpha = (front ? 0.85 : 0.45) * v; ctx.fillStyle = PLATA; ctx.fill();
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // 2 · edges, batched by style and quantised alpha (a few strokes per frame instead of hundreds)
+      for (const arr of bucket.values()) arr.length = 0;
+      const hot = [];
+      for (const e of edges) {
+        const a = e.a, b = e.b, v = Math.min(a.vis, b.vis); if (v < 0.02) continue;
+        const st = ES[e.kind], depth = 0.55 + 0.45 * clamp((a.d + b.d) / 2 + 0.6, 0, 1);
+        if (actors && actors.has(a) && actors.has(b) && (!hover || a === hover || b === hover)) hot.push(e);
+        const q = Math.round(st[1] * v * Math.min(a.fa, b.fa) * depth * 12); if (!q) continue;
+        const key = e.ki * 16 + q; let arr = bucket.get(key); if (!arr) bucket.set(key, (arr = []));
+        arr.push(a.sx, a.sy, b.sx, b.sy);
+      }
+      for (const [key, arr] of bucket) {
+        if (!arr.length) continue;
+        const st = ES[EK[key >> 4]];
+        ctx.beginPath(); for (let i = 0; i < arr.length; i += 4) { ctx.moveTo(arr[i], arr[i + 1]); ctx.lineTo(arr[i + 2], arr[i + 3]); }
+        ctx.globalAlpha = (key & 15) / 12; ctx.strokeStyle = st[0]; ctx.lineWidth = st[2]; ctx.stroke();
+      }
+      // edges inside the current focus: darker, so you can follow who is connected to whom
+      if (hot.length && actors.size < 40) {
+        ctx.beginPath(); for (const e of hot) { ctx.moveTo(e.a.sx, e.a.sy); ctx.lineTo(e.b.sx, e.b.sy); }
+        ctx.globalAlpha = 0.5; ctx.strokeStyle = GRAF; ctx.lineWidth = 1; ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      // 3 · story marks: the lock on Ventas, the access edge once approved, the proposed page
+      const ven = AREA_NODES[0];
+      if (lockA > 0.01 && layerVis[1] > 0.1) {
+        const yL = 0.5 * GAP, a = lockA * layerVis[1];
+        ctx.beginPath();
+        for (let i = 0; i <= 48; i++) { const t = (i / 48) * 6.2832; proj(ven.x + Math.cos(t) * 0.31, yL, ven.z + Math.sin(t) * 0.31, tmp); i ? ctx.lineTo(tmp.sx, tmp.sy) : ctx.moveTo(tmp.sx, tmp.sy); }
+        ctx.setLineDash([3, 4]); ctx.lineWidth = 1.1; ctx.strokeStyle = INK; ctx.globalAlpha = 0.6 * a; ctx.stroke(); ctx.setLineDash([]);
+        // padlock on the ring's front edge; the shackle lifts when access is approved
+        const fa = Math.atan2(cY, sY); proj(ven.x + Math.cos(fa) * 0.31, yL, ven.z + Math.sin(fa) * 0.31, tmp);
+        const open = MOTION && T >= UNLOCK ? ease((T - UNLOCK) / 0.4) : 0, s = kSize;
+        ctx.globalAlpha = a; ctx.fillStyle = '#fff'; ctx.fillRect(tmp.sx - 7 * s, tmp.sy - 11 * s, 14 * s, 17 * s);
+        ctx.fillStyle = INK; ctx.fillRect(tmp.sx - 4.5 * s, tmp.sy - 2 * s, 9 * s, 7 * s);
+        ctx.beginPath(); ctx.lineWidth = 1.5; ctx.strokeStyle = INK;
+        ctx.arc(tmp.sx + (open * 2.5) * s, tmp.sy - (2 + open * 3) * s, 3 * s, Math.PI, 0); ctx.lineTo(tmp.sx + (3 + open * 2.5) * s, tmp.sy - (open * 3 + 1) * s); ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+      if (litA > 0.01) {
+        const a = byId.a_iker, b = byId.v_promos, u = MOTION ? ease((T - UNLOCK) / 0.8) : 1;
+        ctx.beginPath(); ctx.moveTo(a.sx, a.sy); ctx.lineTo(a.sx + (b.sx - a.sx) * u, a.sy + (b.sy - a.sy) * u);
+        ctx.globalAlpha = litA * Math.min(a.vis, b.vis); ctx.strokeStyle = INK; ctx.lineWidth = 1.6; ctx.stroke(); ctx.globalAlpha = 1;
+      }
+      if (MOTION && T > 25.8 && T < POP + 0.2 && layerVis[1] > 0.1) { // proposed page: a dashed ghost waiting for approval
+        const a = clamp((T - 25.8) / 0.4, 0, 1) * clamp((POP + 0.2 - T) / 0.3, 0, 1) * layerVis[1];
+        ctx.beginPath(); ctx.arc(NEW.sx, NEW.sy, (6 + Math.sin(clock * 5) * 0.8) * kSize, 0, 6.2832);
+        ctx.setLineDash([2, 2.5]); ctx.lineWidth = 1.2; ctx.strokeStyle = INK; ctx.globalAlpha = 0.85 * a; ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+      }
+
+      // 4 · nodes, back to front
+      order.sort((a, b) => a.d - b.d);
+      for (const n of order) {
+        const v = n.vis; if (v < 0.02) continue;
+        const depth = 0.62 + 0.38 * clamp(n.d + 0.6, 0, 1), isActor = actors && actors.has(n) && actors.size < 40;
+        let r = nodeR(n) * n.f * (MOTION ? 1 + 0.07 * Math.sin(clock * 1.3 + n.ph) : 1) * (isActor && n.kind !== 'doc' ? 1.12 : 1);
+        ctx.globalAlpha = v * n.fa * depth;
+        if (n.learned) { // the learned page pops in with a little overshoot
+          const u = MOTION && T >= POP ? (T - POP) / 0.7 : 1; r *= backOut(u);
+          if (MOTION && T >= POP && T < POP + 1.1) { const w = (T - POP) / 1.1; ctx.beginPath(); ctx.arc(n.sx, n.sy, r + 26 * w * kSize, 0, 6.2832); ctx.lineWidth = 1.4; ctx.strokeStyle = INK; ctx.globalAlpha = (1 - w) * 0.6 * v; ctx.stroke(); ctx.globalAlpha = v * n.fa; }
+        }
+        if (n.kind === 'doc') { ctx.beginPath(); ctx.arc(n.sx, n.sy, r, 0, 6.2832); ctx.fillStyle = isActor ? INK : GRAF; ctx.fill(); continue; }
+        ctx.beginPath(); ctx.arc(n.sx, n.sy, r + (n.kind === 'hub' ? 3.2 : 1.6) * kSize, 0, 6.2832); ctx.fillStyle = '#fff'; ctx.fill();
+        if (n.kind === 'hub') {
+          ctx.lineWidth = 1; ctx.strokeStyle = PLATA; ctx.stroke();
+          ctx.beginPath(); ctx.arc(n.sx, n.sy, r, 0, 6.2832); ctx.fillStyle = n.learned || isActor ? INK : HUB; ctx.fill();
+        } else if (n.kind === 'person') {
+          ctx.beginPath(); ctx.arc(n.sx, n.sy, r, 0, 6.2832); ctx.fillStyle = INK; ctx.fill();
+        } else if (n.kind === 'agent') {
+          ctx.beginPath(); ctx.arc(n.sx, n.sy, r - 0.8, 0, 6.2832); ctx.lineWidth = 1.7 * kSize; ctx.strokeStyle = INK; ctx.stroke();
+        } else { // shared agent: hollow rounded square
+          const s = r * 0.95; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(n.sx - s, n.sy - s, 2 * s, 2 * s, 2.5) : ctx.rect(n.sx - s, n.sy - s, 2 * s, 2 * s);
+          ctx.lineWidth = 1.7 * kSize; ctx.strokeStyle = INK; ctx.stroke();
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      // 5 · pulses: a glowing head with a short trail; requests are hollow, summaries are a small page
+      if (MOTION) for (const p of pulses) {
+        const t = T - p.t; if (t < 0 || t > p.dur + 1.2) continue;
+        const v = Math.min(p.a.vis, p.b.vis); if (v < 0.05) continue;
+        const stop = p.kind === 'blocked' ? 0.9 : 1, u = ease(t / p.dur) * stop, arrived = t >= p.dur;
+        // the route it travels, faint (dashed for a request)
+        ctx.beginPath();
+        for (let i = 0; i <= 16; i++) { pathPoint(p, (i / 16) * (arrived ? stop : u), tmp); i ? ctx.lineTo(tmp.sx, tmp.sy) : ctx.moveTo(tmp.sx, tmp.sy); }
+        const fade = arrived ? clamp(1 - (t - p.dur) / 1.1, 0, 1) : 1;
+        if (p.kind === 'request') ctx.setLineDash([3, 3]);
+        ctx.lineWidth = p.kind === 'approve' ? 1.6 : 1; ctx.strokeStyle = p.kind === 'approve' ? INK : GRAF; ctx.globalAlpha = (p.kind === 'approve' ? 0.9 : 0.45) * fade * v; ctx.stroke(); ctx.setLineDash([]);
+        if (!arrived) {
+          // trail: segments that thin out behind the head
+          let px = 0, py = 0;
+          for (let k = 0; k <= 9; k++) {
+            const uk = u - k * 0.028 * stop; if (uk < 0) break;
+            pathPoint(p, uk, tmp);
+            if (k) { ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tmp.sx, tmp.sy); ctx.lineWidth = (3 - k * 0.28) * kSize; ctx.strokeStyle = INK; ctx.globalAlpha = (0.55 - k * 0.055) * v; ctx.lineCap = 'round'; ctx.stroke(); }
+            px = tmp.sx; py = tmp.sy;
+          }
+          pathPoint(p, u, tmp);
+          const g = 30 * kSize * tmp.f; ctx.globalAlpha = v; ctx.drawImage(halo, tmp.sx - g / 2, tmp.sy - g / 2, g, g);
+          ctx.beginPath();
+          if (p.kind === 'summary') { const s = 3.4 * kSize; ctx.fillStyle = '#fff'; ctx.fillRect(tmp.sx - s, tmp.sy - s * 1.25, 2 * s, 2.5 * s); ctx.lineWidth = 1.3; ctx.strokeStyle = INK; ctx.strokeRect(tmp.sx - s, tmp.sy - s * 1.25, 2 * s, 2.5 * s); }
+          else if (p.kind === 'request') { ctx.arc(tmp.sx, tmp.sy, 3.6 * kSize, 0, 6.2832); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 1.6; ctx.strokeStyle = INK; ctx.stroke(); }
+          else { ctx.arc(tmp.sx, tmp.sy, (p.kind === 'answer' || p.kind === 'approve' ? 3.6 : 3) * kSize, 0, 6.2832); ctx.fillStyle = INK; ctx.fill(); }
+        } else if (t - p.dur < 0.75) {
+          // arrival: a ring that opens and fades (a small cross where access was refused)
+          const w = (t - p.dur) / 0.75; pathPoint(p, stop, tmp); ctx.globalAlpha = (1 - w) * 0.7 * v; ctx.strokeStyle = INK; ctx.lineWidth = 1.3;
+          ctx.beginPath(); ctx.arc(tmp.sx, tmp.sy, (5 + 15 * ease(w)) * kSize, 0, 6.2832); ctx.stroke();
+          if (p.kind === 'blocked') { const s = 5 * kSize; ctx.globalAlpha = clamp(1.6 - w * 1.6, 0, 1) * v; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(tmp.sx - s, tmp.sy - s); ctx.lineTo(tmp.sx + s, tmp.sy + s); ctx.moveTo(tmp.sx + s, tmp.sy - s); ctx.lineTo(tmp.sx - s, tmp.sy + s); ctx.stroke(); }
+        }
+        ctx.lineCap = 'butt';
+      }
+      ctx.globalAlpha = 1;
+
+      // 6 · labels: area names, people, whoever is in the current beat, and the source tags
+      ctx.textBaseline = 'middle';
+      const fs = small ? 11 : 12;
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '1px';
+      for (const a of AREA_NODES) {
+        if (layerVis[1] < 0.1) continue;
+        ctx.globalAlpha = layerVis[1] * (0.55 + 0.4 * clamp(a.d + 0.5, 0, 1));
+        text(a.name.toUpperCase(), a.sx, a.sy - 30 * kSize * a.f, `500 ${small ? 9.5 : 10}px ${MONO}`, '#5e6672', 'center');
+      }
+      for (let L = 0; L < 4; L++) { // layer names on the left tip of each ring
+        if (layerVis[L] < 0.1) continue;
+        const y = (1.5 - L) * GAP * YS; tmp.sx = CX - S * DIST / (DIST - y * sP) * 1.06; const yp = y * cP, f = DIST / (DIST - y * sP);
+        ctx.globalAlpha = layerVis[L] * 0.95;
+        text(LAYERS[L].toUpperCase(), tmp.sx + 4, CY - yp * f * S - 12, `500 ${small ? 9.5 : 10}px ${MONO}`, INK);
+      }
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+      // names: story actors first, then nearest first; a name goes right of its node, else left, else it waits (no overlaps)
+      const big = actors && actors.size < 40, cand = [], placed = [], tags = [];
+      // source / state tags take their place first, so names step aside for them
+      if (MOTION) for (const c of CHIPS) {
+        const a = chipA(c); if (a <= 0) continue;
+        ctx.font = `500 ${small ? 9.5 : 10}px ${MONO}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0.6px';
+        const w = ctx.measureText(c.text).width + 14, h = 20, x = clamp(c.n.sx - w / 2, 6, W - w - 6), y = c.n.sy - 20 - h + (1 - ease(a)) * 4;
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+        tags.push([c, a, x, y, w, h]); placed.push([x, y, w, h + 6]);
+      }
+      for (const n of order) {
+        if (n.vis < 0.3) continue;
+        const actor = big && actors.has(n), focusN = n === pinned || n === found || n === hover;
+        if (focusN || (actor && CHIPS.some((c) => c.n === n && chipA(c) > 0.2))) continue; // the tooltip or its tag names it
+        if ((n.kind === 'person' && (actor || !small || n.d > -0.05)) || (actor && n.kind !== 'doc' && !(actors.size > 6 && n.kind !== 'hub' && !hover && !pinned && !found))) cand.push([n, actor]);
+      }
+      cand.sort((p, q) => q[1] - p[1] || q[0].d - p[0].d);
+      for (const [n, actor] of cand) {
+        const font = `${actor ? 600 : 500} ${fs}px ${FONT}`; ctx.font = font;
+        const w = ctx.measureText(n.label).width, r = nodeR(n) * n.f + 5, h = fs + 2;
+        const free = (x) => !placed.some((q) => x < q[0] + q[2] && x + w > q[0] && n.sy - h / 2 < q[1] + q[3] && n.sy + h / 2 > q[1]);
+        let x = n.sx + r;
+        if (!free(x) || x + w > W - 4) x = n.sx - r - w;
+        if ((!free(x) || x < 4) && !(actor && n.kind === 'person')) continue; // people in the story are always named
+        placed.push([x, n.sy - h / 2, w, h]);
+        ctx.globalAlpha = n.vis * (actor ? 1 : n.fa * (0.5 + 0.5 * clamp(n.d + 0.7, 0, 1)));
+        text(n.label, x, n.sy, font, actor ? INK : '#5e6672');
+      }
+      for (const [c, a, x, y, w, h] of tags) {
+        ctx.font = `500 ${small ? 9.5 : 10}px ${MONO}`; if ('letterSpacing' in ctx) ctx.letterSpacing = '0.6px';
+        ctx.globalAlpha = a; ctx.fillStyle = '#fff'; ctx.fillRect(x, y, w, h); ctx.lineWidth = 1; ctx.strokeStyle = INK; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+        ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.fillText(c.text, x + 7, y + h / 2 + 0.5);
+        ctx.beginPath(); ctx.moveTo(c.n.sx, y + h); ctx.lineTo(c.n.sx, c.n.sy - 7); ctx.strokeStyle = INK; ctx.globalAlpha = a * 0.5; ctx.stroke();
+        if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+      }
+      ctx.globalAlpha = 1;
+      placeTip();
+    };
+
+    // ---------- tooltip ----------
+    const describe = (n) => {
+      const area = n.area ? AREAS[n.area][0] : '';
+      if (n.kind === 'person') return n.role;
+      if (n.kind === 'agent') return `Agente · ${area}`;
+      if (n.kind === 'shared') return 'Agente compartido';
+      if (n.learned) return 'Nuevo en la wiki de Ventas';
+      if (n.kind === 'hub') return n.layer === 0 ? 'Wiki de la empresa' : `Wiki de ${area}`;
+      return `Documento · ${n.layer === 0 ? 'Empresa' : area}`;
+    };
+    let tipFor = null;
+    const placeTip = () => {
+      const n = pinned || found || hover;
+      if (!n || n.vis < 0.3) { if (!tip.hidden) tip.hidden = true; tipFor = null; return; }
+      if (tipFor !== n) {
+        tipFor = n; tip.hidden = false;
+        tip.querySelector('b').textContent = n.label;
+        tip.querySelector('span').textContent = `${describe(n)} · ${n.nb.size} conexiones`;
+      }
+      const w = tip.offsetWidth / 2, below = n.sy < tip.offsetHeight + 24;
+      tip.classList.toggle('below', below);
+      tip.style.left = clamp(n.sx, w + 6, W - w - 6) + 'px'; tip.style.top = n.sy + 'px';
+    };
+
+    // ---------- loop: runs only while the graph is on screen and the tab is visible ----------
+    let onScreen = false, raf = 0, last = 0;
+    const frame = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      draw(step(dt));
+      raf = onScreen && !document.hidden ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => { if (MOTION && !raf && onScreen && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const still = () => { if (!MOTION) draw(step(1)); }; // ?nomotion: draw on demand, every eased value snaps to its target
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; start(); }, { rootMargin: '60px' }).observe(stage);
+    document.addEventListener('visibilitychange', start);
+    new ResizeObserver(() => { resize(); if (MOTION && !raf) draw(step(0)); still(); }).observe(stage);
+    document.fonts && document.fonts.ready.then(still);
+
+    // ---------- interaction: drag to turn, hover/tap a node, legend, search, reset ----------
+    const local = (e) => { const r = stage.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const hit = (x, y, rad) => {
+      let best = null, bd = rad * rad;
+      for (const n of nodes) {
+        if (n.vis < 0.5) continue;
+        const dx = n.sx - x, dy = n.sy - y, dd = (dx * dx + dy * dy) * (n.kind === 'doc' ? 1.8 : 1);
+        if (dd < bd) { bd = dd; best = n; }
+      }
+      return best;
+    };
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.button) return;
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now(), moved: false, mouse: e.pointerType === 'mouse' };
+      yawVel = 0; yawBack = false;
+    });
+    stage.addEventListener('pointermove', (e) => {
+      const [x, y] = local(e);
+      if (drag && drag.id === e.pointerId) {
+        const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (!drag.moved && (drag.mouse ? Math.hypot(dx, dy) > 4 : Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy))) {
+          drag.moved = true; stage.classList.add('dragging'); hover = null;
+          try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+        }
+        if (drag.moved) {
+          const now = performance.now(), d = -dx * 0.0085;
+          yawUser += d; yawVel = (d / Math.max(8, now - drag.t)) * 1000; drag.t = now;
+          if (drag.mouse) pitchT = pitch = clamp(pitchT + dy * 0.003, 0.12, 0.5);
+          drag.x = e.clientX; drag.y = e.clientY; still();
+        }
+        return;
+      }
+      if (e.pointerType !== 'mouse') return;
+      const n = hit(x, y, 14);
+      if (n !== hover) { hover = n; stage.classList.toggle('on-node', !!n); still(); }
+    });
+    const endDrag = (e, tap) => {
+      if (!drag || drag.id !== e.pointerId) return;
+      if (tap && !drag.moved) { const [x, y] = local(e); const n = hit(x, y, drag.mouse ? 14 : 22); pinned = n && n !== pinned ? n : null; }
+      if (performance.now() - drag.t > 90) yawVel = 0; // released without flicking: no spin
+      drag = null; stage.classList.remove('dragging'); still();
+    };
+    stage.addEventListener('pointerup', (e) => endDrag(e, true));
+    stage.addEventListener('pointercancel', (e) => { if (drag) drag.moved = true; endDrag(e, false); });
+    stage.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && hover) { hover = null; stage.classList.remove('on-node'); still(); } });
+    chips.forEach((c) => c.addEventListener('click', () => {
+      const L = +c.dataset.layer; layerOn[L] = !layerOn[L]; c.setAttribute('aria-pressed', String(layerOn[L]));
+      [pinned, found, hover].forEach((n) => { if (n && n.layer === L && !layerOn[L]) { if (pinned === n) pinned = null; if (found === n) found = null; if (hover === n) hover = null; } });
+      still();
+    }));
+    const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    let matches = [], mi = 0;
+    const runFind = () => {
+      const q = norm(findIn.value.trim());
+      matches = q.length < 2 ? [] : nodes.filter((n) => avail(n) && layerOn[n.layer] && (!n.learned || n.pres > 0.5) && norm(n.label).includes(q))
+        .sort((a, b) => (a.kind === 'doc') - (b.kind === 'doc'));
+      mi = 0; found = matches[0] || null; pinned = null; still();
+    };
+    findIn.addEventListener('input', runFind);
+    findIn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && matches.length) { e.preventDefault(); mi = (mi + 1) % matches.length; found = matches[mi]; still(); }
+      if (e.key === 'Escape') { findIn.value = ''; runFind(); }
+    });
+    resetB.addEventListener('click', () => {
+      yawUser = ((yawUser + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI; // shortest way back
+      yawVel = 0; yawBack = MOTION; if (!MOTION) yawUser = 0; pitchT = P0; if (!MOTION) pitch = P0;
+      layerOn.fill(true); chips.forEach((c) => c.setAttribute('aria-pressed', 'true'));
+      pinned = found = hover = null; findIn.value = ''; matches = [];
+      still();
+    });
+
+    // ---------- scenes: the feature item in view (or under the cursor) picks one; null = the whole story ----------
+    return {
+      scene(k) {
+        const s = k === null || k === undefined ? null : +k;
+        if (s === sel) return;
+        sel = s; hold = 0;
+        if (s !== null) {
+          if (MOTION) { T = SCENES[s].start; beatIx = -1; }
+          live.textContent = `Escena ${s + 1} de 4, ${SCENES[s].name}: ${SCENES[s].sum}`;
+        }
+        if (!MOTION) still();
+        else if (!raf) { root.dataset.scene = s === null ? '' : String(s); sceneShown = s; }
+      },
+    };
+  })();
+
+  // platform: the feature in the middle of the screen (or under the cursor, or focused) plays its scene in the graph
+  const feat = document.querySelector('.feat');
+  const fItems = [...feat.querySelectorAll('.feat-item')];
+  const twoCols = matchMedia('(min-width: 1021px)');
   const light = (seg) => {
-    feat.classList.toggle('has-on', seg !== null); diagram.classList.toggle('has-on', seg !== null);
+    feat.classList.toggle('has-on', seg !== null);
     fItems.forEach((i) => i.classList.toggle('on', i.dataset.seg === seg));
-    segs.forEach((g) => g.classList.toggle('on', g.dataset.seg === seg));
+    graph.scene(seg);
   };
   let hovering = false;
   // the item under the middle of the screen wins (two items can touch the middle band by a pixel)
@@ -1312,18 +1950,21 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       const d = r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
       if (d < dist) { dist = d; best = i; }
     }
-    return best;
+    return { item: best, dist };
   };
   const featIO = new IntersectionObserver(() => {
-    // react to items entering AND leaving the middle band, then trust geometry over the entry list
+    // react to items entering AND leaving the middle band, then trust geometry over the entry list.
+    // One column: the graph sits under the list, so once no item is in the middle the whole story plays.
     if (hovering) return;
-    const c = centered(); if (c) light(c.dataset.seg);
+    const { item, dist } = centered();
+    light(item && (twoCols.matches || dist === 0) ? item.dataset.seg : null);
   }, { rootMargin: '-45% 0px -45% 0px' });
   fItems.forEach((i) => featIO.observe(i));
   new IntersectionObserver(([e]) => { if (!e.isIntersecting) light(null); }).observe(document.querySelector('.platform .grid'));
-  [...fItems, ...segs].forEach((el) => {
-    el.addEventListener('pointerenter', () => { hovering = true; light(el.dataset.seg); });
+  fItems.forEach((el) => {
+    el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'mouse') return; hovering = true; light(el.dataset.seg); });
     el.addEventListener('pointerleave', () => { hovering = false; });
+    el.addEventListener('focus', () => light(el.dataset.seg));
   });
 
   // carousel: one dot per position the arrows can reach (not per card), rebuilt when the width changes

@@ -4,6 +4,11 @@ Página
 - index.html → la web de norai como empresa: explica qué hace, muestra la demo y tiene el formulario "Agenda una demo".
   Secciones (en orden): inicio, el problema, cómo funciona (4 pasos), demo, funciones, una empresa que aprende,
   casos de uso por área, seguridad y control, integraciones, precios, preguntas frecuentes, agenda una demo, pie.
+- En "Funciones" hay un grafo animado en 4 capas (empresa, áreas, personas, agentes) que cuenta una historia en bucle:
+  María le pregunta a Iker, su agente busca, pide acceso a Ventas, Magdalena aprueba y lo aprendido entra a la wiki.
+  Cada punto de la lista (01-04) pone su escena al quedar al centro de la pantalla o al pasarle el cursor.
+  Se puede girar arrastrando, tocar un nodo, ocultar capas con la leyenda, buscar un nodo y restablecer la vista.
+  Está dibujado a mano en un <canvas> (sin librerías), en el bloque "knowledge graph" del <script>.
 
 PENDIENTES (TODO): lo que tienes que llenar tú
 Las tres cosas se cambian en un solo lugar: al principio del <script> de index.html, en el bloque
@@ -38,7 +43,7 @@ Cómo verla en tu PC
 
 Revisión automática (se pegan en la consola del navegador o las corre Claude)
 - scripts\qa.js          revisa desbordes, imágenes rotas, textos encimados y el carrusel.
-- scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, diagrama, demo y formulario (enviarlo vacío).
+- scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, grafo de Funciones, demo y formulario (enviarlo vacío).
 - scripts\anim-audit.js  busca animaciones que salten de golpe y mide la fluidez (cuadros por segundo).
 - scripts\carousel-test.js  revisa que los puntitos del carrusel coincidan con lo que avanzan las flechas y el arrastre.
 

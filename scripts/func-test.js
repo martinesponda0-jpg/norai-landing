@@ -62,14 +62,16 @@
   ok(next.disabled, 'flecha derecha apagada al final');
   car.scrollLeft = 0;
 
-  // 7. diagrama: cada punto ilumina su parte
-  const items = [...document.querySelectorAll('.feat-item')];
+  // 7. grafo: cada punto, al quedar al centro de la pantalla, pone su escena en el grafo (data-scene)
+  const items = [...document.querySelectorAll('.feat-item')], graph = document.getElementById('graph');
   let lit = 0;
   for (const it of items) {
     window.scrollTo(0, scrollY + it.getBoundingClientRect().top + it.getBoundingClientRect().height / 2 - vh / 2); await wait(450);
-    if (document.querySelector(`.seg.on[data-seg="${it.dataset.seg}"]`)) lit++;
+    if (it.classList.contains('on') && graph && graph.dataset.scene === it.dataset.seg) lit++;
   }
-  ok(lit === items.length, `diagrama se ilumina con cada punto: ${lit}/${items.length}`);
+  ok(lit === items.length, `grafo pone la escena de cada punto: ${lit}/${items.length}`);
+  const cnv = graph && graph.querySelector('canvas');
+  ok(cnv && cnv.width > 0 && cnv.height > 0, `grafo dibujado (${cnv ? cnv.width + '×' + cnv.height : 'sin canvas'})`);
 
   // 8. ciclo de aprendizaje: los 3 pasos aparecen al verlo (sin números inventados)
   const log = document.getElementById('log');
