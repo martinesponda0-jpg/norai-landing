@@ -13,6 +13,7 @@ Revisión automática (se pegan en la consola del navegador o las corre Claude)
 - scripts\qa.js          revisa desbordes, imágenes rotas, textos encimados y el carrusel.
 - scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, diagrama, contadores.
 - scripts\anim-audit.js  busca animaciones que salten de golpe y mide la fluidez (cuadros por segundo).
+- scripts\carousel-test.js  revisa que los puntitos del carrusel coincidan con lo que avanzan las flechas y el arrastre.
 
 Logos
 - assets\ tiene el símbolo, la palabra "sequoia ai" (versión verde y clara), favicons e ícono de celular,
