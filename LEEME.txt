@@ -24,7 +24,8 @@ Las tres cosas se cambian en un solo lugar: al principio del <script> de index.h
    - Los campos que se mandan: nombre, email, empresa, tamano_equipo, mensaje.
 
 Otros detalles que son de ejemplo o provisionales
-- La dirección https://sequoia-landing.vercel.app (canonical y og:url) se queda así hasta que haya dominio propio.
+- La dirección oficial es https://norai-ia.vercel.app (canonical, og:url y la imagen al compartir apuntan ahí).
+  La dirección vieja https://sequoia-landing.vercel.app sigue funcionando (es el mismo proyecto de Vercel).
 - Los precios dicen "Hablemos" a propósito: no hay precios inventados. Si algún día hay precios, van en la sección Precios.
 - Los casos de uso y la demo son escenarios de ejemplo (nombres como Iker, María o Magdalena son inventados), no clientes.
 - El link "Código en GitHub" del pie apunta a github.com/Jero110/enterprise-agent.
@@ -46,8 +47,19 @@ Logos
 - El símbolo (círculo, anillo, noray y dos ondas) vive dentro de index.html como un solo <symbol id="norai">;
   la barra de arriba y el pie lo usan. La palabra "norai" es texto (Arial bold), no imagen.
 - Al entrar, el logo de la barra se dibuja solo (~1.7 s). Con ?nomotion sale completo y quieto.
-- assets\ tiene favicons, ícono de celular (apple-touch-icon) y og.jpg (la imagen al compartir el link),
-  sacados de los SVG del kit.
+- assets\ tiene favicons, ícono de celular (apple-touch-icon) y og.jpg (la imagen al compartir el link, 1200×630,
+  logo horizontal del kit sobre blanco), sacados de los SVG del kit.
+- En fondo claro: símbolo y palabra en carbón, anillo plata, onda grafito. En el pie (fondo carbón) va la variante
+  oscura del kit: blanco, anillo #858B94 y onda #C5CAD1.
+
+Colores
+- Solo la paleta del kit: carbón #171A20, grafito #69717D, plata #A7ADB6, blanco #FFFFFF y niebla #F2F4F6,
+  más tonos de esos mismos grises (bordes #E3E6EA, etc.). Están al principio del <style> (:root).
+- Nada de verde ni naranja: lo que antes era "acento" ahora es carbón, peso de letra o un fondo niebla.
+- Chips del recorrido: contorno carbón = solicitud o propuesta; relleno carbón = aprobada.
+- El texto secundario usa un grafito un poco más oscuro (#5E6672) para que se lea bien sobre niebla (contraste AA).
+  La plata es solo para detalles, nunca para texto sobre fondo claro.
 
 En línea
-- https://sequoia-landing.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/sequoia-landing)
+- https://norai-ia.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/sequoia-landing)
+- https://sequoia-landing.vercel.app  (dirección vieja, sigue funcionando)
