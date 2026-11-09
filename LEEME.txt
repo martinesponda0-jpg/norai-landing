@@ -48,22 +48,24 @@ Revisión automática (se pegan en la consola del navegador o las corre Claude)
 - scripts\carousel-test.js  revisa que los puntitos del carrusel coincidan con lo que avanzan las flechas y el arrastre.
 
 Logos
-- La marca es norai (antes Sequoia AI). Kit: Documents\norai-kit (guía de marca y 5 SVG).
-- El símbolo (círculo, anillo, noray y dos ondas) vive dentro de index.html como un solo <symbol id="norai">;
-  la barra de arriba y el pie lo usan. La palabra "norai" es texto (Arial bold), no imagen.
-- Al entrar, el logo de la barra se dibuja solo (~1.7 s). Con ?nomotion sale completo y quieto.
-- assets\ tiene favicons, ícono de celular (apple-touch-icon) y og.jpg (la imagen al compartir el link, 1200×630,
-  logo horizontal del kit sobre blanco), sacados de los SVG del kit.
-- En fondo claro: símbolo y palabra en carbón, anillo plata, onda grafito. En el pie (fondo carbón) va la variante
-  oscura del kit: blanco, anillo #858B94 y onda #C5CAD1.
+- La marca es norAi (antes Sequoia AI). Kit: Documents\norai-kit-v2 (guia-de-marca.md, USAGE.md y los SVG).
+- El logo horizontal ("n" + "orAi") vive dentro de index.html como un solo <symbol id="norai-logo">, copiado tal cual
+  de logo-horizontal-transparent-*.svg. La barra de arriba y el pie lo usan (30 px de alto; 28 px en celular, el mínimo del kit).
+- Al entrar, el logo de la barra se construye solo (~1.5 s), como la animación de arranque del kit: se traza el contorno
+  de la "n", se rellena de abajo hacia arriba, la rampa se llena de izquierda a derecha y las celdas de píxel de "orAi"
+  aparecen una por una. Al final queda exactamente el logo del kit. Con ?nomotion sale completo y quieto.
+- assets\ tiene los favicons del kit (favicon.ico, favicon.svg, favicon-16/32/48.png), el ícono de celular
+  (apple-touch-icon.png) y og.jpg (la imagen al compartir el link, 1200×630, convertida del og-image del kit).
+- En fondo claro el logo va en Tinta #2A2927; en el pie (fondo Tinta) va en Hueso #E5E2DB.
 
 Colores
-- Solo la paleta del kit: carbón #171A20, grafito #69717D, plata #A7ADB6, blanco #FFFFFF y niebla #F2F4F6,
-  más tonos de esos mismos grises (bordes #E3E6EA, etc.). Están al principio del <style> (:root).
-- Nada de verde ni naranja: lo que antes era "acento" ahora es carbón, peso de letra o un fondo niebla.
-- Chips del recorrido: contorno carbón = solicitud o propuesta; relleno carbón = aprobada.
-- El texto secundario usa un grafito un poco más oscuro (#5E6672) para que se lea bien sobre niebla (contraste AA).
-  La plata es solo para detalles, nunca para texto sobre fondo claro.
+- Paleta cálida del kit v2: Tinta #2A2927, Grafito #3A3835, Humo #6B6862, Piedra #9A968E, Hueso #E5E2DB y
+  Papel #F3F1EC, más tonos de esos mismos (fondo de la página #FBFAF7, bordes #E5E2DB, etc.).
+  Están al principio del <style> (:root). El grafo de Funciones usa los mismos colores (constantes INK, BG, etc.).
+- Nada de verde ni naranja: lo que antes era "acento" ahora es Tinta, peso de letra o un fondo Papel.
+- Chips del recorrido: contorno Tinta = solicitud o propuesta; relleno Tinta = aprobada.
+- El texto secundario usa Humo #6B6862 (contraste AA sobre Papel y sobre la página). En el pie, Piedra #9A968E.
+  Los grises claros (#A9A59D) son solo para detalles, nunca para texto sobre fondo claro.
 
 En línea
 - https://norai-ia.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/sequoia-landing)
