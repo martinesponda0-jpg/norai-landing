@@ -3,22 +3,23 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Norai — La empresa que aprende con cada tarea</title>
-<meta name="description" content="Norai es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo." />
+<title>norai — IA que conoce a tu empresa</title>
+<meta name="description" content="norai es la app de escritorio donde tus equipos trabajan con agentes de IA (Codex y Claude) que comparten lo que sabe tu empresa: wiki por capas, permisos por área, aprendizaje con aprobación y un hub que corre en tu red." />
 <script>/* Motion is part of the brand, so it plays even when the system asks for less; ?nomotion shows the still version. */
 if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.classList.add("force-motion");</script>
 <link rel="icon" href="assets/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <meta name="theme-color" content="#1e3b2f" />
-<meta property="og:title" content="Norai" />
-<meta property="og:site_name" content="Norai" />
-<meta property="og:description" content="La empresa que aprende con cada tarea: agentes que comparten el conocimiento de tu equipo, por capas y con permisos por área." />
+<meta property="og:title" content="norai — IA que conoce a tu empresa" />
+<meta property="og:site_name" content="norai" />
+<meta property="og:description" content="Empresas conectadas · IA en acción. Agentes de IA que comparten lo que sabe tu empresa, con permisos por área y aprendizaje que tus líderes aprueban." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="es_MX" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Norai — La empresa que aprende con cada tarea" />
-<meta name="twitter:description" content="La empresa que aprende con cada tarea: agentes que comparten el conocimiento de tu equipo, por capas y con permisos por área." />
+<meta name="twitter:title" content="norai — IA que conoce a tu empresa" />
+<meta name="twitter:description" content="Empresas conectadas · IA en acción. Agentes de IA que comparten lo que sabe tu empresa, con permisos por área y aprendizaje que tus líderes aprueban." />
+<meta property="og:image:alt" content="Logotipo de norai" />
 <meta name="twitter:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
 <link rel="canonical" href="https://sequoia-landing.vercel.app/" />
 <meta property="og:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
@@ -62,6 +63,8 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   }
   a { color: inherit; text-decoration: none; }
   img, svg { display: block; }
+  [hidden] { display: none !important; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .wrap { max-width: var(--max); margin: 0 auto; padding: 0 48px; }
   .mono { font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; }
   .serif { font: inherit; letter-spacing: inherit; color: inherit; } /* same letter and color as the rest of the title */
@@ -72,16 +75,6 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .035;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
-
-  /* ---------- announcement ---------- */
-  .announce {
-    background: var(--moss); color: #e9eadf; text-align: center; padding: 9px 16px;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
-  }
-  .announce .dot { display: inline-block; width: 6px; height: 6px; background: var(--ember); margin-right: 10px; vertical-align: middle; border-radius: 1px; animation: blink 2.6s ease-in-out infinite; }
-  .announce a { margin-left: 14px; transition: opacity .15s cubic-bezier(.4,0,.2,1); }
-  .announce a:hover { opacity: .7; }
-  @keyframes blink { 0%, 100% { opacity: 1; box-shadow: 0 0 7px 1px rgba(217, 140, 95, .55); } 50% { opacity: .08; box-shadow: 0 0 0 0 rgba(217, 140, 95, 0); } }
 
   /* ---------- nav ---------- */
   .nav { position: sticky; top: 0; z-index: 50; background: rgba(252, 251, 248, .82); backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid transparent; transition: border-color .4s; }
@@ -128,6 +121,8 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     border: 1px solid var(--ink); position: relative; isolation: isolate; overflow: hidden; white-space: nowrap;
     transition: background-color .35s var(--ease-hr), color .35s var(--ease-hr), border-color .35s var(--ease-hr), transform .2s var(--ease-hr);
   }
+  button.btn { cursor: pointer; }
+  .btn:disabled { opacity: .6; pointer-events: none; }
   .btn:active, .arrow:active { transform: scale(.98); }
   .btn:focus-visible, .arrow:focus-visible, .boxlink:focus-visible, .area:focus-visible { outline: 2px solid var(--redwood); outline-offset: 2px; }
   /* arrow swap: one arrow leaves to the right, the next one enters from the left */
@@ -159,7 +154,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
   /* ---------- hero ---------- */
   .hero {
-    position: relative; overflow: hidden; min-height: calc(100svh - 104px); display: flex; align-items: center;
+    position: relative; overflow: hidden; min-height: calc(100svh - 68px); display: flex; align-items: center;
     background: linear-gradient(100deg, #e4e0d4 0%, #efece4 45%, #fbfaf6 100%);
   }
   .hero .wrap { position: relative; z-index: 2; width: 100%; padding-top: 80px; padding-bottom: 96px; }
@@ -170,7 +165,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     background: repeating-linear-gradient(104deg, var(--ink) var(--gx, 8%), var(--fern) calc(var(--gx, 8%) + 60%), var(--ink) calc(var(--gx, 8%) + 120%));
     -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; cursor: default;
   }
-  .hero-sub { margin-top: 34px; max-width: 470px; font-size: 18px; line-height: 1.5; color: var(--ink-2); }
+  .hero-sub { margin-top: 34px; max-width: 520px; font-size: 18px; line-height: 1.5; color: var(--ink-2); }
   .hero-cta { margin-top: 38px; display: flex; gap: 12px; flex-wrap: wrap; }
   .hero-meta { margin-top: 56px; display: flex; gap: 28px; color: var(--muted); flex-wrap: wrap; }
   .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
@@ -283,8 +278,6 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   .diagram.has-on .seg { opacity: .3; }
   .diagram .seg { transition: opacity .45s var(--ease-hr), filter .4s; }
   .diagram.has-on .seg.on { opacity: 1; }
-  .live { width: 7px; height: 7px; border-radius: 50%; background: #3f9b62; box-shadow: 0 0 0 3px rgba(63,155,98,.18); animation: live 1.6s ease-in-out infinite; display: inline-block; }
-  @keyframes live { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
   @media (min-width: 1021px) {
     .platform .grid { align-items: start; }
     .diagram { position: sticky; top: max(104px, calc(50vh - 290px)); }
@@ -340,11 +333,14 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   .col .mono::before { content: ""; width: 6px; height: 6px; background: var(--redwood); }
   .col h4 { margin-top: 18px; font-weight: 500; font-size: 19px; letter-spacing: -0.02em; }
   .col p { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); max-width: 330px; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
-  .stat { padding: 30px 28px; border-right: 1px solid var(--line); }
-  .stat:last-child { border-right: 0; }
-  .stat b { display: block; font-weight: 400; font-size: 48px; letter-spacing: -0.045em; line-height: 1; }
-  .stat .mono { display: block; margin-top: 14px; color: var(--muted); }
+  .cols.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sec-head + .panel { margin-top: 0; }
+  .stone .sec-head .lead { color: var(--ink); }
+  /* audit trail example inside the security panel */
+  .audit { border-top: 1px solid var(--line); padding: 26px 28px 30px; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px 28px; align-items: start; }
+  .audit > .mono { color: var(--muted); padding-top: 14px; }
+  .audit .mini { box-shadow: none; border: 1px solid var(--line); background: var(--white); max-width: 640px; }
+  .audit .who { min-width: 76px; }
 
   /* ---------- learning ---------- */
   .learn .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
@@ -369,8 +365,139 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     background: linear-gradient(104deg, var(--ink) 0%, var(--ink-2) 45%, var(--fern) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .08em; }
   .closing .rings { right: calc(min(70vw, 980px) * -0.28); width: min(70vw, 980px); opacity: .9; }
 
-  footer { background: var(--ink); color: #c9ccbd; padding: 56px 0 40px; }
-  footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
+  .closing .wrap { position: relative; z-index: 2; }
+
+  /* ---------- how it works: steps on one line ---------- */
+  .steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 48px 32px; position: relative; padding-top: 38px; }
+  .steps::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--ink); opacity: .22; transform: scaleX(0); transform-origin: left; transition: transform 1.8s var(--ease) .2s; }
+  .steps.in::before { transform: scaleX(1); }
+  .steps.reveal { opacity: 1; transform: none; } /* the container only draws its line; each step reveals itself */
+  .step { position: relative; }
+  .step::before { content: ""; position: absolute; top: -42px; left: 0; width: 8px; height: 8px; background: var(--redwood); }
+  .step .mono { color: var(--fern); }
+  .step h3 { margin-top: 14px; font-weight: 400; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; }
+  .step p { margin-top: 10px; font-size: 14.5px; line-height: 1.55; color: var(--ink-2); max-width: 300px; }
+
+  /* ---------- demo player: video slot + walkthrough poster ---------- */
+  .sec.lined { border-top: 1px solid var(--line); }
+  .player { border: 1px solid var(--line); background: var(--paper); }
+  .player-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); color: var(--muted); }
+  .player-bar .lights { display: flex; gap: 6px; }
+  .player-bar .lights i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .player-bar .lights i:first-child { background: var(--redwood); }
+  .frame { margin: 20px 20px 0; aspect-ratio: 16 / 9; background: var(--ink); }
+  .frame iframe, .frame video { display: block; width: 100%; height: 100%; border: 0; background: var(--ink); }
+  .player .story { padding: 20px; }
+  .player-foot { display: flex; justify-content: space-between; align-items: center; gap: 18px 28px; flex-wrap: wrap; padding: 20px; border-top: 1px solid var(--line); }
+  .player-foot p { max-width: 560px; color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+  .visual::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ember); transform: scaleX(0); transform-origin: left; }
+  .player .card.on .visual::after { animation: prog 4.5s linear forwards; }
+  .player.paused .card.on .visual::after { animation: none; transform: scaleX(1); }
+  .player .card.on .visual::before { transform: scale(1.12); }
+  .player .card.on .mini { transform: translateY(-4px); }
+  .card .label { transition: color .35s var(--ease-hr); }
+  .player .card.on .label { color: var(--redwood); }
+  @keyframes prog { to { transform: scaleX(1); } }
+
+  /* ---------- day-to-day strip under the platform ---------- */
+  .daily { margin-top: 72px; }
+  .daily > .mono { color: var(--muted); display: block; margin-bottom: 18px; }
+  .daily .panel { margin-top: 0; background: var(--white); border: 1px solid var(--line); }
+
+  /* ---------- use cases carousel ---------- */
+  .carousel.cases { grid-auto-columns: calc((min(100%, 1184px) - 40px) / 2.6); }
+  .cases .area { aspect-ratio: auto; min-height: 420px; padding: 22px; }
+  .cases .area .bottom { max-width: 34em; }
+  .cases .area .scn { margin-top: 14px; font-size: 15px; line-height: 1.55; opacity: .92; }
+
+  /* ---------- pricing ---------- */
+  .plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); background: var(--white); }
+  .plan { padding: 34px 30px 32px; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
+  .plan:last-child { border-right: 0; }
+  .plan > .mono { color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .plan > .mono::before { content: ""; width: 6px; height: 6px; background: var(--redwood); }
+  .plan h3 { margin-top: 18px; font-weight: 400; font-size: 32px; letter-spacing: -0.035em; line-height: 1.05; }
+  .plan .for { margin-top: 10px; color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+  .plan .price { margin-top: 26px; padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 26px; letter-spacing: -0.03em; }
+  .plan .price small { display: block; margin-bottom: 6px; color: var(--muted); }
+  .plan ul { list-style: none; margin: 24px 0 32px; display: grid; gap: 12px; align-content: start; flex: 1; }
+  .plan li { display: grid; grid-template-columns: 14px 1fr; gap: 8px; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+  .plan li::before { content: ""; width: 6px; height: 6px; margin-top: 7px; border: 1px solid var(--fern); }
+  .plan .btn { align-self: flex-start; }
+  .plan.featured { background: var(--moss); color: var(--paper); border-color: var(--moss); }
+  .plan.featured > .mono, .plan.featured .price small { color: var(--sage); }
+  .plan.featured > .mono::before { background: var(--ember); }
+  .plan.featured .for, .plan.featured li { color: #dfe1d6; }
+  .plan.featured li::before { border-color: var(--ember); }
+  .plan.featured .price { border-color: rgba(244,241,234,.2); }
+  .plan.featured .btn { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  @media (hover: hover) { .plan.featured .btn:hover { background: var(--ember); border-color: var(--ember); color: var(--ink); } }
+  .plans-note { margin-top: 22px; max-width: 640px; color: var(--ink-2); font-size: 14.5px; line-height: 1.55; }
+  .pricing { background: var(--paper); border-top: 1px solid var(--line); }
+
+  /* ---------- FAQ ---------- */
+  .faq-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 64px; align-items: start; }
+  .faq-grid .lead { margin-top: 22px; }
+  .faq-grid .boxlink { margin-top: 24px; }
+  .faq { border-top: 1px solid var(--line); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 0; font-size: 18px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary:focus-visible { outline: 2px solid var(--redwood); outline-offset: 2px; }
+  .pm { position: relative; flex-shrink: 0; width: 22px; height: 22px; border: 1px solid #b9b3a5; transition: border-color .3s var(--ease-hr), transform .45s var(--ease-hr); }
+  .pm::before, .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 1px; margin: -.5px 0 0 -5px; background: currentColor; transition: transform .45s var(--ease-hr); }
+  .pm::after { transform: rotate(90deg); }
+  .faq details[open] .pm { border-color: var(--ink); transform: rotate(180deg); }
+  .faq details[open] .pm::after { transform: rotate(0deg); }
+  @media (hover: hover) { .faq summary:hover .pm { border-color: var(--ink); } }
+  .faq .ans { padding: 0 44px 26px 0; color: var(--ink-2); font-size: 15.5px; line-height: 1.6; }
+  .faq details[open] .ans { animation: ansIn .55s var(--ease) both; }
+  @keyframes ansIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- contact (inside the closing band) ---------- */
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+  .closing .contact-grid h2 { font-size: clamp(44px, 5.4vw, 84px); }
+  .contact-grid .lead { margin-top: 26px; font-size: 17px; max-width: 460px; }
+  .next-steps { list-style: none; margin-top: 34px; display: grid; gap: 0; max-width: 460px; border-top: 1px solid #cfc9bb; }
+  .next-steps li { display: grid; grid-template-columns: 34px 1fr; padding: 14px 0; border-bottom: 1px solid #cfc9bb; font-size: 15px; color: var(--ink-2); }
+  .next-steps li .mono { color: var(--redwood); padding-top: 3px; }
+  .direct { margin-top: 26px; color: var(--muted); }
+  .direct a { color: var(--ink); border-bottom: 1px solid currentColor; text-transform: none; letter-spacing: .02em; font-size: 13px; }
+  .form { background: var(--white); border: 1px solid var(--line); padding: 32px; box-shadow: 0 40px 80px -50px rgba(13,17,14,.45); }
+  .form-title { font-weight: 400; font-size: 26px; letter-spacing: -0.025em; margin-bottom: 6px; }
+  .form-sub { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+  .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 16px; }
+  .field { display: grid; gap: 8px; margin-bottom: 18px; align-content: start; }
+  .field label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); }
+  .field label small { color: var(--muted); font-size: inherit; }
+  .field input, .field select, .field textarea {
+    width: 100%; font: 16px/1.4 var(--font-body); color: var(--ink); background: var(--white); border: 1px solid #cfc9bb; border-radius: 0;
+    height: 48px; padding: 0 14px; transition: border-color .25s var(--ease-hr), box-shadow .25s var(--ease-hr); -webkit-appearance: none; appearance: none;
+  }
+  .field select { padding-right: 40px; cursor: pointer; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'><path d='M2 3.5 5 6.5 8 3.5' fill='none' stroke='%232a2f2b' stroke-width='1.2'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; }
+  .field textarea { height: auto; min-height: 112px; padding: 12px 14px; resize: vertical; }
+  .field input::placeholder, .field textarea::placeholder { color: #9a9b92; }
+  @media (hover: hover) { .field input:hover, .field select:hover, .field textarea:hover { border-color: #a9a395; } }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(30,59,47,.14); }
+  .field [aria-invalid="true"] { border-color: var(--redwood); }
+  .field [aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(180,83,42,.16); }
+  .err { font-size: 13px; line-height: 1.4; color: var(--redwood); }
+  .err:empty { display: none; }
+  .form .btn[type="submit"] { width: 100%; justify-content: space-between; height: 52px; margin-top: 6px; }
+  .form-status { margin-top: 14px; font-size: 14px; line-height: 1.5; color: var(--redwood); }
+  .form-status:empty { display: none; }
+  .form-fine { margin-top: 14px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .form-fine a, .thanks a { color: var(--ink); border-bottom: 1px solid currentColor; }
+  .thanks { padding: 8px 0; outline: none; }
+  .thanks .mark { width: 44px; height: 44px; border: 1px solid var(--fern); color: var(--fern); display: grid; place-items: center; }
+  .thanks .mark svg { width: 18px; height: 18px; }
+  .thanks h3 { margin-top: 22px; font-weight: 400; font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; }
+  .thanks p { margin-top: 12px; color: var(--ink-2); font-size: 15.5px; line-height: 1.55; }
+  .thanks .btn { margin-top: 26px; }
+
+  footer { background: var(--ink); color: #c9ccbd; padding: 64px 0 40px; }
+  footer .wrap { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
+  footer .tagline { margin-top: 16px; color: #e2e4d8; }
   footer .brand { color: #fff; --ring: #858b94; --wave: #c5cad1; } /* kit dark-background variant */
   footer p { margin-top: 14px; font-size: 14px; line-height: 1.55; max-width: 340px; color: #a9ad9f; }
   footer h5 { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #7f8577; font-weight: 400; margin-bottom: 14px; }
@@ -382,38 +509,67 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   @media (max-width: 1020px) {
     .wrap { padding: 0 28px; }
     .story { grid-template-columns: repeat(2, 1fr); }
-    .platform .grid, .learn .grid { grid-template-columns: 1fr; }
+    .platform .grid, .learn .grid, .faq-grid, .contact-grid { grid-template-columns: 1fr; }
+    .faq-grid, .contact-grid { gap: 44px; }
     .carousel { --gut: 28px; grid-auto-columns: calc((100vw - 56px - 20px) / 2.2); }
-    .cols, .stats { grid-template-columns: 1fr 1fr; }
+    .carousel.cases { grid-auto-columns: calc((100vw - 56px - 20px) / 1.6); }
+    .cols { grid-template-columns: 1fr 1fr; }
     .col:nth-child(2) { border-right: 0; }
     .col:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--line); }
-    .stat:nth-child(2) { border-right: 0; }
-    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .cols.four .col:nth-child(3) { grid-column: auto; border-right: 1px solid var(--line); }
+    .cols.four .col:nth-child(4) { border-top: 1px solid var(--line); }
+    .steps { grid-template-columns: 1fr 1fr; padding-top: 0; }
+    .steps::before { display: none; }
+    .step { border-top: 1px solid #cfc9bb; padding-top: 30px; }
+    .step::before { top: -4px; }
+    .footer-brand { grid-column: 1 / -1; }
+    footer .wrap { grid-template-columns: 1fr 1fr 1fr; }
+    .audit { grid-template-columns: 1fr; }
+    .audit > .mono { padding-top: 0; }
     .rings { right: -30vw; width: 110vw; opacity: .55; }
     .hero .rings .chip, .hero .rings .sc { display: none; }
   }
-  @media (max-width: 900px) { .nav-links a.link, .nav-links .dd { display: none; } }
+  @media (max-width: 900px) {
+    .nav-links a.link, .nav-links .dd { display: none; }
+    .plans { grid-template-columns: 1fr; }
+    .plan { border-right: 0; border-bottom: 1px solid var(--line); }
+    .plan:last-child { border-bottom: 0; }
+  }
   @media (max-width: 720px) {
     .wrap { padding: 0 16px; }
     .nav-links a.link { display: none; }
     .sec { padding: 88px 0; }
     .story { grid-template-columns: 1fr; }
+    .player .story, .player-foot { padding: 14px; }
+    .frame { margin: 14px 14px 0; }
+    .player-foot .btn { width: 100%; justify-content: space-between; }
     .carousel { --gut: 16px; grid-auto-columns: 78vw; }
-    .cols, .stats { grid-template-columns: 1fr; }
-    .col, .stat { border-right: 0 !important; border-bottom: 1px solid var(--line); }
-    .col:nth-child(3) { border-top: 0; }
-    footer .wrap { grid-template-columns: 1fr; }
+    .carousel.cases { grid-auto-columns: 84vw; }
+    .cases .area { min-height: 400px; padding: 18px; }
+    .cols, .cols.four { grid-template-columns: 1fr; }
+    .col { border-right: 0 !important; border-bottom: 1px solid var(--line); }
+    .col:nth-child(3), .cols.four .col:nth-child(3), .cols.four .col:nth-child(4) { border-top: 0; }
+    .col:last-child { border-bottom: 0; }
+    .steps { grid-template-columns: 1fr; gap: 36px; }
+    .audit { padding: 22px 20px 24px; }
+    .plan { padding: 28px 22px; }
+    .faq summary { font-size: 16.5px; padding: 20px 0; }
+    .faq .ans { padding-right: 0; }
+    .form { padding: 24px 18px; }
+    .row2 { grid-template-columns: 1fr; }
+    footer .wrap { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
     .hero-sub { font-size: 16.5px; }
     .rings { top: 22%; right: -45vw; width: 130vw; opacity: .4; }
-    .announce .hide-sm { display: none; }
+    .closing { padding: 110px 0 96px; }
   }
+  @media (max-width: 420px) { .nav-cta .hide-xs { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     html:not(.force-motion) *, html:not(.force-motion) *::before, html:not(.force-motion) *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     html:not(.force-motion) .reveal, html:not(.force-motion) .load { opacity: 1; transform: none; }
     html:not(.force-motion) .gr { animation: none !important; opacity: 1; stroke-dashoffset: 0; }
     html:not(.force-motion) .ring.dash { opacity: 1; }
     html:not(.force-motion) .track { animation: none !important; }
-    html:not(.force-motion) .announce .dot { animation-duration: 2.6s !important; animation-iteration-count: infinite !important; } /* a soft fade, no movement: keep it */
+    html:not(.force-motion) .steps::before { transform: scaleX(1); }
     html:not(.force-motion) .scene, html:not(.force-motion) .sp, html:not(.force-motion) .sn, html:not(.force-motion) .sc { animation: none !important; }
     html:not(.force-motion) .scene { opacity: 0; }
     html:not(.force-motion) .scene[style*="--s:0"] { opacity: 1; }
@@ -441,26 +597,22 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   <symbol id="diag" viewBox="0 0 10 10"><path d="M2 8 8 2M3.4 2H8v4.6" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
 </svg>
 
-<div class="announce">
-  <span class="dot"></span>Norai se presenta en el Kavak × OpenAI × Primero AI RSI Hackathon<span class="hide-sm"> — 9 nov 2026</span>
-  <a href="#demo">Cómo funciona →</a>
-</div>
-
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
-    <nav class="nav-links">
+    <a class="brand" href="#top" aria-label="norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
+    <nav class="nav-links" aria-label="Principal">
       <div class="dd" id="dd">
         <button class="link dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Producto <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></button>
         <div class="dd-panel" role="menu">
-          <a role="menuitem" href="#demo"><span class="mono">01 · Cómo funciona</span><span>De la junta al feature, paso a paso</span></a>
-          <a role="menuitem" href="#plataforma"><span class="mono">02 · Plataforma</span><span>Conocimiento por capas y permisos</span></a>
-          <a role="menuitem" href="#aprende"><span class="mono">03 · Auto-aprendizaje</span><span>La wiki que se mejora sola</span></a>
+          <a role="menuitem" href="#como-funciona"><span class="mono">01 · Cómo funciona</span><span>De lo que sabe tu equipo a lo que sabe tu empresa</span></a>
+          <a role="menuitem" href="#demo"><span class="mono">02 · Demo</span><span>Mira norai en acción</span></a>
+          <a role="menuitem" href="#funciones"><span class="mono">03 · Funciones</span><span>Wiki por capas, permisos, equipo y Tu día</span></a>
+          <a role="menuitem" href="#seguridad"><span class="mono">04 · Seguridad</span><span>Permisos, aprobaciones y registro</span></a>
         </div>
       </div>
-      <a class="link" href="#areas">Áreas</a>
-      <a class="link" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+      <a class="link" href="#casos">Casos de uso</a>
+      <a class="link" href="#precios">Precios</a>
+      <a class="btn nav-cta" href="#contacto"><span><span class="hide-xs">Agenda una </span>demo</span><span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
     </nav>
   </div>
 </header>
@@ -480,7 +632,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
         <path class="ring" pathLength="1" d="M500 372 C574 370 630 428 628 502 C626 574 572 630 498 628 C426 626 370 574 372 500 C374 428 428 374 500 372 Z" style="--d:.95s"/>
         <path class="ring strong" pathLength="1" d="M500 430 C540 430 570 462 570 500 C570 540 540 570 500 570 C460 570 430 540 430 500 C430 462 462 430 500 430 Z" style="--d:1.15s"/>
 
-        <!-- three scenes loop every 18s: lines draw, chips appear, everything fades (HappyRobot A/B/C rhythm) -->
+        <!-- three scenes loop every 18s: lines draw, chips appear, everything fades -->
         <g class="scene" style="--s:0">
           <path class="sp" pathLength="1" d="M500 500 L560 446 L652 336 L760 196"/>
           <circle class="sn" cx="560" cy="446" r="5.5" style="--n:0"/>
@@ -489,7 +641,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
           <circle class="spulse" cx="760" cy="196" r="12"/>
           <g transform="translate(574 436)"><g class="sc" style="--c:0"><rect width="200" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> PERSONA · IKER</text></g></g>
           <g transform="translate(664 352)"><g class="sc" style="--c:1"><rect width="190" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> ÁREA · VENTAS</text></g></g>
-          <g transform="translate(532 150)"><g class="sc" style="--c:2"><rect width="214" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> EMPRESA · KAVAK</text></g></g>
+          <g transform="translate(532 150)"><g class="sc" style="--c:2"><rect width="226" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> EMPRESA · GENERAL</text></g></g>
         </g>
         <g class="scene" style="--s:1">
           <path class="sp" pathLength="1" d="M500 500 L548 580 L612 690 L668 820"/>
@@ -506,9 +658,9 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
           <circle class="sn" cx="700" cy="520" r="6.5" style="--n:1"/>
           <circle class="sn" cx="800" cy="480" r="8" style="--n:2"/>
           <circle class="spulse" cx="800" cy="480" r="12"/>
-          <g transform="translate(566 536)"><g class="sc" style="--c:0"><rect width="238" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> PROMO ANTERIOR · 5%</text></g></g>
-          <g transform="translate(600 590)"><g class="sc" style="--c:1"><rect width="222" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> SKILL · COMPARTIDA</text></g></g>
-          <g transform="translate(640 644)"><g class="sc" style="--c:2"><rect width="196" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> WIKI · V13</text></g></g>
+          <g transform="translate(566 536)"><g class="sc" style="--c:0"><rect width="238" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> PROPUESTA · AGENTE</text></g></g>
+          <g transform="translate(600 590)"><g class="sc" style="--c:1"><rect width="222" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> APROBADA · LÍDER</text></g></g>
+          <g transform="translate(640 644)"><g class="sc" style="--c:2"><rect width="186" height="34" /><text x="12" y="22"><tspan class="k">■</tspan> WIKI · AL DÍA</text></g></g>
         </g>
         <circle class="node node-core" cx="500" cy="500" r="9" style="--d:1.35s"/>
         <circle class="pulse" cx="500" cy="500" r="16" style="--d:1.8s"/>
@@ -516,131 +668,147 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     </div>
 
     <div class="wrap">
-      <div class="eyebrow mono load" style="animation-delay:.05s">Agentes que trabajan en equipo</div>
-      <h1 class="hero-title load" style="animation-delay:.15s">La empresa que <span class="serif">aprende</span> con cada tarea.</h1>
-      <p class="hero-sub load" style="animation-delay:.35s">Norai es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo.</p>
+      <div class="eyebrow mono load" style="animation-delay:.05s">Empresas conectadas · IA en acción</div>
+      <h1 class="hero-title load" style="animation-delay:.15s">IA que <span class="serif">conoce</span><br /> a tu empresa.</h1>
+      <p class="hero-sub load" style="animation-delay:.35s">norai es la app donde tus equipos trabajan con agentes de IA (Codex y Claude) que comparten lo que sabe tu empresa: citan sus fuentes, respetan los permisos de cada área y aprenden solo lo que tus líderes aprueban.</p>
       <div class="hero-cta load" style="animation-delay:.5s">
-        <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
-        <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+        <a class="btn" href="#contacto">Agenda una demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn ghost" href="#como-funciona">Ver cómo funciona <span class="arr"><span class="rot" style="transform:rotate(90deg)"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
       </div>
       <div class="hero-meta mono load" style="animation-delay:.7s">
         <span><i></i>Wiki viva por capas</span>
         <span><i></i>Permisos por área</span>
-        <span><i></i>Funciona con Codex y Claude</span>
+        <span><i></i>Corre en tu red</span>
       </div>
     </div>
   </section>
 
-  <!-- ================= PROVIDERS ================= -->
-  <section class="wall">
-    <div class="wrap wall-title mono reveal">
-      <span>Funciona con los agentes que tu equipo ya usa</span>
-      <span>Trae tu propia suscripción</span>
-    </div>
-    <div class="marquee reveal" style="--d:.1s">
-      <div class="track">
-        <div class="cell"><div>Codex<small>OpenAI</small></div></div>
-        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
-        <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
-        <div class="cell"><div>OpenCode<small>Open source</small></div></div>
-        <div class="cell"><div>Grok<small>xAI</small></div></div>
-        <div class="cell"><div>Antigravity<small>Google</small></div></div>
-        <div class="cell"><div>Kiro<small>AWS</small></div></div>
-        <div class="cell"><div>Codex<small>OpenAI</small></div></div>
-        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
-        <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
-        <div class="cell"><div>OpenCode<small>Open source</small></div></div>
-        <div class="cell"><div>Grok<small>xAI</small></div></div>
-        <div class="cell"><div>Antigravity<small>Google</small></div></div>
-        <div class="cell"><div>Kiro<small>AWS</small></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= STORY ================= -->
-  <section class="sec" id="demo">
+  <!-- ================= PROBLEM ================= -->
+  <section class="sec stone" id="problema">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="reveal">De la junta al feature, <span class="serif">sin perder nada.</span></h2>
-        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña nueva en Kavak. Nadie recuerda de cuánto fue el descuento la vez pasada. Así lo resuelve un equipo en Norai.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
+        <h2 class="reveal">Tu empresa ya sabe mucho. <span class="serif">Tu IA, no.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Lo que tu equipo aprende se queda regado. Y los asistentes de IA empiezan de cero cada vez que alguien abre uno.</p>
       </div>
-
-      <div class="story">
-        <article class="card reveal">
-          <div class="visual">
-            <span class="num mono">01</span>
-            <div class="mini">
-              <div class="row"><span class="who">MARÍA</span><span>"Esto ya se hizo… ¿de cuánto fue la promo?"</span></div>
-              <div class="row"><span class="who">FCO.</span><span>"Mándenme el request por Norai."</span></div>
-              <div class="row"><span class="who">TAREA</span><span><span class="pill hot">IKER</span>Buscar % de la promo</span></div>
-            </div>
-          </div>
-          <span class="label mono">Junta · transcripción</span>
-          <h3>La junta se vuelve tareas sola.</h3>
-          <p>El transcript se procesa y el tablero de cada quien se actualiza con lo que le toca.</p>
-        </article>
-
-        <article class="card reveal" style="--d:.1s">
-          <div class="visual" style="background:#2c4a3c">
-            <span class="num mono">02</span>
-            <div class="mini">
-              <div class="row"><b>Nodo encontrado</b></div>
-              <div class="row"><span>Pertenece al área</span><span class="pill">VENTAS</span></div>
-              <div class="row"><span class="pill hot">SOLICITUD</span><span class="pill ok">APROBADA · MAGDALENA</span></div>
-            </div>
-          </div>
-          <span class="label mono">Permisos por área</span>
-          <h3>Acceso cuando hace falta, no antes.</h3>
-          <p>El agente encuentra el dato, pero es de Ventas. Iker pide acceso y la jefa de área lo aprueba.</p>
-        </article>
-
-        <article class="card reveal" style="--d:.2s">
-          <div class="visual" style="background:#3b3a2e">
-            <span class="num mono">03</span>
-            <div class="mini">
-              <div class="big">5%</div>
-              <div class="row" style="margin-top:8px"><span>Compartido con María</span></div>
-              <div class="row"><span class="pill ok">RESULTADO + PROCESO</span><span class="pill">SIN CHAT</span></div>
-            </div>
-          </div>
-          <span class="label mono">Contexto compartido</span>
-          <h3>Resultados, no conversaciones.</h3>
-          <p>María ve cómo se encontró el dato, sin leer el chat de Iker con su agente. Cero micromanagement.</p>
-        </article>
-
-        <article class="card reveal" style="--d:.3s">
-          <div class="visual" style="background:#5a2f1f">
-            <span class="num mono">04</span>
-            <div class="mini">
-              <div class="row"><span class="pill ok">+ ÁREA</span><span>Proceso documentado</span></div>
-              <div class="row"><span class="pill ok">+ EMPRESA</span><span>Campaña documentada para todos</span></div>
-              <div class="row"><span class="pill hot">− PODA</span><span>Campaña anterior archivada</span></div>
-            </div>
-          </div>
-          <span class="label mono">La empresa aprende</span>
-          <h3>Cada feature deja la wiki más sabia.</h3>
-          <p>Al cerrar, el contexto del área y de la empresa se actualiza, se prueba y se poda solo.</p>
-        </article>
+      <div class="panel reveal" style="--d:.15s">
+        <div class="cols">
+          <div class="col"><span class="mono">Chats y juntas</span><h4>Se queda en conversaciones</h4><p>Decisiones, cifras y acuerdos viven en hilos y juntas que nadie vuelve a encontrar cuando hacen falta.</p></div>
+          <div class="col"><span class="mono">Personas</span><h4>Se va con quien lo sabía</h4><p>Cuando alguien cambia de área o deja la empresa, se lleva lo que sabía. Quien llega empieza de cero.</p></div>
+          <div class="col"><span class="mono">Herramientas de IA</span><h4>La IA no conoce a tu empresa</h4><p>Cada quien le explica todo a su asistente, una y otra vez. Y nadie sabe de dónde sacó lo que contesta.</p></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= PLATFORM ================= -->
-  <section class="sec platform" id="plataforma">
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="sec" id="como-funciona">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal">Así funciona norai, <span class="serif">en cuatro pasos.</span></h2>
+        <div class="reveal" style="--d:.1s"><p class="lead">Tu equipo sigue trabajando como siempre, ahora con agentes que saben lo que sabe la empresa y que la hacen aprender con cada tarea.</p><a class="boxlink" style="margin-top:18px" href="#demo"><span class="ul">Ver la demo</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
+      </div>
+      <ol class="steps reveal" style="list-style:none">
+        <li class="step reveal"><span class="mono">01 · Instala</span><h3>El hub corre en tu red</h3><p>El hub de norai vive en un equipo o servidor de tu empresa. Cada persona usa la app de escritorio en Windows, macOS o Linux.</p></li>
+        <li class="step reveal" style="--d:.12s"><span class="mono">02 · Ordena</span><h3>Una wiki viva, por capas</h3><p>Lo que sabe la empresa se ordena en tres capas: empresa, área y persona. Cada área decide quién ve qué.</p></li>
+        <li class="step reveal" style="--d:.24s"><span class="mono">03 · Trabaja</span><h3>Agentes que citan sus fuentes</h3><p>Tu equipo trabaja con Codex o Claude. Los agentes leen la parte de la wiki que su dueño puede ver y dicen de dónde sacan cada dato.</p></li>
+        <li class="step reveal" style="--d:.36s"><span class="mono">04 · Aprende</span><h3>Lo nuevo entra con aprobación</h3><p>Al trabajar, los agentes proponen lo que aprendieron. Un líder de área lo aprueba y queda registrado quién propuso y quién aprobó.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= DEMO ================= -->
+  <section class="sec lined" id="demo" aria-labelledby="demo-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal" id="demo-title">Mira norai <span class="serif">en acción.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Escenario de ejemplo: preparan una campaña nueva y nadie recuerda de cuánto fue el descuento la vez pasada. Así lo resuelve un equipo en norai.</p>
+      </div>
+
+      <div class="player reveal" id="player" style="--d:.1s">
+        <div class="player-bar mono"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>norai · recorrido en 4 pasos</span></div>
+        <!-- the video goes here: set DEMO_VIDEO_URL at the top of the script (see LEEME.txt) -->
+        <div class="frame" id="demo-frame" hidden></div>
+        <div class="story" id="walkthrough">
+          <article class="card reveal">
+            <div class="visual">
+              <span class="num mono">01</span>
+              <div class="mini">
+                <div class="row"><span class="who">MARÍA</span><span>"Esto ya se hizo… ¿de cuánto fue la promo?"</span></div>
+                <div class="row"><span class="who">FCO.</span><span>"Lo dejamos en el tablero de Producto."</span></div>
+                <div class="row"><span class="who">TAREA</span><span><span class="pill hot">IKER</span>Buscar % de la promo</span></div>
+              </div>
+            </div>
+            <span class="label mono">Junta · tablero del área</span>
+            <h3>La duda de la junta queda como tarea.</h3>
+            <p>Iker toma la tarea en el tablero de su área y se la pasa a su agente.</p>
+          </article>
+
+          <article class="card reveal" style="--d:.1s">
+            <div class="visual" style="background:#2c4a3c">
+              <span class="num mono">02</span>
+              <div class="mini">
+                <div class="row"><b>Dato encontrado</b></div>
+                <div class="row"><span>Pertenece al área</span><span class="pill">VENTAS</span></div>
+                <div class="row"><span class="pill hot">SOLICITUD</span><span class="pill ok">APROBADA · MAGDALENA</span></div>
+              </div>
+            </div>
+            <span class="label mono">Permisos por área</span>
+            <h3>Acceso cuando hace falta, no antes.</h3>
+            <p>El agente sabe dónde está el dato, pero es de Ventas. Iker pide acceso y la líder del área lo aprueba.</p>
+          </article>
+
+          <article class="card reveal" style="--d:.2s">
+            <div class="visual" style="background:#3b3a2e">
+              <span class="num mono">03</span>
+              <div class="mini">
+                <div class="big">5%</div>
+                <div class="row" style="margin-top:8px"><span>Compartido con María</span></div>
+                <div class="row"><span class="pill ok">SOLO RESUMEN</span><span class="pill">SIN CHAT</span></div>
+              </div>
+            </div>
+            <span class="label mono">Vista de equipo</span>
+            <h3>Resultados, no conversaciones.</h3>
+            <p>Iker comparte el resultado como resumen. María ve qué se encontró y de dónde, sin leer su chat.</p>
+          </article>
+
+          <article class="card reveal" style="--d:.3s">
+            <div class="visual" style="background:#5a2f1f">
+              <span class="num mono">04</span>
+              <div class="mini">
+                <div class="row"><span class="pill hot">PROPUESTA</span><span>Promo anterior: 5%</span></div>
+                <div class="row"><span class="pill ok">APROBADA</span><span>Magdalena · Ventas</span></div>
+                <div class="row"><span class="pill">REGISTRO</span><span>Quién propuso y quién aprobó</span></div>
+              </div>
+            </div>
+            <span class="label mono">La empresa aprende</span>
+            <h3>La próxima vez, ya lo sabe.</h3>
+            <p>El agente propone el dato para la wiki de Ventas. Al aprobarse, todos los agentes con acceso lo encuentran.</p>
+          </article>
+        </div>
+        <div class="player-foot">
+          <p>¿Lo quieres ver con un caso de tu empresa? Te lo mostramos en vivo y resolvemos tus dudas en la misma llamada.</p>
+          <a class="btn" href="#contacto">Agenda una demo en vivo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="sec platform" id="funciones">
     <div class="wrap grid">
       <div>
-        <h2 class="reveal">Una plataforma para trabajar con tu <span class="serif">equipo de agentes.</span></h2>
-        <a class="btn reveal" style="margin-top:30px; --d:.1s" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver el código <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+        <h2 class="reveal">Todo para trabajar con tu <span class="serif">equipo de agentes.</span></h2>
+        <a class="boxlink reveal" style="margin-top:30px; --d:.1s" href="#seguridad"><span class="ul">Ver seguridad y control</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <div class="feat">
-          <div class="feat-item reveal" data-seg="0"><span class="mono">01</span><h4>El conocimiento vive por capas</h4><p>Empresa, área y persona. Cada agente consulta solo lo que su dueño puede ver, cuando lo necesita.</p></div>
-          <div class="feat-item reveal" data-seg="1" style="--d:.08s"><span class="mono">02</span><h4>Permisos por área</h4><p>Cada área decide quién ve qué. Si tu agente necesita un dato de otra área, pides acceso y la jefa del área lo aprueba.</p></div>
-          <div class="feat-item reveal" data-seg="2" style="--d:.16s"><span class="mono">03</span><h4>Tu equipo, en vivo <i class="live" aria-hidden="true"></i></h4><p>Ve los proyectos y agentes activos de tus compañeros. Actuar en el de otro requiere permiso explícito y revocable.</p></div>
-          <div class="feat-item reveal" data-seg="3" style="--d:.24s"><span class="mono">04</span><h4>El sistema se mejora a sí mismo</h4><p>Lo que pasa en juntas, chats y tareas se convierte en propuestas que actualizan la wiki, con pruebas antes de entrar.</p></div>
+          <div class="feat-item reveal" data-seg="0"><span class="mono">01</span><h4>Conocimiento por capas</h4><p>Una wiki viva en tres capas: empresa, área y persona. Los agentes la consultan cuando la necesitan y citan la fuente de cada dato.</p></div>
+          <div class="feat-item reveal" data-seg="1" style="--d:.08s"><span class="mono">02</span><h4>Permisos por área</h4><p>Se aplican en el servidor, también a los agentes. Si necesitas algo de otra área, pides acceso y el líder de esa área lo aprueba.</p></div>
+          <div class="feat-item reveal" data-seg="2" style="--d:.16s"><span class="mono">03</span><h4>Vista de equipo</h4><p>Comparte conversaciones en modo lectura o solo como resumen: tu jefe ve qué se hizo, no el chat completo. Entre compañeros se mandan mensajes y se piden skills.</p></div>
+          <div class="feat-item reveal" data-seg="3" style="--d:.24s"><span class="mono">04</span><h4>Aprende con aprobación</h4><p>Los agentes proponen conocimiento nuevo a partir de su trabajo, por ejemplo de una junta. Un líder de área o un admin lo aprueba antes de que entre.</p></div>
         </div>
       </div>
 
-      <div class="diagram reveal" style="--d:.15s" aria-label="Diagrama: el conocimiento de Norai por capas">
-        <svg viewBox="0 0 640 600">
+      <div class="diagram reveal" style="--d:.15s" role="img" aria-label="Diagrama: el conocimiento de norai por capas, con contexto, permisos, equipo y aprendizaje">
+        <svg viewBox="0 0 640 600" aria-hidden="true">
           <!-- outer ring segments (empresa) -->
           <g transform="translate(320 300)">
             <path class="seg" data-seg="0" d="M0 -270 A270 270 0 0 1 270 0 L190 0 A190 190 0 0 0 0 -190 Z" fill="#1e3b2f"/>
@@ -649,7 +817,6 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
             <path class="seg" data-seg="3" d="M-270 0 A270 270 0 0 1 0 -270 L0 -190 A190 190 0 0 0 -190 0 Z" fill="#ebe6da" stroke="#cfc9bb"/>
             <!-- middle ring (área) -->
             <circle r="190" fill="none" stroke="#fcfbf8" stroke-width="2"/>
-            <circle r="186" fill="none" stroke="#fcfbf8" stroke-opacity=".0"/>
             <circle r="128" fill="#f4f1ea" stroke="#cfc9bb"/>
             <circle r="128" fill="none" stroke="#b4532a" stroke-dasharray="3 6" stroke-opacity=".7"/>
             <!-- core (persona + agentes) -->
@@ -659,18 +826,18 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
             <line class="tick" x1="-270" y1="0" x2="270" y2="0"/>
 
             <text class="dlabel" x="0" y="-20" text-anchor="middle" fill="#0d110e">Agentes</text>
-            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#6d6f66">Codex · Claude · …</text>
+            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#6d6f66">Codex · Claude</text>
             <text class="dlabel" x="0" y="-92" text-anchor="middle" fill="#2a2f2b" font-size="11">Área</text>
             <text class="dlabel" x="0" y="106" text-anchor="middle" fill="#2a2f2b" font-size="11">Persona</text>
 
             <text class="dlabel" x="163" y="-166" text-anchor="middle" fill="#f4f1ea">Contexto</text>
-            <text class="dsmall" x="163" y="-147" text-anchor="middle" fill="#c9ccbd">Wiki · Memoria</text>
+            <text class="dsmall" x="163" y="-147" text-anchor="middle" fill="#c9ccbd">Wiki · Fuentes</text>
             <text class="dlabel" x="163" y="160" text-anchor="middle" fill="#f4f1ea">Permisos</text>
             <text class="dsmall" x="163" y="179" text-anchor="middle" fill="#e2e4d8">Por área</text>
             <text class="dlabel" x="-163" y="160" text-anchor="middle" fill="#0d110e">Equipo</text>
-            <text class="dsmall" x="-163" y="179" text-anchor="middle" fill="#2a2f2b">En vivo</text>
+            <text class="dsmall" x="-163" y="179" text-anchor="middle" fill="#2a2f2b">Compartido</text>
             <text class="dlabel" x="-163" y="-166" text-anchor="middle" fill="#0d110e">Aprendizaje</text>
-            <text class="dsmall" x="-163" y="-147" text-anchor="middle" fill="#6d6f66">Propuestas</text>
+            <text class="dsmall" x="-163" y="-147" text-anchor="middle" fill="#6d6f66">Con aprobación</text>
           </g>
           <!-- callout -->
           <g transform="translate(470 22)">
@@ -681,46 +848,14 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
         </svg>
       </div>
     </div>
-  </section>
 
-  <!-- ================= AREAS ================= -->
-  <section class="sec" id="areas">
-    <div class="wrap">
-      <div class="areas-top">
-        <h2 class="reveal">Para cada área <span class="serif">de la empresa.</span></h2>
-        <p class="lead reveal" style="--d:.1s">Cada área tiene su propia capa de conocimiento. Tus agentes trabajan con lo que tú puedes ver, y piden el resto.</p>
-      </div>
-      <div class="carousel reveal" id="carousel" style="--d:.15s">
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#1e3b2f,#0d110e)"></div><svg class="glyph" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="30" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="14" fill="none" stroke="#d98c5f"/></svg><div class="top mono"><span>01</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Customer Experience</h3><p>Diseño de features · Promociones</p></div></a>
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#b4532a,#5a2f1f)"></div><svg class="glyph" viewBox="0 0 100 100"><path d="M10 80 L40 50 L60 64 L90 24" fill="none" stroke="#f4f1ea" stroke-opacity=".6"/><circle cx="90" cy="24" r="4" fill="#f4f1ea"/></svg><div class="top mono"><span>02</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Ventas</h3><p>Campañas · Historial de precios</p></div></a>
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#4f6b57,#1e3b2f)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="#f4f1ea" fill-opacity=".45"><rect x="12" y="12" width="20" height="20"/><rect x="40" y="12" width="20" height="20" fill-opacity=".2"/><rect x="68" y="12" width="20" height="20"/><rect x="12" y="40" width="20" height="20" fill-opacity=".2"/><rect x="40" y="40" width="20" height="20"/><rect x="68" y="40" width="20" height="20" fill-opacity=".2"/></g></svg><div class="top mono"><span>03</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Data</h3><p>Tablas · Fuentes de verdad</p></div></a>
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#2a2f2b,#0d110e)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="none" stroke="#d98c5f"><path d="M50 10 L88 32 L88 72 L50 92 L12 72 L12 32 Z" stroke-opacity=".7"/><path d="M50 10 L50 92 M12 32 L88 72 M88 32 L12 72" stroke-opacity=".3"/></g></svg><div class="top mono"><span>04</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>AI Engineering</h3><p>Skills · Buenas prácticas de RAG</p></div></a>
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#a9ae9a,#5f6656)"></div><svg class="glyph" viewBox="0 0 100 100"><g fill="none" stroke="#0d110e" stroke-opacity=".45"><circle cx="35" cy="50" r="25"/><circle cx="65" cy="50" r="25"/></g></svg><div class="top mono" style="color:#0d110e"><span>05</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom" style="color:#0d110e"><h3>Negocio</h3><p>Alianzas · Decisiones</p></div></a>
-        <a class="area" href="#demo"><div class="bg" style="background:linear-gradient(160deg,#3b3a2e,#141611)"></div><svg class="glyph" viewBox="0 0 100 100"><g stroke="#f4f1ea" stroke-opacity=".5"><line x1="20" y1="85" x2="20" y2="55"/><line x1="40" y1="85" x2="40" y2="35"/><line x1="60" y1="85" x2="60" y2="45"/><line x1="80" y1="85" x2="80" y2="18" stroke="#d98c5f" stroke-opacity="1"/></g></svg><div class="top mono"><span>06</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></div><div class="bottom"><h3>Métricas</h3><p>KPIs · Resultados por equipo</p></div></a>
-      </div>
-      <div class="controls">
-        <div class="dots" id="dots"></div>
-        <button class="arrow left" id="prev" aria-label="Anterior"><svg class="a1"><use href="#arr-l"/></svg><svg class="a2"><use href="#arr-l"/></svg></button>
-        <button class="arrow" id="next" aria-label="Siguiente"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= STONE ================= -->
-  <section class="sec stone">
-    <div class="wrap">
-      <h2 class="reveal">Hecho para equipos, <span class="serif">no para vigilantes.</span></h2>
+    <div class="wrap daily">
+      <span class="mono reveal">Y en el día a día</span>
       <div class="panel reveal" style="--d:.1s">
         <div class="cols">
-          <div class="col"><span class="mono">Capas</span><h4>Contexto que se ordena solo</h4><p>General para todos, por área para quien la trabaja, individual para ti. Sin copiar documentos a cada prompt.</p></div>
-          <div class="col"><span class="mono">Privacidad</span><h4>Resultados, no conversaciones</h4><p>Tu jefe ve qué encontraste y cómo, nunca tu chat completo con tu agente. Confianza sin micromanagement.</p></div>
-          <div class="col"><span class="mono">Compartido</span><h4>Lo que aprende uno, lo aprende el equipo</h4><p>Una skill o un hallazgo se comparte con un clic y queda en la wiki para la próxima vez.</p></div>
-        </div>
-        <div class="stats">
-          <div class="stat"><b data-count="3">3</b><span class="mono">Capas de conocimiento</span></div>
-          <div class="stat"><b data-count="7">7</b><span class="mono">Agentes compatibles</span></div>
-          <div class="stat"><b data-count="1">1</b><span class="mono">Wiki viva por empresa</span></div>
-          <div class="stat"><b data-count="0">0</b><span class="mono">Chats expuestos a tu jefe</span></div>
+          <div class="col"><span class="mono">Tu día</span><h4>Un resumen de tu jornada</h4><p>Al final del día ves qué hiciste y cuánto tiempo te ahorraron tus agentes, en un solo panel.</p></div>
+          <div class="col"><span class="mono">Tableros</span><h4>Proyectos por área</h4><p>Cada área tiene su tablero de proyectos, para que se vea qué está en curso y quién lo lleva.</p></div>
+          <div class="col"><span class="mono">Dictado</span><h4>Habla en lugar de escribir</h4><p>Dicta tus mensajes directo en la caja de texto y deja que tu agente se ponga a trabajar.</p></div>
         </div>
       </div>
     </div>
@@ -730,9 +865,9 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   <section class="sec learn" id="aprende">
     <div class="wrap grid">
       <div>
-        <h2 class="reveal">Esto es una empresa <span class="serif">que aprende.</span></h2>
-        <p class="lead reveal" style="--d:.1s">Norai convierte lo que pasa en juntas y tareas en propuestas para la wiki. El líder del área las aprueba y cada versión se compara con la anterior antes de entrar. Cada versión nueva hace más firme el amarre.</p>
-        <a class="btn reveal" style="--d:.2s" href="#demo">Ver cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <h2 class="reveal">Una empresa <span class="serif">que aprende.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Cuando un agente termina una tarea, propone lo que aprendió para la wiki. El líder del área lo revisa y decide si entra. Cada cambio guarda quién lo propuso y quién lo aprobó, así que la empresa aprende con cada tarea sin perder el control.</p>
+        <a class="btn reveal" style="--d:.2s" href="#contacto">Agenda una demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
       </div>
       <div class="stage reveal" style="--d:.15s" aria-hidden="true">
         <span class="cap2 mono">Ciclo de aprendizaje</span>
@@ -749,14 +884,178 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
           <line x1="200" y1="200" x2="372" y2="146" class="crack"/>
           <circle cx="200" cy="200" r="4" fill="#b4532a"/>
         </svg>
-        <ol class="log mono" id="log"><li><b>1</b> resuelve · cierra la tarea con lo que sabe</li><li><b>2</b> aprende · propone y el líder aprueba</li><li><b>3</b> construye · la siguiente versión, medida</li></ol>
-        <span class="cap mono">Resuelve → aprende → construye</span>
+        <ol class="log mono" id="log"><li><b>1</b> resuelve · trabaja con lo que la empresa sabe</li><li><b>2</b> propone · lo nuevo queda como propuesta</li><li><b>3</b> aprueba · el líder decide y queda registrado</li></ol>
+        <span class="cap mono">Resuelve → propone → aprueba</span>
       </div>
     </div>
   </section>
 
-  <!-- ================= CLOSING ================= -->
-  <section class="closing">
+  <!-- ================= USE CASES ================= -->
+  <section class="sec lined" id="casos">
+    <div class="wrap">
+      <div class="areas-top">
+        <h2 class="reveal">Para cada área <span class="serif">de la empresa.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Escenarios de ejemplo de cómo se usa norai en el día a día. Cada área tiene su propia capa de conocimiento y sus propios permisos.</p>
+      </div>
+      <div class="carousel cases reveal" id="carousel" style="--d:.15s" aria-label="Casos de uso por área">
+        <article class="area"><div class="bg" style="background:linear-gradient(160deg,#b4532a,#5a2f1f)"></div><svg class="glyph" viewBox="0 0 100 100" aria-hidden="true"><path d="M10 80 L40 50 L60 64 L90 24" fill="none" stroke="#f4f1ea" stroke-opacity=".6"/><circle cx="90" cy="24" r="4" fill="#f4f1ea"/></svg><div class="top mono"><span>01 · Ventas</span></div><div class="bottom"><h3>Ventas</h3><p>Onboarding · Historial de precios</p><div class="scn">Un becario de Ventas entra el lunes. Su agente ya conoce las políticas de descuento y el historial de campañas del área, y le dice de qué página de la wiki sacó cada dato.</div></div></article>
+        <article class="area"><div class="bg" style="background:linear-gradient(160deg,#1e3b2f,#0d110e)"></div><svg class="glyph" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="30" fill="none" stroke="#f4f1ea" stroke-opacity=".35"/><circle cx="50" cy="50" r="14" fill="none" stroke="#d98c5f"/></svg><div class="top mono"><span>02 · Marketing</span></div><div class="bottom"><h3>Marketing</h3><p>Campañas · Acceso entre áreas</p><div class="scn">Marketing prepara una campaña y pregunta qué se hizo la vez pasada. El dato es de Ventas: la persona pide acceso desde norai y la líder de Ventas lo aprueba.</div></div></article>
+        <article class="area"><div class="bg" style="background:linear-gradient(160deg,#4f6b57,#1e3b2f)"></div><svg class="glyph" viewBox="0 0 100 100" aria-hidden="true"><g fill="#f4f1ea" fill-opacity=".45"><rect x="12" y="12" width="20" height="20"/><rect x="40" y="12" width="20" height="20" fill-opacity=".2"/><rect x="68" y="12" width="20" height="20"/><rect x="12" y="40" width="20" height="20" fill-opacity=".2"/><rect x="40" y="40" width="20" height="20"/><rect x="68" y="40" width="20" height="20" fill-opacity=".2"/></g></svg><div class="top mono"><span>03 · Operaciones</span></div><div class="bottom"><h3>Operaciones</h3><p>Procesos · Conocimiento aprobado</p><div class="scn">Un analista encuentra un paso nuevo en el proceso de entregas. Su agente lo propone para la wiki del área; el líder lo aprueba y desde ese momento todos los agentes del área lo usan.</div></div></article>
+        <article class="area"><div class="bg" style="background:linear-gradient(160deg,#3b3a2e,#141611)"></div><svg class="glyph" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#f4f1ea" stroke-opacity=".5"><line x1="20" y1="85" x2="20" y2="55"/><line x1="40" y1="85" x2="40" y2="35"/><line x1="60" y1="85" x2="60" y2="45"/><line x1="80" y1="85" x2="80" y2="18" stroke="#d98c5f" stroke-opacity="1"/></g></svg><div class="top mono"><span>04 · Dirección</span></div><div class="bottom"><h3>Dirección</h3><p>Resúmenes · Tableros por área</p><div class="scn">La directora quiere saber cómo va cada equipo. Revisa los tableros de cada área y los resúmenes que su equipo le comparte, sin leer las conversaciones completas de nadie.</div></div></article>
+      </div>
+      <div class="controls">
+        <div class="dots" id="dots"></div>
+        <button class="arrow left" id="prev" type="button" aria-label="Anterior" aria-controls="carousel"><svg class="a1"><use href="#arr-l"/></svg><svg class="a2"><use href="#arr-l"/></svg></button>
+        <button class="arrow" id="next" type="button" aria-label="Siguiente" aria-controls="carousel"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECURITY ================= -->
+  <section class="sec stone" id="seguridad">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal">Tú decides <span class="serif">quién sabe qué.</span></h2>
+        <p class="lead reveal" style="--d:.1s">norai está hecho para equipos, no para vigilantes: control claro para la empresa y privacidad para cada persona.</p>
+      </div>
+      <div class="panel reveal" style="--d:.15s">
+        <div class="cols four">
+          <div class="col"><span class="mono">Permisos</span><h4>Por área, en el servidor</h4><p>Las reglas se aplican en el hub, no en la pantalla. Un agente no puede leer lo que su dueño no puede ver.</p></div>
+          <div class="col"><span class="mono">Aprobaciones</span><h4>Nada entra sin aprobación</h4><p>Lo que proponen los agentes espera a un líder de área o un admin. Igual las solicitudes de acceso a otra área.</p></div>
+          <div class="col"><span class="mono">Registro</span><h4>Cada cambio deja huella</h4><p>Cada cambio a la wiki guarda quién lo propuso y quién lo aprobó.</p></div>
+          <div class="col"><span class="mono">Infraestructura</span><h4>Corre en tu red</h4><p>El hub vive en la red o en un equipo de tu empresa. La wiki y los permisos se quedan contigo.</p></div>
+        </div>
+        <div class="audit">
+          <span class="mono">Así se ve un cambio en el registro (ejemplo)</span>
+          <div class="mini">
+            <div class="row"><span class="who">PROPUSO</span><span>Agente de Iker · Producto</span></div>
+            <div class="row"><span class="who">APROBÓ</span><span>Magdalena · líder de Ventas</span></div>
+            <div class="row"><span class="who">CAMBIO</span><span><span class="pill ok">+ VENTAS</span>"La promo anterior fue de 5%"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INTEGRATIONS ================= -->
+  <section class="sec" id="integraciones" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal">Funciona con los agentes <span class="serif">que tu equipo ya usa.</span></h2>
+        <p class="lead reveal" style="--d:.1s">norai no reemplaza a tus agentes: les da el contexto de tu empresa. Funciona con Codex y Claude, en Windows, macOS y Linux, y está construido sobre T3 Code, de código abierto.</p>
+      </div>
+    </div>
+    <div class="wall">
+      <div class="marquee reveal" style="--d:.1s">
+        <div class="track">
+          <div class="cell"><div>Codex<small>OpenAI</small></div></div>
+          <div class="cell"><div>Claude<small>Anthropic</small></div></div>
+          <div class="cell"><div>Windows<small>App de escritorio</small></div></div>
+          <div class="cell"><div>macOS<small>App de escritorio</small></div></div>
+          <div class="cell"><div>Linux<small>App de escritorio</small></div></div>
+          <div class="cell"><div>Tu red<small>Hub de norai</small></div></div>
+          <div class="cell"><div>T3 Code<small>Código abierto</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRICING ================= -->
+  <section class="sec pricing" id="precios">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="reveal">Empieza con un piloto, <span class="serif">crece por áreas.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Cada empresa arranca distinto, así que todavía no publicamos precios. Después de la demo te mandamos una propuesta por escrito.</p>
+      </div>
+      <div class="plans reveal" style="--d:.15s">
+        <div class="plan featured">
+          <span class="mono">Para empezar</span>
+          <h3>Piloto guiado</h3>
+          <p class="for">Prueba norai con un área y un caso real de tu empresa.</p>
+          <div class="price"><small class="mono">Precio</small>Hablemos</div>
+          <ul>
+            <li>Un área con su wiki inicial</li>
+            <li>Instalación del hub en tu red, con nuestro acompañamiento</li>
+            <li>Revisión de resultados al cerrar el piloto</li>
+          </ul>
+          <a class="btn" href="#contacto">Agenda una demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        </div>
+        <div class="plan">
+          <span class="mono">Varias áreas</span>
+          <h3>Equipo</h3>
+          <p class="for">Para varias áreas que trabajan juntas y comparten conocimiento.</p>
+          <div class="price"><small class="mono">Precio</small>Hablemos</div>
+          <ul>
+            <li>Varias áreas, cada una con sus permisos</li>
+            <li>Aprobaciones y registro de cambios</li>
+            <li>Vista de equipo, tableros y Tu día</li>
+          </ul>
+          <a class="btn ghost" href="#contacto">Hablemos <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        </div>
+        <div class="plan">
+          <span class="mono">Toda la organización</span>
+          <h3>Empresa</h3>
+          <p class="for">Para llevar norai a toda la empresa, con sus áreas y líderes.</p>
+          <div class="price"><small class="mono">Precio</small>Hablemos</div>
+          <ul>
+            <li>Todas las áreas, líderes y admins</li>
+            <li>Despliegue en tu infraestructura</li>
+            <li>Acompañamiento para el arranque</li>
+          </ul>
+          <a class="btn ghost" href="#contacto">Hablemos <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        </div>
+      </div>
+      <p class="plans-note reveal">¿No sabes cuál te conviene? Lo vemos juntos en la demo.</p>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="sec" id="preguntas">
+    <div class="wrap faq-grid">
+      <div>
+        <h2 class="reveal">Preguntas <span class="serif">frecuentes.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Si tu duda no está aquí, pregúntanos en la demo.</p>
+        <a class="boxlink reveal" style="--d:.15s" href="#contacto"><span class="ul">Agenda una demo</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+      </div>
+      <div class="faq reveal" style="--d:.1s">
+        <details>
+          <summary>¿Qué es norai, exactamente?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Una app de escritorio donde los equipos de tu empresa trabajan con agentes de IA que comparten el conocimiento de la empresa. Está construida sobre T3 Code, un proyecto de código abierto, y suma la wiki por capas, los permisos por área, las aprobaciones y la vista de equipo.</div>
+        </details>
+        <details>
+          <summary>¿Con qué agentes de IA funciona?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Con Codex (de OpenAI) y Claude (de Anthropic). norai no reemplaza a tus agentes: les da el contexto de tu empresa y las reglas de quién puede ver qué.</div>
+        </details>
+        <details>
+          <summary>¿Dónde viven los datos de mi empresa?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">El hub de norai corre en la red o en un equipo de tu empresa; ahí viven la wiki, los permisos y el registro de cambios. Cuando un agente trabaja, lo que le pides pasa por el proveedor de ese agente (OpenAI o Anthropic), como cuando lo usas por tu cuenta.</div>
+        </details>
+        <details>
+          <summary>¿Quién decide qué entra a la wiki?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Las personas. Los agentes solo proponen; un líder de área o un admin aprueba. Cada cambio guarda quién lo propuso y quién lo aprobó.</div>
+        </details>
+        <details>
+          <summary>¿Mi jefe puede leer mis conversaciones con el agente?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Solo si tú las compartes. Puedes compartir una conversación en modo lectura o solo como resumen; con el resumen, tu jefe ve qué se hizo, no el chat completo.</div>
+        </details>
+        <details>
+          <summary>¿En qué sistemas operativos funciona?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">La app de escritorio funciona en Windows, macOS y Linux.</div>
+        </details>
+        <details>
+          <summary>¿Cuánto cuesta?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Depende de cómo quieras empezar. Lo normal es arrancar con un piloto guiado en un área; después de la demo te mandamos una propuesta por escrito.</div>
+        </details>
+        <details>
+          <summary>¿Cómo empezamos?<span class="pm" aria-hidden="true"></span></summary>
+          <div class="ans">Agenda una demo con el formulario de abajo. Te mostramos norai con un caso parecido al tuyo y, si encaja, armamos un piloto con un área.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING + CONTACT ================= -->
+  <section class="closing" id="contacto">
     <div class="rings" aria-hidden="true">
       <svg viewBox="0 0 1000 1000">
         <path class="ring" pathLength="1" d="M500 92 C760 96 912 268 906 506 C900 742 742 910 500 906 C262 902 92 748 96 500 C100 262 250 88 500 92 Z"/>
@@ -767,38 +1066,121 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
         <circle class="pulse" cx="500" cy="500" r="14" style="--d:1s"/>
       </svg>
     </div>
-    <div class="wrap" style="position:relative; z-index:2">
-      <h2 class="reveal">Pon a tu empresa <span class="serif">a aprender.</span></h2>
-      <div class="hero-cta reveal" style="--d:.15s">
-        <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
-        <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
+    <div class="wrap contact-grid">
+      <div>
+        <div class="eyebrow mono reveal">Agenda una demo</div>
+        <h2 class="reveal">Pon a tu empresa <span class="serif">a aprender.</span></h2>
+        <p class="lead reveal" style="--d:.1s">Cuéntanos de tu equipo. Te mostramos norai con un caso parecido al tuyo y, si encaja, armamos un piloto guiado con un área.</p>
+        <ol class="next-steps reveal" style="--d:.15s">
+          <li><span class="mono">01</span>Nos dejas tus datos</li>
+          <li><span class="mono">02</span>Te escribimos para agendar la demo</li>
+          <li><span class="mono">03</span>Si encaja, arrancamos un piloto con un área</li>
+        </ol>
+        <p class="direct mono reveal" style="--d:.2s">¿Prefieres correo? <a data-email="text" href="#contacto">Escríbenos</a></p>
       </div>
+
+      <form class="form reveal" id="demo-form" style="--d:.15s" novalidate aria-labelledby="form-title">
+        <div id="form-body">
+          <h3 class="form-title" id="form-title">Agenda una demo</h3>
+          <p class="form-sub">Te respondemos por correo para coordinar la fecha.</p>
+          <div class="row2">
+            <div class="field">
+              <label for="f-nombre">Nombre</label>
+              <input id="f-nombre" name="nombre" type="text" autocomplete="name" required maxlength="120" aria-describedby="e-nombre" />
+              <p class="err" id="e-nombre"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Correo de trabajo</label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="160" placeholder="tu@empresa.com" aria-describedby="e-email" />
+              <p class="err" id="e-email"></p>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="f-empresa">Empresa</label>
+              <input id="f-empresa" name="empresa" type="text" autocomplete="organization" required maxlength="120" aria-describedby="e-empresa" />
+              <p class="err" id="e-empresa"></p>
+            </div>
+            <div class="field">
+              <label for="f-tamano">Tamaño del equipo</label>
+              <select id="f-tamano" name="tamano_equipo" required aria-describedby="e-tamano">
+                <option value="">Elige una opción</option>
+                <option>1 a 10 personas</option>
+                <option>11 a 50 personas</option>
+                <option>51 a 200 personas</option>
+                <option>201 a 1,000 personas</option>
+                <option>Más de 1,000 personas</option>
+              </select>
+              <p class="err" id="e-tamano"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-mensaje">Mensaje <small>(opcional)</small></label>
+            <textarea id="f-mensaje" name="mensaje" rows="4" maxlength="2000" placeholder="¿Qué te gustaría resolver con norai?"></textarea>
+          </div>
+          <div class="sr-only" aria-hidden="true"><label for="f-hp">No llenar</label><input id="f-hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
+          <button class="btn" type="submit" id="f-submit"><span id="f-submit-label">Enviar solicitud</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></button>
+          <p class="form-status" id="form-status" role="alert"></p>
+          <p class="form-fine">Solo usamos estos datos para responderte sobre la demo.</p>
+        </div>
+        <div class="thanks" id="form-thanks" tabindex="-1" hidden>
+          <span class="mark" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 10.5 8.2 14.5 16 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <h3 id="thanks-title">Gracias, recibimos tu solicitud.</h3>
+          <p id="thanks-text">Te escribimos al correo que nos dejaste para agendar la demo.</p>
+          <button class="btn ghost" type="button" id="form-again">Enviar otra solicitud <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></button>
+        </div>
+      </form>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div>
-      <a class="brand" href="#top" aria-label="Norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
-      <p>El espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa. Hecho por el equipo Tri-π.</p>
+    <div class="footer-brand">
+      <a class="brand" href="#top" aria-label="norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
+      <p class="tagline mono">Empresas conectadas · IA en acción</p>
+      <p>La app donde los equipos de tu empresa trabajan con agentes de IA que comparten lo que sabe la empresa.</p>
     </div>
     <div>
       <h5>Producto</h5>
-      <ul><li><a href="#demo">Cómo funciona</a></li><li><a href="#plataforma">Plataforma</a></li><li><a href="#areas">Áreas</a></li><li><a href="#aprende">Auto-aprendizaje</a></li></ul>
+      <ul><li><a href="#como-funciona">Cómo funciona</a></li><li><a href="#demo">Demo</a></li><li><a href="#funciones">Funciones</a></li><li><a href="#seguridad">Seguridad</a></li><li><a href="#integraciones">Integraciones</a></li></ul>
     </div>
     <div>
-      <h5>Proyecto</h5>
-      <ul><li><a href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://luma.com/6ejxfvva" target="_blank" rel="noopener">RSI Hackathon 2026</a></li></ul>
+      <h5>Empresa</h5>
+      <ul><li><a href="#casos">Casos de uso</a></li><li><a href="#precios">Precios</a></li><li><a href="#preguntas">Preguntas</a></li><li><a href="#contacto">Agenda una demo</a></li><li><a data-email="text" href="#contacto">Contacto</a></li></ul>
+    </div>
+    <div>
+      <h5>Código abierto</h5>
+      <ul><li><a href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener noreferrer">Código en GitHub</a></li><li><a href="#integraciones">Construido sobre T3 Code</a></li></ul>
     </div>
     <div class="legal mono">
-      <span>© 2026 Norai · Tri-π</span>
+      <span>© <span id="year">2026</span> norai</span>
       <span>Construido sobre T3 Code (licencia MIT)</span>
     </div>
   </div>
 </footer>
 
 <script>
+  /* ================= CONFIGURACIÓN (ver LEEME.txt) =================
+     DEMO_VIDEO_URL  link del video de la demo. Vacío = se muestra el recorrido de 4 pasos.
+                     Sirve YouTube, Vimeo, Loom, o un archivo .mp4/.webm (p. ej. "assets/demo.mp4").
+     FORM_ENDPOINT   dirección de Formspree (o similar), p. ej. "https://formspree.io/f/xxxxxxx".
+                     Vacío = el formulario abre el correo de la persona con el mensaje listo (mailto).
+     CONTACT_EMAIL   correo de contacto que aparece en la página y recibe los mailto. TODO: cambiarlo. */
+  const DEMO_VIDEO_URL = "";
+  const FORM_ENDPOINT = "";
+  const CONTACT_EMAIL = "hola@norai.mx";
+  /* ================================================================= */
+
+  const motionOn = document.documentElement.classList.contains('force-motion') || !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // contact email: one constant fills every link marked data-email
+  document.querySelectorAll('[data-email]').forEach((a) => {
+    a.href = 'mailto:' + CONTACT_EMAIL;
+    if (a.dataset.email === 'text') a.textContent = CONTACT_EMAIL;
+  });
+
   // nav border on scroll
   const nav = document.getElementById('nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8), { passive: true });
@@ -818,18 +1200,10 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     o.disconnect();
   }, { threshold: 0.2 }).observe(closing);
 
-  // stats count-up
-  const counters = document.querySelectorAll('[data-count]');
-  const co = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (!e.isIntersecting) continue;
-      const el = e.target, end = +el.dataset.count, t0 = performance.now(), dur = 1100;
-      const tick = (t) => { const p = Math.min(1, (t - t0) / dur); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(tick); };
-      if (end > 0) { el.textContent = '0'; requestAnimationFrame(tick); }
-      co.unobserve(el);
-    }
-  }, { threshold: 0.6 });
-  counters.forEach((c) => co.observe(c));
+  // integrations marquee: repeat the cells so the loop never shows a gap, even on very wide screens
+  const track = document.querySelector('.track');
+  const baseCells = [...track.children];
+  for (let k = 0; k < 3; k++) baseCells.forEach((c) => { const d = c.cloneNode(true); d.setAttribute('aria-hidden', 'true'); track.append(d); });
 
   // hero title gradient follows the cursor (eased)
   const title = document.querySelector('.hero-title');
@@ -854,6 +1228,55 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   document.addEventListener('click', (e) => { if (!dd.contains(e.target)) setDD(false); });
   dd.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setDD(false); ddBtn.focus(); } });
   dd.querySelectorAll('.dd-panel a').forEach((a) => a.addEventListener('click', () => setDD(false)));
+
+  // demo: video when DEMO_VIDEO_URL is set; the 4-step walkthrough always stays as the poster/summary
+  (() => {
+    const url = DEMO_VIDEO_URL.trim();
+    if (!url) return;
+    const frame = document.getElementById('demo-frame');
+    const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    const loom = url.match(/loom\.com\/(?:share|embed)\/([\w]+)/);
+    let el;
+    if (/\.(mp4|webm|m4v|mov)(?:[?#]|$)/i.test(url) && !yt) {
+      el = document.createElement('video');
+      Object.assign(el, { src: url, controls: true, playsInline: true, preload: 'metadata' });
+      el.setAttribute('aria-label', 'Video de la demo de norai');
+    } else {
+      el = document.createElement('iframe');
+      el.src = yt ? `https://www.youtube-nocookie.com/embed/${yt[1]}?rel=0` : vimeo ? `https://player.vimeo.com/video/${vimeo[1]}` : loom ? `https://www.loom.com/embed/${loom[1]}` : url;
+      el.title = 'Video de la demo de norai';
+      el.loading = 'lazy';
+      el.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      el.allowFullscreen = true;
+      el.referrerPolicy = 'strict-origin-when-cross-origin';
+    }
+    frame.append(el);
+    frame.hidden = false;
+    document.getElementById('player').classList.add('has-video');
+  })();
+
+  // walkthrough poster: the four cards light up in turn while the player is on screen (hover picks one)
+  const player = document.getElementById('player');
+  const pCards = [...player.querySelectorAll('.card')];
+  let pIdx = -1, pTimer = 0;
+  const showCard = (i) => {
+    pIdx = i;
+    pCards.forEach((c, k) => { if (k === i) { c.classList.remove('on'); void c.offsetWidth; c.classList.add('on'); } else c.classList.remove('on'); });
+  };
+  const nextCard = () => { if (!player.classList.contains('paused')) showCard((pIdx + 1) % pCards.length); };
+  if (motionOn) {
+    new IntersectionObserver(([e]) => {
+      clearInterval(pTimer);
+      if (!e.isIntersecting) return;
+      if (pIdx < 0) showCard(0);
+      pTimer = setInterval(nextCard, 4500);
+    }, { threshold: 0.3 }).observe(player);
+    pCards.forEach((c, k) => {
+      c.addEventListener('pointerenter', () => { player.classList.add('paused'); showCard(k); });
+      c.addEventListener('pointerleave', () => player.classList.remove('paused'));
+    });
+  }
 
   // platform: the feature in the middle of the screen (or under the cursor) lights its diagram segment
   const feat = document.querySelector('.feat'), diagram = document.querySelector('.diagram');
@@ -880,7 +1303,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     const c = centered(); if (c) light(c.dataset.seg);
   }, { rootMargin: '-45% 0px -45% 0px' });
   fItems.forEach((i) => featIO.observe(i));
-  new IntersectionObserver(([e]) => { if (!e.isIntersecting) light(null); }).observe(document.querySelector('.platform'));
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting) light(null); }).observe(document.querySelector('.platform .grid'));
   [...fItems, ...segs].forEach((el) => {
     el.addEventListener('pointerenter', () => { hovering = true; light(el.dataset.seg); });
     el.addEventListener('pointerleave', () => { hovering = false; });
@@ -935,7 +1358,6 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   car.addEventListener('click', (e) => { if (car.classList.contains('dragging')) e.preventDefault(); }, true);
   car.addEventListener('dragstart', (e) => e.preventDefault());
 
-
   // learning cycle: the three steps appear one by one when the block comes into view (no invented numbers)
   const logEl = document.getElementById('log');
   new IntersectionObserver(([e], o) => {
@@ -943,6 +1365,84 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     [...logEl.children].forEach((li, i) => setTimeout(() => li.classList.add('in'), 500 + i * 450));
     o.disconnect();
   }, { threshold: 0.3 }).observe(logEl);
+
+  // "Agenda una demo" form: validates, then POSTs to FORM_ENDPOINT or, when that is empty, opens a ready-made email
+  (() => {
+    const form = document.getElementById('demo-form');
+    const body = document.getElementById('form-body'), thanks = document.getElementById('form-thanks');
+    const status = document.getElementById('form-status');
+    const submit = document.getElementById('f-submit'), submitLabel = document.getElementById('f-submit-label');
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const rules = {
+      'f-nombre': (v) => (v ? '' : 'Escribe tu nombre.'),
+      'f-email': (v) => (!v ? 'Escribe tu correo de trabajo.' : EMAIL_RE.test(v) ? '' : 'Revisa el correo: parece incompleto.'),
+      'f-empresa': (v) => (v ? '' : 'Escribe el nombre de tu empresa.'),
+      'f-tamano': (v) => (v ? '' : 'Elige un tamaño aproximado.'),
+    };
+    const check = (id) => {
+      const el = document.getElementById(id), msg = rules[id](el.value.trim());
+      document.getElementById('e-' + id.slice(2)).textContent = msg;
+      el.setAttribute('aria-invalid', String(Boolean(msg)));
+      return !msg;
+    };
+    let tried = false;
+    const recheck = (e) => { if (tried && rules[e.target.id]) check(e.target.id); };
+    form.addEventListener('input', recheck);
+    form.addEventListener('change', recheck);
+
+    const emailLink = () => `<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>`;
+    const showThanks = (head, text) => {
+      document.getElementById('thanks-title').textContent = head;
+      document.getElementById('thanks-text').innerHTML = text;
+      body.hidden = true; thanks.hidden = false; thanks.focus();
+    };
+    const mailtoFor = (d) => {
+      const subject = `Demo de norai · ${d.get('empresa')}`;
+      const lines = [
+        'Hola, me gustaría agendar una demo de norai.', '',
+        `Nombre: ${d.get('nombre')}`, `Correo: ${d.get('email')}`, `Empresa: ${d.get('empresa')}`, `Tamaño del equipo: ${d.get('tamano_equipo')}`,
+      ];
+      const msg = String(d.get('mensaje') || '').trim();
+      if (msg) lines.push('', 'Mensaje:', msg);
+      return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\r\n'))}`;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      tried = true; status.textContent = '';
+      const bad = Object.keys(rules).filter((id) => !check(id));
+      if (bad.length) { status.textContent = 'Revisa los campos marcados.'; document.getElementById(bad[0]).focus(); return; }
+      if (form.elements._gotcha.value) return; // spam bots fill the hidden field
+      const data = new FormData(form);
+      ['nombre', 'email', 'empresa', 'mensaje'].forEach((k) => data.set(k, String(data.get(k) || '').trim()));
+
+      if (!FORM_ENDPOINT) {
+        // no backend yet: open the visitor's email app with the request written out
+        window.location.href = mailtoFor(data);
+        showThanks('Tu correo ya está listo.', `Abrimos tu app de correo con la solicitud escrita; solo falta que le des enviar. ¿No se abrió? Escríbenos a ${emailLink()}.`);
+        return;
+      }
+      data.set('_subject', `Demo de norai · ${data.get('empresa')}`);
+      data.delete('_gotcha');
+      submit.disabled = true; submit.setAttribute('aria-busy', 'true'); submitLabel.textContent = 'Enviando…';
+      try {
+        const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        form.reset();
+        showThanks('Gracias, recibimos tu solicitud.', 'Te escribimos al correo que nos dejaste para agendar la demo.');
+      } catch (err) {
+        status.innerHTML = `No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos a ${emailLink()}.`;
+      } finally {
+        submit.disabled = false; submit.removeAttribute('aria-busy'); submitLabel.textContent = 'Enviar solicitud';
+      }
+    });
+
+    document.getElementById('form-again').addEventListener('click', () => {
+      form.reset(); tried = false;
+      Object.keys(rules).forEach((id) => { document.getElementById(id).removeAttribute('aria-invalid'); document.getElementById('e-' + id.slice(2)).textContent = ''; });
+      thanks.hidden = true; body.hidden = false; document.getElementById('f-nombre').focus();
+    });
+  })();
 </script>
 </body>
 </html>

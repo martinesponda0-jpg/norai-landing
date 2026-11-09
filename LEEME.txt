@@ -1,7 +1,33 @@
 PÁGINA DE NORAI
 
 Página
-- index.html → diseño propio (inspirado en happyrobot.ai) con los logos del kit. (La versión B con todo el kit se descartó.)
+- index.html → la web de norai como empresa: explica qué hace, muestra la demo y tiene el formulario "Agenda una demo".
+  Secciones (en orden): inicio, el problema, cómo funciona (4 pasos), demo, funciones, una empresa que aprende,
+  casos de uso por área, seguridad y control, integraciones, precios, preguntas frecuentes, agenda una demo, pie.
+
+PENDIENTES (TODO): lo que tienes que llenar tú
+Las tres cosas se cambian en un solo lugar: al principio del <script> de index.html, en el bloque
+"CONFIGURACIÓN". Abre index.html, busca CONFIGURACIÓN y cambia lo que está entre comillas.
+
+1. CONTACT_EMAIL = "hola@norai.mx"      ← TODO: es un correo de ejemplo, cámbialo por el real.
+   Aparece en la sección de contacto y en el pie, y es a donde llegan las solicitudes mientras no haya FORM_ENDPOINT.
+
+2. DEMO_VIDEO_URL = ""                  ← TODO: pega el link del video de la demo.
+   - Vacío: la sección "Mira norai en acción" muestra el recorrido animado de 4 pasos y el botón "Agenda una demo en vivo".
+   - Con link: el video aparece arriba del recorrido. Sirven links de YouTube, Vimeo o Loom tal cual los copias
+     (p. ej. "https://youtu.be/XXXXXXXXXXX"), o un archivo de video: copia demo.mp4 a la carpeta assets y pon "assets/demo.mp4".
+
+3. FORM_ENDPOINT = ""                   ← TODO (opcional): para recibir el formulario sin que la persona abra su correo.
+   - Vacío: al enviar, se abre la app de correo de la persona con la solicitud ya escrita, dirigida a CONTACT_EMAIL (mailto).
+   - Con Formspree: crea un formulario gratis en formspree.io, copia su dirección (algo como "https://formspree.io/f/abcdwxyz")
+     y pégala aquí. El formulario se manda directo y la persona ve "Gracias, recibimos tu solicitud".
+   - Los campos que se mandan: nombre, email, empresa, tamano_equipo, mensaje.
+
+Otros detalles que son de ejemplo o provisionales
+- La dirección https://sequoia-landing.vercel.app (canonical y og:url) se queda así hasta que haya dominio propio.
+- Los precios dicen "Hablemos" a propósito: no hay precios inventados. Si algún día hay precios, van en la sección Precios.
+- Los casos de uso y la demo son escenarios de ejemplo (nombres como Iker, María o Magdalena son inventados), no clientes.
+- El link "Código en GitHub" del pie apunta a github.com/Jero110/enterprise-agent.
 
 Cómo verla en tu PC
 - Abre una terminal y corre:  python -m http.server 4321 --bind 127.0.0.1 --directory C:\Users\Gigabyte\sequoia-landing
@@ -11,7 +37,7 @@ Cómo verla en tu PC
 
 Revisión automática (se pegan en la consola del navegador o las corre Claude)
 - scripts\qa.js          revisa desbordes, imágenes rotas, textos encimados y el carrusel.
-- scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, diagrama, contadores.
+- scripts\func-test.js   hace lo que haría una persona: links, menú, carrusel, diagrama, demo y formulario (enviarlo vacío).
 - scripts\anim-audit.js  busca animaciones que salten de golpe y mide la fluidez (cuadros por segundo).
 - scripts\carousel-test.js  revisa que los puntitos del carrusel coincidan con lo que avanzan las flechas y el arrastre.
 

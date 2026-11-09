@@ -14,9 +14,10 @@
   const shown = document.querySelectorAll('.reveal.in').length;
   ok(shown === total, `secciones que aparecen al bajar: ${shown}/${total}`);
 
-  // 2. contadores llegan a su número final
+  // 2. contadores (si hay) llegan a su número final; la página de venta ya no tiene cifras
   const counts = [...document.querySelectorAll('[data-count]')];
-  ok(counts.every((c) => c.textContent.trim() === c.dataset.count), `contadores: ${counts.map((c) => c.textContent.trim()).join(', ')}`);
+  if (counts.length) ok(counts.every((c) => c.textContent.trim() === c.dataset.count), `contadores: ${counts.map((c) => c.textContent.trim()).join(', ')}`);
+  else passes.push('sin contadores (correcto: no hay cifras inventadas)');
 
   // 3. links internos: llevan a su sección y no queda tapada por la barra
   const internal = [...new Set([...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href')))].filter((h) => h.length > 1);
@@ -83,6 +84,26 @@
     const small = [...document.querySelectorAll('a.btn, button.arrow')].filter((b) => { const r = b.getBoundingClientRect(); return r.width && r.height < 40; });
     ok(small.length === 0, `botones chicos para dedo: ${small.length}`);
   }
+
+  // 10. demo: con DEMO_VIDEO_URL vacío se ve el recorrido de 4 pasos; con link, el video arriba del recorrido
+  const frame = document.getElementById('demo-frame'), walk = document.getElementById('walkthrough');
+  ok(walk && walk.querySelectorAll('.card').length === 4, 'demo: recorrido de 4 pasos presente');
+  ok(frame && (frame.hidden ? !frame.children.length : frame.querySelector('iframe, video')), `demo: espacio de video ${frame && frame.hidden ? 'vacío (se ve el recorrido)' : 'con video'}`);
+
+  // 11. formulario: enviar vacío marca los campos y no sale de la página
+  const form = document.getElementById('demo-form'), here = location.href;
+  form.requestSubmit(); await wait(200);
+  const invalid = form.querySelectorAll('[aria-invalid="true"]').length;
+  ok(invalid === 4 && location.href === here && !document.getElementById('form-body').hidden, `formulario vacío: ${invalid}/4 campos marcados, sin enviar`);
+  ok(document.activeElement && document.activeElement.getAttribute('aria-invalid') === 'true', 'formulario: el foco va al primer campo con error');
+  form.reset(); form.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+  form.querySelectorAll('.err, #form-status').forEach((e) => (e.textContent = ''));
+  const mail = document.querySelector('[data-email]');
+  ok(mail && mail.href.startsWith('mailto:'), `correo de contacto: ${mail && mail.href}`);
+
+  // 12. nada de la etapa de hackatón en el texto visible
+  ok(!/hackat[oó]n|sequoia/i.test(document.body.innerText), 'sin "hackathon" ni "Sequoia" en el texto');
+
   window.scrollTo(0, 0);
   return { vw, touch: isTouch, ok: passes.length, fails };
 })();
