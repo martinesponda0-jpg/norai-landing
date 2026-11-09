@@ -104,7 +104,7 @@
   ok(mail && mail.href.startsWith('mailto:'), `correo de contacto: ${mail && mail.href}`);
 
   // 12. nada de la etapa de hackatón en el texto visible
-  ok(!/hackat[oó]n|sequoia/i.test(document.body.innerText), 'sin "hackathon" ni "Sequoia" en el texto');
+  ok(!/hackath?[oó]n|sequoia/i.test(document.body.innerText), 'sin "hackathon"/"hackatón" ni "Sequoia" en el texto');
 
   window.scrollTo(0, 0);
   return { vw, touch: isTouch, ok: passes.length, fails };
