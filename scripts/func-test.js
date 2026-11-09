@@ -70,10 +70,11 @@
   }
   ok(lit === items.length, `diagrama se ilumina con cada punto: ${lit}/${items.length}`);
 
-  // 8. registro de cambios del auto-aprendizaje se actualiza
-  const log = document.getElementById('log'); const before = log.textContent;
-  await wait(2000);
-  ok(log.textContent !== before, 'registro de cambios se actualiza solo');
+  // 8. ciclo de aprendizaje: los 3 pasos aparecen al verlo (sin números inventados)
+  const log = document.getElementById('log');
+  log.scrollIntoView({ block: 'center' }); await wait(2200);
+  const shownSteps = [...log.children].filter((li) => li.classList.contains('in') && getComputedStyle(li).opacity > 0.9).length;
+  ok(shownSteps === 3, `ciclo de aprendizaje visible: ${shownSteps}/3 pasos`);
 
   // 9. tamaños de letra legibles y botones del tamaño de un dedo en celular
   const tiny = [...document.querySelectorAll('body *')].filter((e) => e.childNodes.length && [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(e).fontSize) < 10 && e.getBoundingClientRect().width);

@@ -12,6 +12,12 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <meta name="theme-color" content="#1e3b2f" />
 <meta property="og:title" content="Sequoia AI" />
+<meta property="og:description" content="La empresa que aprende con cada tarea: agentes que comparten el conocimiento de tu equipo, por capas y con permisos por área." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_MX" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
+<link rel="canonical" href="https://sequoia-landing.vercel.app/" />
 <meta property="og:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
 <meta property="og:url" content="https://sequoia-landing.vercel.app/" />
 <meta property="og:image:width" content="1200" />
@@ -221,7 +227,8 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   @keyframes marquee { to { transform: translateX(-50%); } }
 
   /* ---------- story cards ---------- */
-  .story { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .story { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  @media (max-width: 1180px) { .story { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .card { display: flex; flex-direction: column; }
   .visual { position: relative; aspect-ratio: 1 / 1.02; overflow: hidden; background: var(--moss); padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; }
   .visual::before { transition: transform .6s var(--ease-hr); }
@@ -335,7 +342,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   .gr.hot { stroke: var(--redwood); stroke-opacity: 1; stroke-width: 1.6; }
   @keyframes grow { 0% { opacity: 0; stroke-dashoffset: 1; } 6% { opacity: 1; } 18% { stroke-dashoffset: 0; } 82% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 0; } }
   .crack { stroke: var(--ink); stroke-opacity: .25; stroke-dasharray: 2 4; }
-  .log { position: absolute; right: 18px; bottom: 42px; list-style: none; text-align: right; color: var(--ink-2); font-size: 10.5px; line-height: 1.9; }
+  .log { position: absolute; right: 18px; bottom: 42px; list-style: none; padding: 0; margin: 0; text-align: right; color: var(--ink-2); font-size: 10.5px; line-height: 1.9; }
   .log li { opacity: 0; transform: translateY(6px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
   .log li.in { opacity: 1; transform: none; }
   .log b { color: var(--redwood); font-weight: 500; }
@@ -412,7 +419,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
 <div class="announce">
   <span class="dot"></span>Sequoia AI se presenta en el Kavak × OpenAI × Primero AI RSI Hackathon<span class="hide-sm"> — 9 nov 2026</span>
-  <a href="#demo">Ver la demo →</a>
+  <a href="#demo">Cómo funciona →</a>
 </div>
 
 <header class="nav" id="nav">
@@ -429,7 +436,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
       </div>
       <a class="link" href="#areas">Áreas</a>
       <a class="link" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+      <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
     </nav>
   </div>
 </header>
@@ -489,13 +496,13 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
       <h1 class="hero-title load" style="animation-delay:.15s">La empresa que <span class="serif">aprende</span> con cada tarea.</h1>
       <p class="hero-sub load" style="animation-delay:.35s">Sequoia es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo.</p>
       <div class="hero-cta load" style="animation-delay:.5s">
-        <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
       </div>
       <div class="hero-meta mono load" style="animation-delay:.7s">
         <span><i></i>Wiki viva por capas</span>
         <span><i></i>Permisos por área</span>
-        <span><i></i>Funciona con Claude y Codex</span>
+        <span><i></i>Funciona con Codex y Claude</span>
       </div>
     </div>
   </section>
@@ -508,15 +515,15 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     </div>
     <div class="marquee reveal" style="--d:.1s">
       <div class="track">
-        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
         <div class="cell"><div>Codex<small>OpenAI</small></div></div>
+        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
         <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
         <div class="cell"><div>OpenCode<small>Open source</small></div></div>
         <div class="cell"><div>Grok<small>xAI</small></div></div>
         <div class="cell"><div>Antigravity<small>Google</small></div></div>
         <div class="cell"><div>Kiro<small>AWS</small></div></div>
-        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
         <div class="cell"><div>Codex<small>OpenAI</small></div></div>
+        <div class="cell"><div>Claude Code<small>Anthropic</small></div></div>
         <div class="cell"><div>Cursor<small>Anysphere</small></div></div>
         <div class="cell"><div>OpenCode<small>Open source</small></div></div>
         <div class="cell"><div>Grok<small>xAI</small></div></div>
@@ -531,7 +538,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap">
       <div class="sec-head">
         <h2 class="reveal">De la junta al feature, <span class="serif">sin perder nada.</span></h2>
-        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña con Kavak. Nadie recuerda el descuento de la vez pasada. Así lo resuelve un equipo en Sequoia.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
+        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña nueva en Kavak. Nadie recuerda de cuánto fue el descuento la vez pasada. Así lo resuelve un equipo en Sequoia.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
       </div>
 
       <div class="story">
@@ -582,7 +589,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
             <span class="num mono">04</span>
             <div class="mini">
               <div class="row"><span class="pill ok">+ ÁREA</span><span>Proceso documentado</span></div>
-              <div class="row"><span class="pill ok">+ EMPRESA</span><span>Colaboración activa con Kavak</span></div>
+              <div class="row"><span class="pill ok">+ EMPRESA</span><span>Campaña documentada para todos</span></div>
               <div class="row"><span class="pill hot">− PODA</span><span>Campaña anterior archivada</span></div>
             </div>
           </div>
@@ -628,7 +635,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
             <line class="tick" x1="-270" y1="0" x2="270" y2="0"/>
 
             <text class="dlabel" x="0" y="-20" text-anchor="middle" fill="#0d110e">Agentes</text>
-            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#6d6f66">Claude · Codex · …</text>
+            <text class="dsmall" x="0" y="20" text-anchor="middle" fill="#6d6f66">Codex · Claude · …</text>
             <text class="dlabel" x="0" y="-92" text-anchor="middle" fill="#2a2f2b" font-size="11">Área</text>
             <text class="dlabel" x="0" y="106" text-anchor="middle" fill="#2a2f2b" font-size="11">Persona</text>
 
@@ -700,11 +707,11 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap grid">
       <div>
         <h2 class="reveal">Esto es una empresa <span class="serif">que aprende.</span></h2>
-        <p class="lead reveal" style="--d:.1s">Sequoia escucha lo que pasa en juntas, Slack y tareas, propone cambios a la wiki, los prueba y poda lo que ya no sirve. Cada anillo nuevo hace más fuerte al árbol.</p>
+        <p class="lead reveal" style="--d:.1s">Sequoia convierte lo que pasa en juntas y tareas en propuestas para la wiki. El líder del área las aprueba y cada versión se compara con la anterior antes de entrar. Cada anillo nuevo hace más fuerte al árbol.</p>
         <a class="btn reveal" style="--d:.2s" href="#demo">Ver cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
       </div>
       <div class="stage reveal" style="--d:.15s" aria-hidden="true">
-        <span class="cap2 mono" id="ver">Versión 12</span>
+        <span class="cap2 mono">Ciclo de aprendizaje</span>
         <svg class="grow" viewBox="0 0 400 400">
           <g fill="none">
             <path pathLength="1" class="gr" style="--i:0" d="M200 176 C214 176 224 186 224 200 C224 214 214 224 200 224 C186 224 176 214 176 200 C176 186 186 176 200 176 Z"/>
@@ -718,8 +725,8 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
           <line x1="200" y1="200" x2="372" y2="146" class="crack"/>
           <circle cx="200" cy="200" r="4" fill="#b4532a"/>
         </svg>
-        <ul class="log mono" id="log"></ul>
-        <span class="cap mono">Conocimiento · versión por versión</span>
+        <ol class="log mono" id="log"><li><b>1</b> resuelve · cierra la tarea con lo que sabe</li><li><b>2</b> aprende · propone y el líder aprueba</li><li><b>3</b> construye · la siguiente versión, medida</li></ol>
+        <span class="cap mono">Resuelve → aprende → construye</span>
       </div>
     </div>
   </section>
@@ -739,7 +746,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap" style="position:relative; z-index:2">
       <h2 class="reveal">Pon a tu empresa <span class="serif">a aprender.</span></h2>
       <div class="hero-cta reveal" style="--d:.15s">
-        <a class="btn" href="#demo">Ver la demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
       </div>
     </div>
@@ -833,10 +840,20 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     segs.forEach((g) => g.classList.toggle('on', g.dataset.seg === seg));
   };
   let hovering = false;
-  const featIO = new IntersectionObserver((entries) => {
+  // the item under the middle of the screen wins (two items can touch the middle band by a pixel)
+  const centered = () => {
+    const mid = innerHeight / 2; let best = null, dist = Infinity;
+    for (const i of fItems) {
+      const r = i.getBoundingClientRect();
+      const d = r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+      if (d < dist) { dist = d; best = i; }
+    }
+    return best;
+  };
+  const featIO = new IntersectionObserver(() => {
+    // react to items entering AND leaving the middle band, then trust geometry over the entry list
     if (hovering) return;
-    const vis = entries.filter((e) => e.isIntersecting);
-    if (vis.length) light(vis[vis.length - 1].target.dataset.seg);
+    const c = centered(); if (c) light(c.dataset.seg);
   }, { rootMargin: '-45% 0px -45% 0px' });
   fItems.forEach((i) => featIO.observe(i));
   new IntersectionObserver(([e]) => { if (!e.isIntersecting) light(null); }).observe(document.querySelector('.platform'));
@@ -895,23 +912,13 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   car.addEventListener('dragstart', (e) => e.preventDefault());
 
 
-  // growing rings log
-  const logEl = document.getElementById('log'), verEl = document.getElementById('ver');
-  const changes = [
-    ['+', 'conexión · promo kavak → ventas'], ['+', 'proceso de diseño documentado'], ['−', 'poda · campaña anterior'],
-    ['+', 'skill RAG compartida'], ['+', 'acceso aprobado · área ventas'], ['−', 'poda · nota duplicada']
-  ];
-  let v = 12, k = 0;
-  const pushLog = () => {
-    const li = document.createElement('li');
-    const [sign, text] = changes[k++ % changes.length];
-    li.innerHTML = '<b>' + sign + '</b> ' + text;
-    logEl.appendChild(li); requestAnimationFrame(() => li.classList.add('in'));
-    while (logEl.children.length > 4) logEl.firstChild.remove();
-  };
-  for (let i = 0; i < 3; i++) pushLog();
-  setInterval(pushLog, 1800);
-  setInterval(() => { verEl.textContent = 'Versión ' + (++v); }, 9000);
+  // learning cycle: the three steps appear one by one when the block comes into view (no invented numbers)
+  const logEl = document.getElementById('log');
+  new IntersectionObserver(([e], o) => {
+    if (!e.isIntersecting) return;
+    [...logEl.children].forEach((li, i) => setTimeout(() => li.classList.add('in'), 500 + i * 450));
+    o.disconnect();
+  }, { threshold: 0.3 }).observe(logEl);
 </script>
 </body>
 </html>
