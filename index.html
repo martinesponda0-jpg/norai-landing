@@ -388,6 +388,30 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
   .col p { margin-top: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); max-width: 330px; }
   .cols.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .sec-head + .panel { margin-top: 0; }
+  /* Why the name: a quiet dictionary card + two short paragraphs */
+  .why { padding: 112px 0; }
+  .why-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 72px; align-items: center; }
+  .why-def { margin: 0; padding: 36px 32px 30px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper-2); }
+  .why-def .bollard { display: block; width: 100%; max-width: 260px; margin: 0 auto 22px; overflow: visible; }
+  .why-def .post { fill: var(--ink); }
+  .why-def .water { fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; opacity: .55; }
+  .why-def .rope { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .why-word { margin: 0 0 8px; font-size: 1.05rem; letter-spacing: .02em; color: var(--ink); }
+  .why-word span { color: var(--muted); font-size: .85em; }
+  .why-meaning { margin: 0; color: var(--ink-2, var(--ink)); line-height: 1.55; }
+  .why-text > .mono { display: block; margin-bottom: 18px; color: var(--muted); }
+  .why-text h2 { margin: 0 0 22px; }
+  .why-text p { max-width: 560px; margin: 0 0 14px; color: var(--ink-2, var(--ink)); font-size: 1.08rem; line-height: 1.6; }
+  /* the ropes tie themselves when the card comes into view */
+  .why-def.reveal .rope { stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s var(--ease) .35s; }
+  .why-def.reveal.in .rope { stroke-dashoffset: 0; }
+  @media (prefers-reduced-motion: reduce) { html:not(.force-motion) .why-def .rope { stroke-dashoffset: 0; transition: none; } }
+  @media (max-width: 900px) {
+    .why { padding: 80px 0; }
+    .why-grid { grid-template-columns: 1fr; gap: 40px; }
+    .why-text { order: -1; }
+  }
+
   .stone .sec-head .lead { color: var(--ink); }
   /* audit trail example inside the security panel */
   .audit { border-top: 1px solid var(--line); padding: 26px 28px 30px; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px 28px; align-items: start; }
@@ -553,6 +577,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
   footer { background: var(--ink); color: #cdc9c1; padding: 64px 0 40px; }
   footer .wrap { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
   footer .tagline { margin-top: 16px; color: #e5e2db; }
+  footer .footer-why { margin-top: 6px; color: #9a968e; font-size: .9rem; }
   footer .brand { color: #e5e2db; } /* kit: Hueso logo on Tinta */
   footer .brand .logo { width: 66px; height: 32px; }
   footer p { margin-top: 14px; font-size: 14px; line-height: 1.55; max-width: 340px; color: var(--plata); }
@@ -771,6 +796,30 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     </div>
   </section>
 
+  <!-- ================= WHY THE NAME ================= -->
+  <section class="sec why" id="nombre" aria-labelledby="nombre-title">
+    <div class="wrap why-grid">
+      <figure class="why-def reveal" aria-label="Definición de noray">
+        <svg class="bollard" viewBox="0 0 220 150" aria-hidden="true" focusable="false">
+          <path class="water" d="M8 132c18-8 34-8 52 0s34 8 52 0 34-8 52 0 34 8 48 2" />
+          <path class="post" d="M96 34h28v8h-4v58h10v12H90v-12h10V42h-4z" />
+          <path class="rope" pathLength="1" d="M108 60c-30 6-52 4-68-6M108 66c-24 12-58 16-92 10" />
+          <path class="rope" pathLength="1" d="M108 60c30 6 52 4 68-6M108 66c24 12 58 16 92 10" />
+        </svg>
+        <figcaption>
+          <p class="mono why-word">no·ray <span>m.</span></p>
+          <p class="why-meaning">Poste del muelle donde se amarran los barcos para que no se vayan con la marea.</p>
+        </figcaption>
+      </figure>
+      <div class="why-text">
+        <span class="mono reveal">Por qué norAi</span>
+        <h2 class="reveal" id="nombre-title" style="--d:.08s">En el puerto, todo se conecta en el noray. <span class="serif">En tu empresa, en norAi.</span></h2>
+        <p class="reveal" style="--d:.16s">Un barco sin amarre se va a la deriva. Pasa igual con lo que sabe tu equipo cuando la IA no tiene dónde agarrarse.</p>
+        <p class="reveal" style="--d:.22s">norAi es ese punto firme: ahí se amarran tu gente, sus agentes y el conocimiento de la empresa, para que lo que se aprende hoy siga ahí mañana.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= HOW IT WORKS ================= -->
   <section class="sec" id="como-funciona">
     <div class="wrap">
@@ -912,7 +961,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       <span class="mono reveal">Y en el día a día</span>
       <div class="panel reveal" style="--d:.1s">
         <div class="cols">
-          <div class="col"><span class="mono">Tu día</span><h4>Un resumen de tu jornada</h4><p>Al final del día ves qué hiciste y cuánto tiempo te ahorraron tus agentes, en un solo panel.</p></div>
+          <div class="col"><span class="mono">Tu día</span><h4>Un resumen de tu jornada</h4><p>Al final del día ves qué hiciste, qué terminaron tus agentes y qué te toca, en un solo panel.</p></div>
           <div class="col"><span class="mono">Tableros</span><h4>Proyectos por área</h4><p>Cada área tiene su tablero de proyectos, para que se vea qué está en curso y quién lo lleva.</p></div>
           <div class="col"><span class="mono">Dictado</span><h4>Habla en lugar de escribir</h4><p>Dicta tus mensajes directo en la caja de texto y deja que tu agente se ponga a trabajar.</p></div>
         </div>
@@ -1198,6 +1247,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     <div class="footer-brand">
       <a class="brand" href="#top" aria-label="norai, inicio"><svg class="logo" viewBox="0 0 500 242" width="66" height="32" aria-hidden="true" focusable="false"><use href="#norai-logo" width="500" height="242"/></svg></a>
       <p class="tagline mono">Empresas conectadas · IA en acción</p>
+      <p class="footer-why">Como el noray del muelle: el punto donde tu empresa se amarra a la IA.</p>
       <p>La app donde los equipos de tu empresa trabajan con agentes de IA que comparten lo que sabe la empresa.</p>
     </div>
     <div>
