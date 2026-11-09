@@ -708,7 +708,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       </div>
       <a class="link" href="#casos">Use cases</a>
       <a class="link" href="#precios">Pricing</a>
-      <a class="btn nav-cta" href="#contacto"><span><span class="hide-xs">Book a </span>demo</span><span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+      <a class="btn nav-cta" href="#demo" data-show-demo><span><span class="hide-xs">Show </span>demo</span><span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
     </nav>
   </div>
 </header>
@@ -768,7 +768,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       <h1 class="hero-title load" style="animation-delay:.15s">AI that <span class="serif">knows</span><br /> your company.</h1>
       <p class="hero-sub load" style="animation-delay:.35s">norai is the app where your teams work with AI agents (Codex and Claude) that share what your company knows: they cite their sources, respect each department’s permissions, and only learn what your leads approve.</p>
       <div class="hero-cta load" style="animation-delay:.5s">
-        <a class="btn" href="#contacto">Book a demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn" href="#demo" data-show-demo>Show demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <a class="btn ghost" href="#como-funciona">See how it works <span class="arr"><span class="rot" style="transform:rotate(90deg)"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
       </div>
       <div class="hero-meta mono load" style="animation-delay:.7s">
@@ -845,7 +845,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       </div>
 
       <div class="player reveal" id="player" style="--d:.1s">
-        <div class="player-bar mono"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>norai · 4-step walkthrough</span></div>
+        <div class="player-bar mono"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span id="player-title">norai · 4-step walkthrough</span></div>
         <!-- the video goes here: set DEMO_VIDEO_URL at the top of the script (see LEEME.txt) -->
         <div class="frame" id="demo-frame" hidden></div>
         <div class="story" id="walkthrough">
@@ -975,7 +975,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       <div>
         <h2 class="reveal">A company <span class="serif">that learns.</span></h2>
         <p class="lead reveal" style="--d:.1s">When an agent finishes a task, it proposes what it learned for the wiki. The department lead reviews it and decides whether it goes in. Every change records who proposed it and who approved it, so the company learns with every task without losing control.</p>
-        <a class="btn reveal" style="--d:.2s" href="#contacto">Book a demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="btn reveal" style="--d:.2s" href="#demo" data-show-demo>Show demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
       </div>
       <div class="stage reveal" style="--d:.15s" aria-hidden="true">
         <span class="cap2 mono">Learning cycle</span>
@@ -1086,7 +1086,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
             <li>Hub installed on your network, with our support</li>
             <li>Results review when the pilot wraps up</li>
           </ul>
-          <a class="btn" href="#contacto">Book a demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+          <a class="btn" href="#demo" data-show-demo>Show demo <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         </div>
         <div class="plan">
           <span class="mono">Several departments</span>
@@ -1123,7 +1123,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
       <div>
         <h2 class="reveal">Frequently asked <span class="serif">questions.</span></h2>
         <p class="lead reveal" style="--d:.1s">If your question isn’t here, ask us in the demo.</p>
-        <a class="boxlink reveal" style="--d:.15s" href="#contacto"><span class="ul">Book a demo</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
+        <a class="boxlink reveal" style="--d:.15s" href="#demo" data-show-demo><span class="ul">Show demo</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
       </div>
       <div class="faq reveal" style="--d:.1s">
         <details>
@@ -1156,7 +1156,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
         </details>
         <details>
           <summary>How do we get started?<span class="pm" aria-hidden="true"></span></summary>
-          <div class="ans">Book a demo with the form below. We’ll show you norai with a case similar to yours and, if it’s a fit, we’ll set up a pilot with one department.</div>
+          <div class="ans">Watch the demo above, or write to us with the form below. We’ll show you norai with a case similar to yours and, if it’s a fit, we’ll set up a pilot with one department.</div>
         </details>
       </div>
     </div>
@@ -1176,7 +1176,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     </div>
     <div class="wrap contact-grid">
       <div>
-        <div class="eyebrow mono reveal">Book a demo</div>
+        <div class="eyebrow mono reveal">Talk to us</div>
         <h2 class="reveal">Get your company <span class="serif">learning.</span></h2>
         <p class="lead reveal" style="--d:.1s">Tell us about your team. We’ll show you norai with a case similar to yours and, if it’s a fit, we’ll set up a guided pilot with one department.</p>
         <ol class="next-steps reveal" style="--d:.15s">
@@ -1189,7 +1189,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
 
       <form class="form reveal" id="demo-form" style="--d:.15s" novalidate aria-labelledby="form-title">
         <div id="form-body">
-          <h3 class="form-title" id="form-title">Book a demo</h3>
+          <h3 class="form-title" id="form-title">Talk to us</h3>
           <p class="form-sub">We’ll reply by email to set up a date.</p>
           <div class="row2">
             <div class="field">
@@ -1256,7 +1256,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     </div>
     <div>
       <h5>Company</h5>
-      <ul><li><a href="#casos">Use cases</a></li><li><a href="#precios">Pricing</a></li><li><a href="#preguntas">FAQ</a></li><li><a href="#contacto">Book a demo</a></li><li><a data-email="text" href="#contacto">Contact</a></li></ul>
+      <ul><li><a href="#casos">Use cases</a></li><li><a href="#precios">Pricing</a></li><li><a href="#preguntas">FAQ</a></li><li><a href="#demo" data-show-demo>Show demo</a></li><li><a data-email="text" href="#contacto">Contact</a></li></ul>
     </div>
     <div>
       <h5>Open source</h5>
@@ -1276,7 +1276,8 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
      FORM_ENDPOINT   dirección de Formspree (o similar), p. ej. "https://formspree.io/f/xxxxxxx".
                      Vacío = el formulario abre el correo de la persona con el mensaje listo (mailto).
      CONTACT_EMAIL   correo de contacto que aparece en la página y recibe los mailto. TODO: cambiarlo. */
-  const DEMO_VIDEO_URL = "";
+  const DEMO_VIDEO_URL = "assets/demo.mp4";
+  const DEMO_VIDEO_POSTER = "assets/demo-poster.jpg";
   const FORM_ENDPOINT = "";
   const CONTACT_EMAIL = "hola@norai.mx";
   /* ================================================================= */
@@ -1349,7 +1350,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     let el;
     if (/\.(mp4|webm|m4v|mov)(?:[?#]|$)/i.test(url) && !yt) {
       el = document.createElement('video');
-      Object.assign(el, { src: url, controls: true, playsInline: true, preload: 'metadata' });
+      Object.assign(el, { src: url, controls: true, playsInline: true, preload: 'metadata', poster: DEMO_VIDEO_POSTER });
       el.setAttribute('aria-label', 'norai demo video');
     } else {
       el = document.createElement('iframe');
@@ -1363,7 +1364,20 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     frame.append(el);
     frame.hidden = false;
     document.getElementById('player').classList.add('has-video');
+    const title = document.getElementById('player-title');
+    if (title) title.textContent = 'norAi · product demo · 3:50';
   })();
+
+  // "Show demo" buttons: scroll to the demo and start the video
+  document.querySelectorAll('[data-show-demo]').forEach((a) => a.addEventListener('click', (e) => {
+    const demo = document.getElementById('demo');
+    if (!demo) return;
+    e.preventDefault();
+    demo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const v = document.querySelector('#demo-frame video');
+    if (v) { setTimeout(() => { v.play().catch(() => {}); v.focus({ preventScroll: true }); }, 450); }
+    history.replaceState(null, '', '#demo');
+  }));
 
   // walkthrough poster: the four cards light up in turn while the player is on screen (hover picks one)
   const player = document.getElementById('player');
@@ -2110,7 +2124,7 @@ document.documentElement.classList.add(/[?&]nomotion(?:&|=|$)/.test(location.sea
     const mailtoFor = (d) => {
       const subject = `norai demo · ${d.get('empresa')}`;
       const lines = [
-        'Hi, I’d like to book a demo of norai.', '',
+        'Hi, I’d like to talk about norAi.', '',
         `Name: ${d.get('nombre')}`, `Email: ${d.get('email')}`, `Company: ${d.get('empresa')}`, `Team size: ${d.get('tamano_equipo')}`,
       ];
       const msg = String(d.get('mensaje') || '').trim();
