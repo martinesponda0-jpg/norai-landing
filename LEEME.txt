@@ -5,8 +5,9 @@ Página
 
 Cómo verla en tu PC
 - Abre una terminal y corre:  python -m http.server 4321 --bind 127.0.0.1 --directory C:\Users\Gigabyte\sequoia-landing
-- Luego abre:  http://127.0.0.1:4321/?motion
-- "?motion" fuerza las animaciones aunque Windows tenga apagados los efectos de animación.
+- Luego abre:  http://127.0.0.1:4321/
+- Las animaciones salen siempre, aunque Windows tenga apagados los efectos de animación.
+  Para ver la versión quieta (sin movimiento) agrega ?nomotion al final del link.
 
 Revisión automática (se pegan en la consola del navegador o las corre Claude)
 - scripts\qa.js          revisa desbordes, imágenes rotas, textos encimados y el carrusel.
@@ -16,3 +17,6 @@ Revisión automática (se pegan en la consola del navegador o las corre Claude)
 Logos
 - assets\ tiene el símbolo, la palabra "sequoia ai" (versión verde y clara), favicons e ícono de celular,
   sacados del logo aprobado del kit (Documents\Codex\2026-11-08\dise-a-el-logo-de-sequoia\outputs\sequoia-ai-kit).
+
+En línea
+- https://sequoia-landing.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/sequoia-landing)
