@@ -3,19 +3,22 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Sequoia AI — La empresa que aprende con cada tarea</title>
-<meta name="description" content="Sequoia es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo." />
+<title>Norai — La empresa que aprende con cada tarea</title>
+<meta name="description" content="Norai es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo." />
 <script>/* Motion is part of the brand, so it plays even when the system asks for less; ?nomotion shows the still version. */
 if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.classList.add("force-motion");</script>
 <link rel="icon" href="assets/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <meta name="theme-color" content="#1e3b2f" />
-<meta property="og:title" content="Sequoia AI" />
+<meta property="og:title" content="Norai" />
+<meta property="og:site_name" content="Norai" />
 <meta property="og:description" content="La empresa que aprende con cada tarea: agentes que comparten el conocimiento de tu equipo, por capas y con permisos por área." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="es_MX" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Norai — La empresa que aprende con cada tarea" />
+<meta name="twitter:description" content="La empresa que aprende con cada tarea: agentes que comparten el conocimiento de tu equipo, por capas y con permisos por área." />
 <meta name="twitter:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
 <link rel="canonical" href="https://sequoia-landing.vercel.app/" />
 <meta property="og:image" content="https://sequoia-landing.vercel.app/assets/og.jpg" />
@@ -84,10 +87,23 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   .nav { position: sticky; top: 0; z-index: 50; background: rgba(252, 251, 248, .82); backdrop-filter: blur(14px) saturate(1.2); border-bottom: 1px solid transparent; transition: border-color .4s; }
   .nav.scrolled { border-color: var(--line); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-  .brand { display: flex; align-items: center; gap: 9px; }
-  .brand .sym { width: 30px; height: 30px; transition: transform .8s var(--ease); }
-  .brand .word { height: 19px; width: auto; margin-top: 2px; }
+  /* norai logo: kit colors (carbón, plata, grafito); the symbol takes currentColor + --ring / --wave */
+  .brand { display: flex; align-items: center; gap: 9px; color: #171a20; --ring: #a7adb6; --wave: #69717d; }
+  .brand .sym { width: 30px; height: 30px; flex-shrink: 0; transition: transform .8s var(--ease); }
+  .brand .word { font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 23px; line-height: 1; letter-spacing: -0.045em; margin-top: -2px; }
   .brand:hover .sym { transform: rotate(-6deg) scale(1.06); }
+  /* the symbol is still (exactly the kit) unless --nm is 1: then it draws itself.
+     circles draw from the top, the post rises, the two waves follow left to right (~1.7 s) */
+  .nm-o { animation: nmDraw calc(var(--nm, 0) * .95s) cubic-bezier(.65, 0, .35, 1) calc(var(--nm, 0) * .1s) backwards; }
+  .nm-i { animation: nmDraw calc(var(--nm, 0) * .85s) cubic-bezier(.65, 0, .35, 1) calc(var(--nm, 0) * .3s) backwards; }
+  .nm-p { animation: nmRise calc(var(--nm, 0) * .65s) var(--ease) calc(var(--nm, 0) * .6s) backwards; }
+  .nm-w1 { animation: nmDraw calc(var(--nm, 0) * .6s) cubic-bezier(.45, 0, .25, 1) calc(var(--nm, 0) * .85s) backwards; }
+  .nm-w2 { animation: nmDraw calc(var(--nm, 0) * .5s) var(--ease) calc(var(--nm, 0) * 1.2s) backwards; }
+  @keyframes nmDraw { from { stroke-dasharray: 1 2; stroke-dashoffset: 1; opacity: 0; } 12% { opacity: 1; } to { stroke-dasharray: 1 2; stroke-dashoffset: 0; opacity: 1; } }
+  @keyframes nmRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .nav .sym { --nm: 1; }
+  .nav .word { animation: nmWord .8s var(--ease) .75s backwards; }
+  @keyframes nmWord { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
   .nav-links { display: flex; align-items: center; gap: 30px; }
   .nav-links a.link { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); position: relative; }
   .link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease-hr); }
@@ -355,7 +371,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
   footer { background: var(--ink); color: #c9ccbd; padding: 56px 0 40px; }
   footer .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
-  footer .brand { color: var(--white); }
+  footer .brand { color: #fff; --ring: #858b94; --wave: #c5cad1; } /* kit dark-background variant */
   footer p { margin-top: 14px; font-size: 14px; line-height: 1.55; max-width: 340px; color: #a9ad9f; }
   footer h5 { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #7f8577; font-weight: 400; margin-bottom: 14px; }
   footer li { list-style: none; font-size: 14px; padding: 4px 0; }
@@ -402,15 +418,23 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     html:not(.force-motion) .scene { opacity: 0; }
     html:not(.force-motion) .scene[style*="--s:0"] { opacity: 1; }
     html:not(.force-motion) .sp { stroke-dashoffset: 0; }
+    html:not(.force-motion) .nav .sym { --nm: 0; } /* logo shown complete, no draw-in */
+    html:not(.force-motion) .nav .word { animation: none !important; }
   }
 </style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <!-- LOGO PROVISIONAL: reemplazar este símbolo por el logo final -->
-  <symbol id="logo" viewBox="0 0 22 26">
-    <path d="M11 0 L17 8 H13.8 L19 15 H14.6 L21 23 H12.2 V26 H9.8 V23 H1 L7.4 15 H3 L8.2 8 H5 Z" fill="currentColor"/>
+  <!-- norai symbol (kit norai-simbolo.svg): círculo, anillo, noray y dos ondas. Colors: currentColor, --ring, --wave -->
+  <symbol id="norai" viewBox="0 0 200 200">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle class="nm-o" cx="100" cy="100" r="84" pathLength="1" transform="rotate(-90 100 100)" stroke="currentColor" stroke-width="7"/>
+      <circle class="nm-i" cx="100" cy="100" r="70" pathLength="1" transform="rotate(90 100 100)" style="stroke: var(--ring, #858b94)" stroke-width="4"/>
+      <path class="nm-p" d="M80 59a6 6 0 0 1 6-6h8v-5a6 6 0 0 1 12 0v5h14a6 6 0 0 1 0 12h-14v73a6 6 0 0 1-12 0V65h-8a6 6 0 0 1-6-6Z" fill="currentColor" stroke="none"/>
+      <path class="nm-w1" pathLength="1" d="M35 129c17-9 30-9 44 0 13 8 22 9 34 4 12-5 19-14 29-11 8 3 6 10 0 12-10 5-20-2-30-2-12 0-20 6-32 12-9 5-18 8-27 10" style="stroke: var(--wave, #69717d)" stroke-width="5"/>
+      <path class="nm-w2" pathLength="1" d="M53 153c12-6 23-8 36-6 14 2 24 11 37 8 7-1 13-5 18-4" stroke="currentColor" stroke-width="8"/>
+    </g>
   </symbol>
   <symbol id="arr" viewBox="0 0 10 10"><path d="M1 5h7.2M5.4 1.8 8.6 5 5.4 8.2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
   <symbol id="arr-l" viewBox="0 0 10 10"><path d="M9 5H1.8M4.6 1.8 1.4 5l3.2 3.2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
@@ -418,13 +442,13 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 </svg>
 
 <div class="announce">
-  <span class="dot"></span>Sequoia AI se presenta en el Kavak × OpenAI × Primero AI RSI Hackathon<span class="hide-sm"> — 9 nov 2026</span>
+  <span class="dot"></span>Norai se presenta en el Kavak × OpenAI × Primero AI RSI Hackathon<span class="hide-sm"> — 9 nov 2026</span>
   <a href="#demo">Cómo funciona →</a>
 </div>
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Sequoia AI, inicio"><img class="sym" src="assets/symbol.png" alt="" width="30" height="30" /><img class="word" src="assets/wordmark.png" alt="sequoia ai" width="77" height="19" /></a>
+    <a class="brand" href="#top" aria-label="Norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
     <nav class="nav-links">
       <div class="dd" id="dd">
         <button class="link dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Producto <svg class="chev" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></button>
@@ -494,7 +518,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap">
       <div class="eyebrow mono load" style="animation-delay:.05s">Agentes que trabajan en equipo</div>
       <h1 class="hero-title load" style="animation-delay:.15s">La empresa que <span class="serif">aprende</span> con cada tarea.</h1>
-      <p class="hero-sub load" style="animation-delay:.35s">Sequoia es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo.</p>
+      <p class="hero-sub load" style="animation-delay:.35s">Norai es el espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa: por capas, con permisos, y que mejora solo.</p>
       <div class="hero-cta load" style="animation-delay:.5s">
         <a class="btn" href="#demo">Cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
         <a class="btn ghost" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver en GitHub <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
@@ -538,7 +562,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap">
       <div class="sec-head">
         <h2 class="reveal">De la junta al feature, <span class="serif">sin perder nada.</span></h2>
-        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña nueva en Kavak. Nadie recuerda de cuánto fue el descuento la vez pasada. Así lo resuelve un equipo en Sequoia.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
+        <div class="reveal" style="--d:.1s"><p class="lead">Una campaña nueva en Kavak. Nadie recuerda de cuánto fue el descuento la vez pasada. Así lo resuelve un equipo en Norai.</p><a class="boxlink" style="margin-top:18px" href="#plataforma"><span class="ul">Ver la plataforma</span> <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a></div>
       </div>
 
       <div class="story">
@@ -547,7 +571,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
             <span class="num mono">01</span>
             <div class="mini">
               <div class="row"><span class="who">MARÍA</span><span>"Esto ya se hizo… ¿de cuánto fue la promo?"</span></div>
-              <div class="row"><span class="who">FCO.</span><span>"Mándenme el request por Sequoia."</span></div>
+              <div class="row"><span class="who">FCO.</span><span>"Mándenme el request por Norai."</span></div>
               <div class="row"><span class="who">TAREA</span><span><span class="pill hot">IKER</span>Buscar % de la promo</span></div>
             </div>
           </div>
@@ -615,7 +639,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
         </div>
       </div>
 
-      <div class="diagram reveal" style="--d:.15s" aria-label="Diagrama: el conocimiento de Sequoia por capas">
+      <div class="diagram reveal" style="--d:.15s" aria-label="Diagrama: el conocimiento de Norai por capas">
         <svg viewBox="0 0 640 600">
           <!-- outer ring segments (empresa) -->
           <g transform="translate(320 300)">
@@ -707,7 +731,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     <div class="wrap grid">
       <div>
         <h2 class="reveal">Esto es una empresa <span class="serif">que aprende.</span></h2>
-        <p class="lead reveal" style="--d:.1s">Sequoia convierte lo que pasa en juntas y tareas en propuestas para la wiki. El líder del área las aprueba y cada versión se compara con la anterior antes de entrar. Cada anillo nuevo hace más fuerte al árbol.</p>
+        <p class="lead reveal" style="--d:.1s">Norai convierte lo que pasa en juntas y tareas en propuestas para la wiki. El líder del área las aprueba y cada versión se compara con la anterior antes de entrar. Cada versión nueva hace más firme el amarre.</p>
         <a class="btn reveal" style="--d:.2s" href="#demo">Ver cómo funciona <span class="arr"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></a>
       </div>
       <div class="stage reveal" style="--d:.15s" aria-hidden="true">
@@ -756,7 +780,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 <footer>
   <div class="wrap">
     <div>
-      <a class="brand" href="#top" aria-label="Sequoia AI, inicio"><img class="sym" src="assets/symbol-light.png" alt="" width="30" height="30" /><img class="word" src="assets/wordmark-light.png" alt="sequoia ai" width="77" height="19" /></a>
+      <a class="brand" href="#top" aria-label="Norai, inicio"><svg class="sym" viewBox="0 0 200 200" width="30" height="30" aria-hidden="true"><use href="#norai" width="200" height="200"/></svg><span class="word" aria-hidden="true">norai</span></a>
       <p>El espacio donde tu equipo trabaja con agentes que comparten el conocimiento de la empresa. Hecho por el equipo Tri-π.</p>
     </div>
     <div>
@@ -768,7 +792,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
       <ul><li><a href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">GitHub</a></li><li><a href="https://luma.com/6ejxfvva" target="_blank" rel="noopener">RSI Hackathon 2026</a></li></ul>
     </div>
     <div class="legal mono">
-      <span>© 2026 Sequoia AI · Tri-π</span>
+      <span>© 2026 Norai · Tri-π</span>
       <span>Construido sobre T3 Code (licencia MIT)</span>
     </div>
   </div>
