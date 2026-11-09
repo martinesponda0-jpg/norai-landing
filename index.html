@@ -294,9 +294,12 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   .area .bottom p { margin-top: 6px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
   .glyph { position: absolute; right: -10%; top: 8%; width: 70%; opacity: .5; }
   .controls { display: flex; justify-content: flex-end; align-items: center; gap: 14px; margin-top: 22px; }
-  .dots { display: flex; gap: 6px; }
-  .dots i { width: 6px; height: 6px; background: var(--line); display: block; transition: background .3s, width .4s var(--ease); }
-  .dots i.on { background: var(--ink); width: 18px; }
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dots button { position: relative; width: 6px; height: 6px; padding: 0; border: 0; background: var(--line); display: block; cursor: pointer; transition: background .3s, width .4s var(--ease); }
+  .dots button::before { content: ""; position: absolute; inset: -10px -3px; } /* finger-sized hit area */
+  .dots button.on { background: var(--ink); width: 18px; }
+  .dots[hidden] { display: none; }
+  .dots button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
   .arrow { position: relative; overflow: hidden; width: 44px; height: 44px; border: 1px solid #b9b3a5; background: var(--white); color: var(--ink); cursor: pointer; transition: color .2s, border-color .2s, opacity .2s, transform .2s var(--ease-hr); }
   .arrow svg { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; transition: transform .35s var(--ease-hr); }
   .arrow .a2 { transform: translateX(-30px); }
@@ -534,7 +537,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
       <div class="story">
         <article class="card reveal">
           <div class="visual">
-            <span class="num mono">01</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <span class="num mono">01</span>
             <div class="mini">
               <div class="row"><span class="who">MARÍA</span><span>"Esto ya se hizo… ¿de cuánto fue la promo?"</span></div>
               <div class="row"><span class="who">FCO.</span><span>"Mándenme el request por Sequoia."</span></div>
@@ -548,7 +551,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
         <article class="card reveal" style="--d:.1s">
           <div class="visual" style="background:#2c4a3c">
-            <span class="num mono">02</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <span class="num mono">02</span>
             <div class="mini">
               <div class="row"><b>Nodo encontrado</b></div>
               <div class="row"><span>Pertenece al área</span><span class="pill">VENTAS</span></div>
@@ -562,7 +565,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
         <article class="card reveal" style="--d:.2s">
           <div class="visual" style="background:#3b3a2e">
-            <span class="num mono">03</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <span class="num mono">03</span>
             <div class="mini">
               <div class="big">5%</div>
               <div class="row" style="margin-top:8px"><span>Compartido con María</span></div>
@@ -576,7 +579,7 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
 
         <article class="card reveal" style="--d:.3s">
           <div class="visual" style="background:#5a2f1f">
-            <span class="num mono">04</span><span class="tag arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span>
+            <span class="num mono">04</span>
             <div class="mini">
               <div class="row"><span class="pill ok">+ ÁREA</span><span>Proceso documentado</span></div>
               <div class="row"><span class="pill ok">+ EMPRESA</span><span>Colaboración activa con Kavak</span></div>
@@ -599,8 +602,9 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
         <a class="btn reveal" style="margin-top:30px; --d:.1s" href="https://github.com/Jero110/enterprise-agent" target="_blank" rel="noopener">Ver el código <span class="arr"><span class="rot"><svg class="a1"><use href="#arr"/></svg><svg class="a2"><use href="#arr"/></svg></span></span></a>
         <div class="feat">
           <div class="feat-item reveal" data-seg="0"><span class="mono">01</span><h4>El conocimiento vive por capas</h4><p>Empresa, área y persona. Cada agente consulta solo lo que su dueño puede ver, cuando lo necesita.</p></div>
-          <div class="feat-item reveal" data-seg="2" style="--d:.08s"><span class="mono">02</span><h4>Tu equipo, en vivo <i class="live" aria-hidden="true"></i></h4><p>Ve los proyectos y agentes activos de tus compañeros. Actuar en el de otro requiere permiso explícito y revocable.</p></div>
-          <div class="feat-item reveal" data-seg="3" style="--d:.16s"><span class="mono">03</span><h4>El sistema se mejora a sí mismo</h4><p>Lo que pasa en juntas, chats y tareas se convierte en propuestas que actualizan la wiki, con pruebas antes de entrar.</p></div>
+          <div class="feat-item reveal" data-seg="1" style="--d:.08s"><span class="mono">02</span><h4>Permisos por área</h4><p>Cada área decide quién ve qué. Si tu agente necesita un dato de otra área, pides acceso y la jefa del área lo aprueba.</p></div>
+          <div class="feat-item reveal" data-seg="2" style="--d:.16s"><span class="mono">03</span><h4>Tu equipo, en vivo <i class="live" aria-hidden="true"></i></h4><p>Ve los proyectos y agentes activos de tus compañeros. Actuar en el de otro requiere permiso explícito y revocable.</p></div>
+          <div class="feat-item reveal" data-seg="3" style="--d:.24s"><span class="mono">04</span><h4>El sistema se mejora a sí mismo</h4><p>Lo que pasa en juntas, chats y tareas se convierte en propuestas que actualizan la wiki, con pruebas antes de entrar.</p></div>
         </div>
       </div>
 
@@ -841,20 +845,36 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
     el.addEventListener('pointerleave', () => { hovering = false; });
   });
 
-  // carousel
+  // carousel: one dot per position the arrows can reach (not per card), rebuilt when the width changes
   const car = document.getElementById('carousel');
   const dots = document.getElementById('dots');
   const items = [...car.children];
-  items.forEach(() => dots.appendChild(document.createElement('i')));
-  const step = () => items[0].getBoundingClientRect().width + 20;
-  const sync = () => { const i = Math.round(car.scrollLeft / step()); [...dots.children].forEach((d, k) => d.classList.toggle('on', k === Math.min(i, items.length - 1))); };
   const prevB = document.getElementById('prev'), nextB = document.getElementById('next');
-  const edges = () => { prevB.disabled = car.scrollLeft < 4; nextB.disabled = car.scrollLeft + car.clientWidth > car.scrollWidth - 4; };
-  car.addEventListener('scroll', () => { sync(); edges(); }, { passive: true }); sync(); edges(); addEventListener('resize', edges);
-  document.getElementById('next').onclick = () => car.scrollBy({ left: step(), behavior: 'smooth' });
+  const step = () => items[1].getBoundingClientRect().left - items[0].getBoundingClientRect().left;
+  const maxLeft = () => Math.max(0, car.scrollWidth - car.clientWidth);
+  const count = () => (maxLeft() < 4 ? 1 : Math.ceil((maxLeft() - 4) / step()) + 1);
+  const atEnd = () => car.scrollLeft >= maxLeft() - 4;
+  const current = () => (atEnd() ? count() - 1 : Math.min(count() - 1, Math.round(car.scrollLeft / step())));
+  const go = (i) => { const k = Math.max(0, Math.min(count() - 1, i)); car.scrollTo({ left: k === count() - 1 ? maxLeft() : k * step(), behavior: 'smooth' }); };
+  const buildDots = () => {
+    const n = count();
+    if (dots.children.length === n) return;
+    dots.replaceChildren(...Array.from({ length: n }, (_, k) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-label', `Ver grupo ${k + 1} de ${n}`); b.onclick = () => go(k);
+      return b;
+    }));
+    dots.hidden = n < 2;
+  };
+  const sync = () => { const i = current(); [...dots.children].forEach((d, k) => { d.classList.toggle('on', k === i); d.toggleAttribute('aria-current', k === i); }); };
+  const edges = () => { prevB.disabled = car.scrollLeft < 4; nextB.disabled = atEnd(); };
+  const refresh = () => { buildDots(); sync(); edges(); };
+  car.addEventListener('scroll', () => { sync(); edges(); }, { passive: true });
+  nextB.onclick = () => go(current() + 1);
+  prevB.onclick = () => go(current() - 1);
   // full-bleed rail: the gutter is the distance from the window edge to the content column (no 100vw, so no scrollbar overflow)
   const setGut = () => { const w = car.parentElement, r = w.getBoundingClientRect(); car.style.setProperty('--gut', Math.round(r.left + parseFloat(getComputedStyle(w).paddingLeft)) + 'px'); };
-  setGut(); addEventListener('resize', setGut);
+  setGut(); refresh(); addEventListener('resize', () => { setGut(); refresh(); });
 
   // drag the rail with the mouse (touch already scrolls natively)
   let drag = null;
@@ -868,12 +888,12 @@ if (!/[?&]nomotion(?:&|=|$)/.test(location.search)) document.documentElement.cla
   addEventListener('pointerup', () => {
     if (!drag) return;
     const moved = drag.moved; drag = null;
-    if (moved) { car.classList.remove('dragging'); const i = Math.round(car.scrollLeft / step()); car.scrollTo({ left: i * step(), behavior: 'smooth' }); }
+    // snap to the nearest reachable position; near the end that is the end itself, so the last card is never left half hidden
+    if (moved) { car.classList.remove('dragging'); go(car.scrollLeft >= maxLeft() - step() / 2 ? count() - 1 : Math.round(car.scrollLeft / step())); }
   });
   car.addEventListener('click', (e) => { if (car.classList.contains('dragging')) e.preventDefault(); }, true);
   car.addEventListener('dragstart', (e) => e.preventDefault());
 
-  document.getElementById('prev').onclick = () => car.scrollBy({ left: -step(), behavior: 'smooth' });
 
   // growing rings log
   const logEl = document.getElementById('log'), verEl = document.getElementById('ver');
