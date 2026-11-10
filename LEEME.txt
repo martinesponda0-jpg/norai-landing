@@ -21,7 +21,7 @@ Las tres cosas se cambian en un solo lugar: al principio del <script> de index.h
 1. CONTACT_EMAIL = "hola@norai.mx"      ← TODO: es un correo de ejemplo, cámbialo por el real.
    Aparece en la sección de contacto y en el pie, y es a donde llegan las solicitudes mientras no haya FORM_ENDPOINT.
 
-2. DEMO_VIDEO_URL = "assets/demo.mp4"   ← listo: el demo (4:56) está en assets/demo.mp4, portada en assets/demo-poster.jpg.
+2. DEMO_VIDEO_URL = "assets/demo.mp4"   ← listo: el demo (4:20) está en assets/demo.mp4, portada en assets/demo-poster.jpg.
    - Vacío: la sección "See norai in action" muestra el recorrido animado de 4 pasos y el botón "Book a live demo".
    - Con link: el video aparece arriba del recorrido. Sirven links de YouTube, Vimeo o Loom tal cual los copias
      (p. ej. "https://youtu.be/XXXXXXXXXXX"), o un archivo de video: copia demo.mp4 a la carpeta assets y pon "assets/demo.mp4".
