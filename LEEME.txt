@@ -72,5 +72,5 @@ Colores
   Los grises claros (#A9A59D) son solo para detalles, nunca para texto sobre fondo claro.
 
 En línea
-- https://norai-ia.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/sequoia-landing)
+- https://norai-ia.vercel.app  (se actualiza solo al subir cambios a GitHub: martinesponda0-jpg/norai-landing)
 - https://sequoia-landing.vercel.app  (dirección vieja, sigue funcionando)
